@@ -1,8 +1,9 @@
-<div class="data-scroll-container">
+<div class="">
   <!-- Our distinction Hero -->
   <!-- The I-Field Advantage -->
 
-  <div class="md:hidden bg-black static data-scroll-section">
+  <!--Mobile Only-->
+  <div class="md:hidden bg-black static">
     <div class="grid grid-cols-2 grid-rows-1">
       <div class="col-span-1 text-5xl text-white text-center font-serif mb-8">
         Our DNA
@@ -28,34 +29,30 @@
   </div>
 
   <div class="hidden md:block static w-[100%] min-h-[100vh] overflow-hidden">
-    <div class="md:w-[90vw] h-[95vh] bg-black">
-      <!-- MOBILE ONLY-->
-
-      <div class="hidden md:block">
-        <img
-          class="absolute top-40 object-cover object-right md:w-2/5 h-[100vh]"
-          src="/assets/7.jpg"
-          alt="hotel lobby"
-        />
-        <div class="absolute inset-[30%] text-6xl text-white">Our DNA</div>
-        <div class="absolute top-[35%] left-[50%] h-1 bg-red-900 w-64"></div>
-        <div
-          class="hidden md:block absolute inset-[40%] w-[40vw] text-xl text-white mx-14 mt-14"
-        >
-          <div>
-            We are a team of industry experts offering deluxe turnkey solutions
-            for FF&E manufacture, supply, and installation. Established and
-            operated by hotel owners and industry experts, our end-to-end
-            services ensure high client satisfaction around the globe.
-          </div>
-          <div class="mt-8 text-2xl">
-            Our core principle is to provide the best in products, prices,
-            efficiency, and customer service, and that’s the I-Field advantage.
-          </div>
-          <button class="text-black bg-yellow-400 w-48 h-12 mt-8">
-            Get In Touch
-          </button>
+    <div class="relative md:w-[90vw] h-[95vh] bg-black">
+      <img
+        class="absolute top-40 object-cover object-right md:w-2/5 h-[100vh]"
+        src="/assets/7.jpg"
+        alt="hotel lobby"
+      />
+      <div class="absolute inset-[30%] text-6xl text-white">Our DNA</div>
+      <div class="absolute top-[35%] left-[50%] h-1 bg-red-900 w-64"></div>
+      <div
+        class="hidden md:block absolute inset-[40%] w-[40vw] text-xl text-white mx-14 mt-14"
+      >
+        <div>
+          We are a team of industry experts offering deluxe turnkey solutions
+          for FF&E manufacture, supply, and installation. Established and
+          operated by hotel owners and industry experts, our end-to-end services
+          ensure high client satisfaction around the globe.
         </div>
+        <div class="mt-8 text-2xl">
+          Our core principle is to provide the best in products, prices,
+          efficiency, and customer service, and that’s the I-Field advantage.
+        </div>
+        <button class="text-black bg-yellow-400 w-48 h-12 mt-8">
+          Get In Touch
+        </button>
       </div>
     </div>
   </div>
@@ -63,7 +60,7 @@
 
   <!-- Process -->
   <div
-    class="container bg-white w-full h-full mt-40 mx-auto flex justify-center data-scroll-section"
+    class="container bg-white w-full h-full mt-40 mx-auto flex justify-center"
   >
     <div class="w-[60%] grid grid-cols-6 gap-4">
       <div class="col-start-1 col-span-3 mx-auto flex justify-center">
@@ -118,9 +115,7 @@
   </div>
 
   <!-- Impact -->
-  <div
-    class="static w-[100%] min-h-[100vh] overflow-hidden bg-white data-scroll-section"
-  >
+  <div class="static w-[100%] min-h-[100vh] overflow-hidden bg-white">
     <div class="relative w-[70%] min-h-[55vh] bg-black left-[20%] mt-20">
       <div class="absolute top-16 left-10 h-1 bg-red-900 w-[35%]"></div>
       <div class="absolute top-10 left-[40%] text-5xl text-white">
@@ -167,9 +162,48 @@
 
   <!-- Process -->
   <div class="">
-    <div class="data-scroll-section">
+    <div class="h-[400px] w-full flex flex-auto justify-around">
       <div
-        class="data-scroll data-scroll-speed-3 h-64 w-64 bg-black text-white m-16 rounded-xl p-8"
+        class="h-64 w-64 bg-black text-white rounded-xl p-8"
+        data-scroll
+        data-scroll-speed="1"
+      >
+        Hi
+      </div>
+      <div
+        class="h-64 w-64 bg-black text-white rounded-xl p-8"
+        data-scroll
+        data-scroll-speed="2"
+      >
+        Hi
+      </div>
+      <div
+        class="h-64 w-64 bg-black text-white rounded-xl p-8"
+        data-scroll
+        data-scroll-speed="3"
+      >
+        Hi
+      </div>
+    </div>
+    <div class="h-[400px] w-full flex flex-auto justify-around">
+      <div
+        class="h-64 w-64 bg-black text-white rounded-xl p-8"
+        data-scroll
+        data-scroll-speed="4"
+      >
+        Hi
+      </div>
+      <div
+        class="h-64 w-64 bg-black text-white rounded-xl p-8"
+        data-scroll
+        data-scroll-speed="5"
+      >
+        Hi
+      </div>
+      <div
+        class="h-64 w-64 bg-black text-white rounded-xl p-8"
+        data-scroll
+        data-scroll-speed="6"
       >
         Hi
       </div>
@@ -179,4 +213,8 @@
   <!-- Projects -->
 
   <!-- Clients -->
+  <script>
+    console.log("from home");
+    scroll.update();
+  </script>
 </div>

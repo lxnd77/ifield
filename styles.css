@@ -1,0 +1,60 @@
+:root {
+    --swiper-navigation-size : 16px;
+    --swiper-navigation-color: black;
+}
+
+.swiper-button-next, .swiper-button-prev{
+    top:95%;
+}
+
+.swiper-button-prev:after, .swiper-rtl .swiper-button-next:after {
+    content: 'Prev';
+    font-family: sans-serif;
+    /* left: 60px; */
+}
+
+.swiper-button-prev::before{
+
+}
+
+.swiper-button-next {
+    right: 60px;
+}
+
+.swiper-button-prev{
+    left:60px;
+}
+
+.swiper-button-next::before {
+    content: '';
+    position: absolute;
+    width: 88px;
+    height: 1px;
+    background: black;
+    top: 50%;
+    left: -104px;
+}
+
+.swiper-button-prev::before {
+    content: '';
+    position: absolute;
+    width: 88px;
+    height: 1px;
+    background: black;
+    top: 50%;
+    right: -104px;
+}
+
+
+.swiper-button-next:after, .swiper-rtl .swiper-button-prev:after{
+    content: 'Next';
+    font-family: sans-serif;
+
+}
+
+.btn {
+    background: #8D1B1C;
+    padding: 12px 36px;
+    color: white;
+    text-decoration: underline;
+}

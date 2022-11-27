@@ -177,19 +177,19 @@
 
     <!-- Main Container -->
     <!-- <div x-data=""></div> -->
+    <div class="">
+      <!-- Home Page -->
+      <template x-route="" template.preload="home.html"></template>
+      <template x-route="/" template.preload="home.html"></template>
 
-    <!-- Home Page -->
-    <template x-route="" template.preload="home.html"></template>
-    <template x-route="/" template.preload="home.html"></template>
+      <template x-route="/about">
+        <h1>About Us</h1>
+      </template>
 
-    <template x-route="/about">
-      <h1>About Us</h1>
-    </template>
-
-    <template x-route.notfound>
-      <div>Error 404 not found</div>
-    </template>
-
+      <template x-route.notfound>
+        <div>Error 404 not found</div>
+      </template>
+    </div>
     <!-- Footer -->
     <div x-data=""></div>
   </body>

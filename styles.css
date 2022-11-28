@@ -59,6 +59,16 @@
   text-decoration: underline;
 }
 
+.distinction::after {
+  content: "";
+  position: absolute;
+  width: 160px;
+  height: 3px;
+  background: darkred;
+  top: 50%;
+  right: -100px;
+}
+
 /** Timeline Stuff **/
 
 .cd-horizontal-timeline {
@@ -87,19 +97,10 @@
 .cd-horizontal-timeline .events-wrapper {
   position: relative;
   height: 100%;
-  margin: 0 40px;
+  margin: 0;
   overflow: hidden;
 }
-.cd-horizontal-timeline .events-wrapper::after,
-.cd-horizontal-timeline .events-wrapper::before {
-  /* these are used to create a shadow effect at the sides of the timeline */
-  content: "";
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  height: 100%;
-  width: 20px;
-}
+
 .cd-horizontal-timeline .events-wrapper::before {
   left: 0;
   background-image: -webkit-linear-gradient(
@@ -122,7 +123,7 @@
   /* this is the grey line/timeline */
   position: absolute;
   z-index: 1;
-  left: 0;
+  left: 10%;
   top: 49px;
   height: 2px;
   /* width will be set using JavaScript */
@@ -253,7 +254,6 @@
   -ms-transform: translateX(-50%) translateY(-50%);
   -o-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
-  background: url(../img/cd-arrow.svg) no-repeat 0 0;
 }
 .cd-timeline-navigation a.prev {
   left: 0;
@@ -278,8 +278,13 @@
 .no-touch .cd-timeline-navigation a.inactive:hover {
   border-color: #dfdfdf;
 }
-
-.cd-horizontal-timeline .events-content {
+.events
+  > ol:nth-child(1)
+  > li:nth-child(3)
+  > a:nth-child(1)
+  > img:nth-child(1)
+  .cd-horizontal-timeline
+  .events-content {
   position: relative;
   width: 100%;
   margin: 2em 0;
@@ -341,23 +346,17 @@
   max-width: 800px;
   margin: 0 auto;
 }
-.cd-horizontal-timeline .events-content h2 {
-  font-weight: bold;
-  font-size: 2.6rem;
+
+.cd-horizontal-timeline .events-content h1 {
   font-family: "Playfair Display", serif;
-  font-weight: 700;
-  line-height: 1.2;
-}
-.cd-horizontal-timeline .events-content em {
+  font-size: 48px;
+  font-weight: 400;
   display: block;
-  font-style: italic;
   margin: 10px auto;
 }
-.cd-horizontal-timeline .events-content em::before {
-  content: "- ";
-}
+
 .cd-horizontal-timeline .events-content p {
-  font-size: 1.4rem;
+  font-size: small;
   color: #959595;
 }
 .cd-horizontal-timeline .events-content em,
@@ -372,7 +371,7 @@
     font-size: 2rem;
   }
   .cd-horizontal-timeline .events-content p {
-    font-size: 1.8rem;
+    font-size: 24px;
   }
 }
 

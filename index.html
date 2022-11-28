@@ -44,7 +44,11 @@
   <body class="bg-white w-full" x-data>
     <div data-scroll-container>
       <!-- Header -->
-      <div class="w-full bg-black" x-data="{location:''}" data-scroll-section>
+      <div
+        class="w-full bg-black h-24"
+        x-data="{location:''}"
+        data-scroll-section
+      >
         <div class="mx-14 py-7 flex flex-row items-center justify-between">
           <div class="hidden md:flex">
             <svg
@@ -187,46 +191,28 @@
               data-scroll-section
             >
               <img
-                class="w-[600px] left-[5%] top-[5%] absolute pointer-events-none hImg"
-                src="./assets/1.jpg"
-                alt=""
-                id="i1"
-              />
-              <img
-                class="w-[400px] left-[12%] top-[30%] absolute pointer-events-none hImg"
-                src="./assets/2.jpg"
+                class="w-[400px] right-[20%] top-[15%] absolute pointer-events-none hImg"
+                src="./assets/Rectangle 45.png"
                 alt=""
                 id="i2"
               />
               <img
-                class="w-[300px] left-[8%] top-[50%] absolute pointer-events-none hImg"
-                src="./assets/3.jpg"
+                class="w-[300px] right-[10%] bottom-[10%] absolute pointer-events-none hImg"
+                src="./assets/Rectangle 50.png"
                 alt=""
-                id="i3"
+                id="i1"
               />
               <img
-                class="w-[400px] right-[5%] top-[5%] absolute pointer-events-none hImg"
-                src="./assets/4.jpg"
+                class="w-[450px] left-[5%] bottom-[5%] absolute pointer-events-none hImg"
+                src="./assets/Rectangle 48.png"
                 alt=""
                 id="i4"
               />
               <img
-                class="w-[600px] right-[12%] top-[30%] absolute pointer-events-none hImg"
-                src="./assets/5.jpg"
+                class="w-[250px] left-[15%] top-[10%] absolute pointer-events-none hImg"
+                src="./assets/Rectangle 49.png"
                 alt=""
-                id="i5"
-              />
-              <img
-                class="w-[400px] right-[8%] top-[56%] absolute pointer-events-none hImg"
-                src="./assets/6.jpg"
-                alt=""
-                id="i6"
-              />
-              <img
-                class="w-[500px] right-[50%] bottom-0 absolute pointer-events-none hImg"
-                src="./assets/7.jpg"
-                alt=""
-                id="i7"
+                id="i3"
               />
 
               <div
@@ -245,7 +231,7 @@
                 <div
                   class="col-span-1 text-5xl text-white text-center font-serif mb-8"
                 >
-                  Our DNA
+                  Our Distinction
                 </div>
                 <div class="col-span-1 h-1 bg-red-900 w-full mt-8"></div>
               </div>
@@ -285,11 +271,13 @@
                   src="/assets/7.jpg"
                   alt="hotel lobby"
                 />
-                <div class="absolute inset-[30%] text-6xl text-white">
-                  Our DNA
-                  <div
-                    class="relative top-[-12%] left-[260px] h-1 bg-red-900 w-64"
-                  ></div>
+                <div
+                  class="distinction h-fit absolute inset-[30%] text-6xl text-white"
+                >
+                  Our Distinction
+                  <!-- <div
+                    class="relative top-[-15%] left-[80%] h-1 bg-red-900 w-64"
+                  ></div> -->
                 </div>
 
                 <div
@@ -424,21 +412,44 @@
                 <div class="events-wrapper">
                   <div class="events">
                     <ol>
+                      <li></li>
                       <li>
-                        <a href="#0" data-date="16/01/2014" class="selected"
-                          >16 Jan</a
-                        >
+                        <a href="#0" data-date="1/1/2014" class="selected"
+                          ><img
+                            src="./assets/assessment.png"
+                            class="w-8 h-8 hover:scale-110"
+                        /></a>
                       </li>
-                      <li><a href="#0" data-date="28/02/2014">28 Feb</a></li>
-                      <li><a href="#0" data-date="20/04/2014">20 Mar</a></li>
-                      <li><a href="#0" data-date="20/05/2014">20 May</a></li>
-                      <li><a href="#0" data-date="09/07/2014">09 Jul</a></li>
-                      <li><a href="#0" data-date="30/08/2014">30 Aug</a></li>
-                      <li><a href="#0" data-date="15/09/2014">15 Sep</a></li>
-                      <li><a href="#0" data-date="01/11/2014">01 Nov</a></li>
-                      <li><a href="#0" data-date="10/12/2014">10 Dec</a></li>
-                      <li><a href="#0" data-date="19/01/2015">29 Jan</a></li>
-                      <li><a href="#0" data-date="03/03/2015">3 Mar</a></li>
+                      <li>
+                        <a href="#0" data-date="1/2/2014"
+                          ><img src="./assets/design.png" class="w-8 h-8"
+                        /></a>
+                      </li>
+                      <li>
+                        <a href="#0" data-date="1/3/2014"
+                          ><img src="./assets/procuremnt.png" class="w-8 h-8"
+                        /></a>
+                      </li>
+                      <li>
+                        <a href="#0" data-date="1/4/2014"
+                          ><img src="./assets/production.png" class="w-8 h-8"
+                        /></a>
+                      </li>
+                      <li>
+                        <a href="#0" data-date="1/5/2014"
+                          ><img src="./assets/logistics.png" class="w-8 h-8"
+                        /></a>
+                      </li>
+                      <li>
+                        <a href="#0" data-date="1/6/2014"
+                          ><img src="./assets/delivery.png" class="w-8 h-8"
+                        /></a>
+                      </li>
+                      <li>
+                        <a href="#0" data-date="1/7/2014"
+                          ><img src="./assets/installation.png" class="w-8 h-8"
+                        /></a>
+                      </li>
                     </ol>
 
                     <span class="filling-line" aria-hidden="true"></span>
@@ -446,168 +457,108 @@
                   <!-- .events -->
                 </div>
                 <!-- .events-wrapper -->
-
+                <!-- 
                 <ul class="cd-timeline-navigation">
                   <li><a href="#0" class="prev inactive">Prev</a></li>
                   <li><a href="#0" class="next">Next</a></li>
-                </ul>
+                </ul> -->
                 <!-- .cd-timeline-navigation -->
               </div>
               <!-- .timeline -->
 
               <div class="events-content">
                 <ol>
-                  <li class="selected" data-date="16/01/2014">
-                    <h2>Horizontal Timeline</h2>
-                    <em>January 16th, 2014</em>
+                  <li class="selected" data-date="1/1/2014">
+                    <h1>Assessment</h1>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Illum praesentium officia, fugit recusandae ipsa, quia
-                      velit nulla adipisci? Consequuntur aspernatur at, eaque
-                      hic repellendus sit dicta consequatur quae, ut harum ipsam
-                      molestias maxime non nisi reiciendis eligendi! Doloremque
-                      quia pariatur harum ea amet quibusdam quisquam, quae,
-                      temporibus dolores porro doloribus.
+                      We assess the site and business to ensure clarity on scope
+                      and budgeting. We provide cost engineering services to
+                      ensure the best use of your budget.
+                    </p>
+                    <p>
+                      We’ll provide expert recommendations, and full
+                      transparency. We make sure you’re optimizing your budget.
                     </p>
                   </li>
 
-                  <li data-date="28/02/2014">
-                    <h2>Event title here</h2>
-                    <em>February 28th, 2014</em>
+                  <li data-date="1/2/2014">
+                    <h1>Design</h1>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Illum praesentium officia, fugit recusandae ipsa, quia
-                      velit nulla adipisci? Consequuntur aspernatur at, eaque
-                      hic repellendus sit dicta consequatur quae, ut harum ipsam
-                      molestias maxime non nisi reiciendis eligendi! Doloremque
-                      quia pariatur harum ea amet quibusdam quisquam, quae,
-                      temporibus dolores porro doloribus.
+                      Our in-house experts provide AUTOCAD illustrations
+                      ensuring precision and consistency.
+                    </p>
+                    <p>
+                      A fine-tuned, collaborative process ensures that the
+                      designs are exactly as you want them to be. Manufacturing
+                      begins only when clients are fully satisfied.
                     </p>
                   </li>
 
-                  <li data-date="20/04/2014">
-                    <h2>Event title here</h2>
-                    <em>March 20th, 2014</em>
+                  <li data-date="1/3/2014">
+                    <h1>Procurement</h1>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Illum praesentium officia, fugit recusandae ipsa, quia
-                      velit nulla adipisci? Consequuntur aspernatur at, eaque
-                      hic repellendus sit dicta consequatur quae, ut harum ipsam
-                      molestias maxime non nisi reiciendis eligendi! Doloremque
-                      quia pariatur harum ea amet quibusdam quisquam, quae,
-                      temporibus dolores porro doloribus.
+                      We work with you to identify and source the ideal
+                      materials for your purposes, and provide samples to make
+                      sure you are fully satisfied.
+                    </p>
+                    <p>
+                      Our sourcing team has access to materials from across the
+                      globe and will find you the best balance between budget &
+                      quality.
                     </p>
                   </li>
 
-                  <li data-date="20/05/2014">
-                    <h2>Event title here</h2>
-                    <em>May 20th, 2014</em>
+                  <li data-date="1/4/2014">
+                    <h1>Production</h1>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Illum praesentium officia, fugit recusandae ipsa, quia
-                      velit nulla adipisci? Consequuntur aspernatur at, eaque
-                      hic repellendus sit dicta consequatur quae, ut harum ipsam
-                      molestias maxime non nisi reiciendis eligendi! Doloremque
-                      quia pariatur harum ea amet quibusdam quisquam, quae,
-                      temporibus dolores porro doloribus.
+                      We source raw materials of the highest quality, and are
+                      equipped for the custom manufacture and engineering of all
+                      FF&E items in our own facilities.
+                    </p>
+                    <p>
+                      From light fixtures and ceiling work, to drapery,
+                      furniture, metal and glass work, all the way down to
+                      carpets, rugs, and flooring, everything is handled
+                      in-house.
                     </p>
                   </li>
 
-                  <li data-date="09/07/2014">
-                    <h2>Event title here</h2>
-                    <em>July 9th, 2014</em>
+                  <li data-date="1/5/2014">
+                    <h1>Logistics</h1>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Illum praesentium officia, fugit recusandae ipsa, quia
-                      velit nulla adipisci? Consequuntur aspernatur at, eaque
-                      hic repellendus sit dicta consequatur quae, ut harum ipsam
-                      molestias maxime non nisi reiciendis eligendi! Doloremque
-                      quia pariatur harum ea amet quibusdam quisquam, quae,
-                      temporibus dolores porro doloribus.
+                      We navigate international regulations and provide
+                      logistical support to ensure seamless transportation.
+                    </p>
+                    <p>
+                      We have over 20 years of experience with managing the
+                      intricacies of transporting FF&E items internationally,
+                      and your experience will be hassle-free.
                     </p>
                   </li>
 
-                  <li data-date="30/08/2014">
-                    <h2>Event title here</h2>
-                    <em>August 30th, 2014</em>
+                  <li data-date="1/6/2014">
+                    <h1>Delivery</h1>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Illum praesentium officia, fugit recusandae ipsa, quia
-                      velit nulla adipisci? Consequuntur aspernatur at, eaque
-                      hic repellendus sit dicta consequatur quae, ut harum ipsam
-                      molestias maxime non nisi reiciendis eligendi! Doloremque
-                      quia pariatur harum ea amet quibusdam quisquam, quae,
-                      temporibus dolores porro doloribus.
+                      Our streamlined process delivers your goods on time, in
+                      perfect condition, ready for installation.
+                    </p>
+                    <p>
+                      We rely on our own shipping division which provides
+                      on-time delivery and that all items are in mint condition.
                     </p>
                   </li>
 
-                  <li data-date="15/09/2014">
-                    <h2>Event title here</h2>
-                    <em>September 15th, 2014</em>
+                  <li data-date="1/7/2014">
+                    <h1>Installation</h1>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Illum praesentium officia, fugit recusandae ipsa, quia
-                      velit nulla adipisci? Consequuntur aspernatur at, eaque
-                      hic repellendus sit dicta consequatur quae, ut harum ipsam
-                      molestias maxime non nisi reiciendis eligendi! Doloremque
-                      quia pariatur harum ea amet quibusdam quisquam, quae,
-                      temporibus dolores porro doloribus.
+                      Our highly-trained team installs your customized items,
+                      and handles fit-out work like painting, plastering, tiling
+                      and more.
                     </p>
-                  </li>
-
-                  <li data-date="01/11/2014">
-                    <h2>Event title here</h2>
-                    <em>November 1st, 2014</em>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Illum praesentium officia, fugit recusandae ipsa, quia
-                      velit nulla adipisci? Consequuntur aspernatur at, eaque
-                      hic repellendus sit dicta consequatur quae, ut harum ipsam
-                      molestias maxime non nisi reiciendis eligendi! Doloremque
-                      quia pariatur harum ea amet quibusdam quisquam, quae,
-                      temporibus dolores porro doloribus.
-                    </p>
-                  </li>
-
-                  <li data-date="10/12/2014">
-                    <h2>Event title here</h2>
-                    <em>December 10th, 2014</em>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Illum praesentium officia, fugit recusandae ipsa, quia
-                      velit nulla adipisci? Consequuntur aspernatur at, eaque
-                      hic repellendus sit dicta consequatur quae, ut harum ipsam
-                      molestias maxime non nisi reiciendis eligendi! Doloremque
-                      quia pariatur harum ea amet quibusdam quisquam, quae,
-                      temporibus dolores porro doloribus.
-                    </p>
-                  </li>
-
-                  <li data-date="19/01/2015">
-                    <h2>Event title here</h2>
-                    <em>January 19th, 2015</em>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Illum praesentium officia, fugit recusandae ipsa, quia
-                      velit nulla adipisci? Consequuntur aspernatur at, eaque
-                      hic repellendus sit dicta consequatur quae, ut harum ipsam
-                      molestias maxime non nisi reiciendis eligendi! Doloremque
-                      quia pariatur harum ea amet quibusdam quisquam, quae,
-                      temporibus dolores porro doloribus.
-                    </p>
-                  </li>
-
-                  <li data-date="03/03/2015">
-                    <h2>Event title here</h2>
-                    <em>March 3rd, 2015</em>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Illum praesentium officia, fugit recusandae ipsa, quia
-                      velit nulla adipisci? Consequuntur aspernatur at, eaque
-                      hic repellendus sit dicta consequatur quae, ut harum ipsam
-                      molestias maxime non nisi reiciendis eligendi! Doloremque
-                      quia pariatur harum ea amet quibusdam quisquam, quae,
-                      temporibus dolores porro doloribus.
+                      When we say turnkey, we mean it. When our expert team is
+                      done, the place is fully ready for our clients to get
+                      business going.
                     </p>
                   </li>
                 </ol>
@@ -714,52 +665,49 @@
                   quality control is unmatched.
                 </div>
                 <div
-                  class="absolute w-30 h-30 bg-white shadow-xl top-[80%] left-[25%] z-20 p-4 m-8 hover:scale-110 ease-in-out transition duration-700"
+                  class="absolute w-30 h-30 bg-white shadow-xl top-[80%] left-[25%] z-20 p-2 m-8 hover:scale-110 ease-in-out transition duration-700"
                 >
-                  <img class="h-12 w-12 m-auto" src="/assets/ok.png" alt="ok" />
+                  <img class="m-auto" src="/assets/fiedl.png" alt="ok" />
                   <div class="text-black text-sm text-center m-4">
-                    Trustworthy
+                    Field Experts
                   </div>
                 </div>
                 <div
-                  class="absolute w-30 h-30 bg-white shadow-xl top-[80%] left-[45%] z-20 p-4 m-8 hover:scale-110 ease-in-out transition duration-700"
+                  class="absolute w-30 h-30 bg-white shadow-xl top-[80%] left-[45%] z-20 p-2 m-8 hover:scale-110 ease-in-out transition duration-700"
                 >
-                  <img class="h-12 w-12 m-auto" src="/assets/ok.png" alt="ok" />
+                  <img class="m-auto" src="/assets/turnkey.png" alt="ok" />
                   <div class="text-black text-sm text-center m-4">
-                    Trustworthy
+                    Turnkey Solutions
                   </div>
                 </div>
                 <div
-                  class="absolute w-30 h-30 bg-white shadow-xl top-[80%] left-[65%] z-20 p-4 m-8 hover:scale-110 ease-in-out transition duration-700"
+                  class="absolute h-30 bg-white shadow-xl top-[80%] left-[65%] z-20 p-2 m-4 hover:scale-110 ease-in-out transition duration-700"
                 >
-                  <img class="h-12 w-12 m-auto" src="/assets/ok.png" alt="ok" />
+                  <img class="m-auto" src="/assets/global.png" alt="ok" />
                   <div class="text-black text-sm text-center m-4">
-                    Trustworthy
+                    Global Coverage
                   </div>
                 </div>
                 <div
-                  class="absolute w-30 h-30 bg-white shadow-xl top-[80%] left-[85%] z-20 p-4 m-8 hover:scale-110 ease-in-out transition duration-700"
+                  class="absolute h-30 bg-white shadow-xl top-[80%] left-[85%] z-20 p-2 m-4 hover:scale-110 ease-in-out transition duration-700"
                 >
-                  <img class="h-12 w-12 m-auto" src="/assets/ok.png" alt="ok" />
+                  <img class="m-auto" src="/assets/quality.png" alt="ok" />
                   <div class="text-black text-sm text-center m-4">
-                    Trustworthy
+                    Unmatched Quality
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Projects -->
-            <div class="projectContainer">
+            <div class="projectContainer" data-scroll-section>
               <div class="flex justify-center gap-2 items-center">
                 <div class="pl-[10%] text-6xl">Our Projects</div>
                 <div class="h-1 bg-red-900 w-64"></div>
               </div>
-              <div class="text-center text-2xl px-[10%] py-[24px]">
-                Our simple philosophy is to offer the best quality products
-                combined with the best prices and the best services. Our
-                customers seem to like it and we’re now China’s biggest
-                independently owned FF&E providing company catering to over 50+
-                Hotel’s worldwide
+              <div class="text-center text-xl px-[10%] py-[24px]">
+                All our projects are highly customized for the client, but each
+                one has the I-Field stamp of unmatched quality.
               </div>
 
               <div class="swiper pb-[64px] pt-8">
@@ -775,12 +723,12 @@
                       </div>
                       <img
                         class="max-w-[500px] w-[60vw] min-w-[260px] absolute right-0 top-[0%]"
-                        src="./assets/2.jpg"
+                        src="./assets/projects/hilton chad.png"
                         alt=""
                       />
                       <img
                         class="max-w-[400px] w-[50vw] min-w-[230px] absolute left-0 top-[28%]"
-                        src="./assets/1.jpg"
+                        src="./assets/projects/hilton chad2.png"
                         alt=""
                       />
                       <div class="absolute bottom-0 right-[10%]">
@@ -798,12 +746,12 @@
                       </div>
                       <img
                         class="max-w-[500px] w-[60vw] min-w-[260px] absolute right-0 top-[0%]"
-                        src="./assets/4.jpg"
+                        src="./assets/projects/marriot gujarat.png"
                         alt=""
                       />
                       <img
                         class="max-w-[400px] w-[50vw] min-w-[230px] absolute left-0 top-[28%]"
-                        src="./assets/3.jpg"
+                        src="./assets/projects/marriot gujarat2.png"
                         alt=""
                       />
                       <div class="absolute bottom-0 right-[10%]">
@@ -821,12 +769,12 @@
                       </div>
                       <img
                         class="max-w-[500px] w-[60vw] min-w-[260px] absolute right-0 top-[0%]"
-                        src="./assets/6.jpg"
+                        src="./assets/projects/nairobi crowne plaza.png"
                         alt=""
                       />
                       <img
                         class="max-w-[400px] w-[50vw] min-w-[230px] absolute left-0 top-[28%]"
-                        src="./assets/5.jpg"
+                        src="./assets/projects/nairobi crowne plaza.png"
                         alt=""
                       />
                       <div class="absolute bottom-0 right-[10%]">
@@ -912,32 +860,32 @@
           ease: "power1",
           duration: 0.6,
         });
-        gsap.to(e.target.children[4], {
-          x: x * 40,
-          y: y * 10,
-          rotateX: y * 16,
-          rotateY: x * 16,
-          ease: "power1",
-          duration: 1,
-        });
-        gsap.to(e.target.children[5], {
-          x: x * 100,
-          y: y * 40,
-          rotateX: y * -24,
-          rotateY: x * -24,
-          ease: "power1",
-          duration: 1.2,
-        });
-        gsap.to(e.target.children[6], {
-          x: x * 60,
-          y: y * 10,
-          rotateX: y * 10,
-          rotateY: x * 10,
-          skewX: y,
-          skewY: x,
-          ease: "power1",
-          duration: 0.6,
-        });
+        // gsap.to(e.target.children[4], {
+        //   x: x * 40,
+        //   y: y * 10,
+        //   rotateX: y * 16,
+        //   rotateY: x * 16,
+        //   ease: "power1",
+        //   duration: 1,
+        // });
+        // gsap.to(e.target.children[5], {
+        //   x: x * 100,
+        //   y: y * 40,
+        //   rotateX: y * -24,
+        //   rotateY: x * -24,
+        //   ease: "power1",
+        //   duration: 1.2,
+        // });
+        // gsap.to(e.target.children[6], {
+        //   x: x * 60,
+        //   y: y * 10,
+        //   rotateX: y * 10,
+        //   rotateY: x * 10,
+        //   skewX: y,
+        //   skewY: x,
+        //   ease: "power1",
+        //   duration: 0.6,
+        // });
       }
     </script>
   </body>

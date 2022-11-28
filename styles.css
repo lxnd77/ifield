@@ -1,6 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Playfair+Display&display=swap');
+
 :root {
   --swiper-navigation-size: 16px;
   --swiper-navigation-color: black;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+.playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Timeline OVeride */
+.selected img {
+  transform: scale(1.5);
+  transition: 0.4s;
+}
+
+.leave-left {
+  opacity: 0;
+  transition: 0.1s;
 }
 
 .swiper-button-next,

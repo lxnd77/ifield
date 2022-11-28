@@ -1,918 +1,758 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <script src="https://cdn.tailwindcss.com"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <script src="./locomotive-scroll.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="locomotive-scroll.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 
-    <link rel="stylesheet" href="styles.css" />
+  <script src="./locomotive-scroll.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="locomotive-scroll.css" />
 
-    <script
-      defer
-      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
-    ></script>
+  <link rel="stylesheet" href="styles.css" />
 
-    <script src="//unpkg.com/three"></script>
-    <script src="//unpkg.com/three/examples/js/controls/OrbitControls.js"></script>
-    <script src="//unpkg.com/three/examples/js/renderers/CSS2DRenderer.js"></script>
-    <script src="//unpkg.com/three-globe"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <script
-      src="https://code.jquery.com/jquery-3.6.1.slim.min.js"
-      integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA="
-      crossorigin="anonymous"
-    ></script>
+  <script src="//unpkg.com/three"></script>
+  <script src="//unpkg.com/three/examples/js/controls/OrbitControls.js"></script>
+  <script src="//unpkg.com/three/examples/js/renderers/CSS2DRenderer.js"></script>
+  <script src="//unpkg.com/three-globe"></script>
 
-    <!-- SEO Stuff -->
-    <title>I-Field</title>
-    <link rel="canonical" href="https://example.com/blog/first-blog" />
-    <link rel="canonical" href="https://example.com/blog/first-blog" />
-    <link rel="canonical" href="https://example.com/blog/first-blog" />
-    <link rel="canonical" href="https://example.com/blog/first-blog" />
-  </head>
+  <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js"
+    integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
 
-  <body class="bg-white w-full" x-data>
-    <div data-scroll-container>
-      <!-- Header -->
-      <div
-        class="w-full bg-black h-24"
-        x-data="{location:''}"
-        data-scroll-section
-      >
-        <div class="mx-14 py-7 flex flex-row items-center justify-between">
-          <div class="hidden md:flex">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 320 512"
-              class="mx-2 w-7 h-7"
-            >
-              <!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-              <path
-                fill="white"
-                d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
-              />
-            </svg>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 448 512"
-              class="mx-2 w-7 h-7"
-            >
-              <!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-              <path
-                fill="white"
-                d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"
-              />
-            </svg>
-          </div>
-          <div>
-            <div class="text-white place-self-center">
-              <img width="100px" alt="logo" src="assets/logo.png" />
-            </div>
-          </div>
-          <div>
-            <div class="text-white">
-              <button class="navbar-burger">
-                <div class="space-y-2">
-                  <span class="block w-8 h-0.5 bg-white"></span>
-                  <span class="block w-5 h-0.5 bg-white"></span>
-                  <span class="block w-8 h-0.5 bg-white"></span>
-                </div>
-              </button>
-            </div>
+  <!-- SEO Stuff -->
+  <title>I-Field</title>
+  <link rel="canonical" href="https://example.com/blog/first-blog" />
+  <link rel="canonical" href="https://example.com/blog/first-blog" />
+  <link rel="canonical" href="https://example.com/blog/first-blog" />
+  <link rel="canonical" href="https://example.com/blog/first-blog" />
+</head>
+
+<body class="bg-white w-full" x-data>
+  <div data-scroll-container>
+    <!-- Header -->
+    <div class="w-full bg-black h-24" x-data="{location:''}" data-scroll-section>
+      <div class="mx-14 py-7 flex flex-row items-center justify-between">
+        <div class="hidden md:flex">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="mx-2 w-7 h-7">
+            <!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+            <path fill="white"
+              d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z" />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="mx-2 w-7 h-7">
+            <!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+            <path fill="white"
+              d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+          </svg>
+        </div>
+        <div>
+          <div class="text-white place-self-center">
+            <img width="100px" alt="logo" src="assets/logo.png" />
           </div>
         </div>
-        <div
-          id="main-nav"
-          class="items-center hidden text-white flex flex-row-reverse ml-auto mr-18 position-absolute z-10"
-        >
-          <div
-            class="border border-gray-200 w-48 text-gray-900 text-sm font-medium text-right bg-white"
-          >
-            <a
-              class="block px-4 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-900 focus:text-red-900 cursor-pointer"
-              href="/"
-              >Home</a
-            >
-            <a
-              class="block px-4 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-900 focus:text-red-900 cursor-pointer"
-              href="/about.html"
-              >About Us</a
-            >
-            <a
-              class="block px-4 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-900 focus:text-red-900 cursor-pointer"
-              href="/services.html"
-              >Services</a
-            >
-            <a
-              class="block px-4 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-red-900 focus:outline-none focus:ring-2 focus:ring-red-900 focus:text-red-900 cursor-pointer"
-              href="/projects.html"
-              >Projects</a
-            >
-            <a
-              class="block px-4 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-red-900 focus:outline-none focus:ring-2 focus:ring-red-900 focus:text-red-900 cursor-pointer"
-              href="/contact.html"
-              >Contact</a
-            >
-            <div
-              class="flex flex-row items-center justify-between w-full p-4 md:hidden"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 320 512"
-                class="mx-2 w-7 h-7"
-              >
-                <!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-                <path
-                  fill="black"
-                  d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
-                />
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 448 512"
-                class="mx-2 w-7 h-7"
-              >
-                <!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-                <path
-                  fill="black"
-                  d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"
-                />
-              </svg>
-            </div>
+        <div>
+          <div class="text-white">
+            <button class="navbar-burger">
+              <div class="space-y-2">
+                <span class="block w-8 h-0.5 bg-white"></span>
+                <span class="block w-5 h-0.5 bg-white"></span>
+                <span class="block w-8 h-0.5 bg-white"></span>
+              </div>
+            </button>
           </div>
         </div>
       </div>
-      <script>
-        // Navbar Toggle
-        document.addEventListener("DOMContentLoaded", function () {
-          // Get all "navbar-burger" elements
-          var $navbarBurgers = Array.prototype.slice.call(
-            document.querySelectorAll(".navbar-burger"),
-            0
-          );
+      <div id="main-nav"
+        class="items-center hidden text-white flex flex-row-reverse ml-auto mr-18 position-absolute z-10">
+        <div class="border border-gray-200 w-48 text-gray-900 text-sm font-medium text-right bg-white">
+          <a class="block px-4 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-900 focus:text-red-900 cursor-pointer"
+            href="/">Home</a>
+          <a class="block px-4 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-900 focus:text-red-900 cursor-pointer"
+            href="/about.html">About Us</a>
+          <a class="block px-4 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-900 focus:text-red-900 cursor-pointer"
+            href="/services.html">Services</a>
+          <a class="block px-4 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-red-900 focus:outline-none focus:ring-2 focus:ring-red-900 focus:text-red-900 cursor-pointer"
+            href="/projects.html">Projects</a>
+          <a class="block px-4 py-2 border-b border-gray-200 w-full hover:bg-gray-100 hover:text-red-900 focus:outline-none focus:ring-2 focus:ring-red-900 focus:text-red-900 cursor-pointer"
+            href="/contact.html">Contact</a>
+          <div class="flex flex-row items-center justify-between w-full p-4 md:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="mx-2 w-7 h-7">
+              <!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+              <path fill="black"
+                d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="mx-2 w-7 h-7">
+              <!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+              <path fill="black"
+                d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Navbar Toggle
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get all "navbar-burger" elements
+        var $navbarBurgers = Array.prototype.slice.call(
+          document.querySelectorAll(".navbar-burger"),
+          0
+        );
 
-          // Check if there are any navbar burgers
-          if ($navbarBurgers.length > 0) {
-            // Add a click event on each of them
-            $navbarBurgers.forEach(function ($el) {
-              $el.addEventListener("click", function () {
-                // Get the "main-nav" element
-                var $target = document.getElementById("main-nav");
+        // Check if there are any navbar burgers
+        if ($navbarBurgers.length > 0) {
+          // Add a click event on each of them
+          $navbarBurgers.forEach(function ($el) {
+            $el.addEventListener("click", function () {
+              // Get the "main-nav" element
+              var $target = document.getElementById("main-nav");
 
-                // Toggle the class on "main-nav"
-                $target.classList.toggle("hidden");
-              });
+              // Toggle the class on "main-nav"
+              $target.classList.toggle("hidden");
             });
-          }
-        });
-      </script>
+          });
+        }
+      });
+    </script>
 
-      <!-- Main Container -->
-      <div>
-        <!-- Home Page -->
+    <!-- Main Container -->
+    <div>
+      <!-- Home Page -->
 
-        <section>
-          <div class="">
-            <!-- Our distinction Hero -->
+      <section>
+        <div class="">
+          <!-- Our distinction Hero -->
+
+          <div class="w-full h-[90vh] bg-black relative" onmousemove="mouse_position(event)" data-scroll-section>
+            <img class="w-[400px] right-[20%] top-[15%] absolute pointer-events-none hImg"
+              src="./assets/Rectangle 45.png" alt="" id="i2" />
+            <img class="w-[300px] right-[10%] bottom-[10%] absolute pointer-events-none hImg"
+              src="./assets/Rectangle 50.png" alt="" id="i1" />
+            <img class="w-[450px] left-[5%] bottom-[5%] absolute pointer-events-none hImg"
+              src="./assets/Rectangle 48.png" alt="" id="i4" />
+            <img class="w-[250px] left-[15%] top-[10%] absolute pointer-events-none hImg"
+              src="./assets/Rectangle 49.png" alt="" id="i3" />
 
             <div
-              class="w-full h-[90vh] bg-black relative"
-              onmousemove="mouse_position(event)"
-              data-scroll-section
-            >
-              <img
-                class="w-[400px] right-[20%] top-[15%] absolute pointer-events-none hImg"
-                src="./assets/Rectangle 45.png"
-                alt=""
-                id="i2"
-              />
-              <img
-                class="w-[300px] right-[10%] bottom-[10%] absolute pointer-events-none hImg"
-                src="./assets/Rectangle 50.png"
-                alt=""
-                id="i1"
-              />
-              <img
-                class="w-[450px] left-[5%] bottom-[5%] absolute pointer-events-none hImg"
-                src="./assets/Rectangle 48.png"
-                alt=""
-                id="i4"
-              />
-              <img
-                class="w-[250px] left-[15%] top-[10%] absolute pointer-events-none hImg"
-                src="./assets/Rectangle 49.png"
-                alt=""
-                id="i3"
-              />
+              class="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-white text-5xl pointer-events-none playfair">
+              FF&E Manufacturing <br />
+              Turnkey Solutions
 
-              <div
-                class="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-white text-5xl pointer-events-none"
-              >
-                FF&E Manufacturing <br />
-                Turnkey Solutions
-              </div>
+            </div>
+            <div class="absolute left-[50%] top-[66%] translate-x-[-50%] translate-y-[-50%]  pointer-events-none">
+              <button class="btn"> Get in touch</button>
             </div>
 
-            <!-- The I-Field Advantage -->
+          </div>
 
-            <!--Mobile Only-->
-            <div class="md:hidden bg-black static" data-scroll-section>
-              <div class="grid grid-cols-2 grid-rows-1">
-                <div
-                  class="col-span-1 text-5xl text-white text-center font-serif mb-8"
-                >
-                  Our Distinction
-                </div>
-                <div class="col-span-1 h-1 bg-red-900 w-full mt-8"></div>
+          <!-- The I-Field Advantage -->
+
+          <!--Mobile Only-->
+          <div class="md:hidden bg-black static" data-scroll-section>
+            <div class="grid grid-cols-2 grid-rows-1">
+              <div class="col-span-1 text-5xl text-white text-center font-serif mb-8 playfair">
+                Our Distinction
               </div>
-              <img
-                class="object-cover h-[100vh]"
-                src="/assets/7.jpg"
-                alt="hotel lobby"
-              />
-              <div class="w-[80%] text-xl text-white mx-14 mt-14 items-center">
+              <div class="col-span-1 h-1 bg-red-900 w-full mt-8"></div>
+            </div>
+            <img class="object-cover h-[100vh]" src="/assets/7.jpg" alt="hotel lobby" />
+            <div class="w-[80%] text-xl text-white mx-14 mt-14 items-center">
+              <div>
+                We are a team of industry experts offering deluxe turnkey
+                solutions for FF&E manufacture, supply, and installation.
+                Established and operated by hotel owners and industry experts,
+                our end-to-end services ensure high client satisfaction around
+                the globe.
+              </div>
+              <div class="mt-8 text-xl">
+                Our core principle is to provide the best in products, prices,
+                efficiency, and customer service, and that’s the I-Field
+                advantage.
+              </div>
+              <button class="text-black bg-yellow-400 w-48 h-12 mt-8 mb-8 text-center">
+                Get In Touch
+              </button>
+            </div>
+          </div>
+
+          <div class="hidden md:block static w-[100%] min-h-[100vh] overflow-hidden" data-scroll-section>
+            <div class="relative md:w-[90vw] h-[95vh] bg-black">
+              <img class="absolute top-40 object-cover object-right md:w-2/5 h-[100vh]" src="/assets/7.jpg"
+                alt="hotel lobby" />
+              <div class="distinction h-fit absolute inset-[30%] text-6xl text-white playfair">
+                Our Distinction
+                <!-- <div
+                    class="relative top-[-15%] left-[80%] h-1 bg-red-900 w-64"
+                  ></div> -->
+              </div>
+
+              <div class="hidden md:block absolute inset-[40%] w-[40vw] text-xl text-white mx-14 mt-14">
                 <div>
                   We are a team of industry experts offering deluxe turnkey
                   solutions for FF&E manufacture, supply, and installation.
-                  Established and operated by hotel owners and industry experts,
-                  our end-to-end services ensure high client satisfaction around
-                  the globe.
+                  Established and operated by hotel owners and industry
+                  experts, our end-to-end services ensure high client
+                  satisfaction around the globe.
                 </div>
-                <div class="mt-8 text-2xl">
-                  Our core principle is to provide the best in products, prices,
-                  efficiency, and customer service, and that’s the I-Field
-                  advantage.
+                <div class="mt-8 text-xl">
+                  Our core principle is to provide the best in products,
+                  prices, efficiency, and customer service, and that’s the
+                  I-Field advantage.
                 </div>
-                <button
-                  class="text-black bg-yellow-400 w-48 h-12 mt-8 mb-8 text-center"
-                >
+                <button class="text-black bg-yellow-400 w-48 h-12 mt-8">
                   Get In Touch
                 </button>
               </div>
             </div>
+          </div>
 
-            <div
-              class="hidden md:block static w-[100%] min-h-[100vh] overflow-hidden"
-              data-scroll-section
-            >
-              <div class="relative md:w-[90vw] h-[95vh] bg-black">
-                <img
-                  class="absolute top-40 object-cover object-right md:w-2/5 h-[100vh]"
-                  src="/assets/7.jpg"
-                  alt="hotel lobby"
-                />
-                <div
-                  class="distinction h-fit absolute inset-[30%] text-6xl text-white"
-                >
-                  Our Distinction
-                  <!-- <div
-                    class="relative top-[-15%] left-[80%] h-1 bg-red-900 w-64"
-                  ></div> -->
-                </div>
+          <!-- Globe -->
+          <div class="flex justify-center gap-2 items-center mt-14 mb-6" data-scroll-section>
+            <div class="pl-[10%] text-6xl playfair">Our Presence</div>
+            <div class="h-1 bg-red-900 w-64"></div>
+          </div>
 
-                <div
-                  class="hidden md:block absolute inset-[40%] w-[40vw] text-xl text-white mx-14 mt-14"
-                >
-                  <div>
-                    We are a team of industry experts offering deluxe turnkey
-                    solutions for FF&E manufacture, supply, and installation.
-                    Established and operated by hotel owners and industry
-                    experts, our end-to-end services ensure high client
-                    satisfaction around the globe.
-                  </div>
-                  <div class="mt-8 text-2xl">
-                    Our core principle is to provide the best in products,
-                    prices, efficiency, and customer service, and that’s the
-                    I-Field advantage.
-                  </div>
-                  <button class="text-black bg-yellow-400 w-48 h-12 mt-8">
-                    Get In Touch
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Globe -->
-
-            <div
-              id="globeViz"
-              class="static w-[60%] h-[60%]"
-              data-scroll-section
-            ></div>
-
-            <script>
-              const markerSvg = `<svg viewBox="-4 0 36 36">
+          <div id="globeViz" class="static w-[60%] h-[400px] mt-12" data-scroll-section></div>
+          <div class="text-center " data-scroll-section>CHINA | HONGKONG (SAR) | INDIA | USA | UAE | NIGERIA | SPAIN
+          </div>
+          <script>
+            const markerSvg = `<svg viewBox="-4 0 36 36">
       <path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
       <circle fill="black" cx="14" cy="14" r="7"></circle>
     </svg>`;
 
-              // Gen random data
-              const N = 6;
-              const gData = [...Array(N).keys()].map(() => ({
-                lat: (Math.random() - 0.5) * 180,
-                lng: (Math.random() - 0.5) * 360,
-                size: 7 + Math.random() * 30,
-                color: "green",
-              }));
+            // Gen random data
+            const N = 6;
+            const gData = [...Array(N).keys()].map(() => ({
+              lat: (Math.random() - 0.5) * 180,
+              lng: (Math.random() - 0.5) * 360,
+              size: 7 + Math.random() * 30,
+              color: "#8D1B1C",
+            }));
 
-              const chinaOffice = {
-                lat: 1.223,
-                lng: 1.223,
-                size: 10,
-                color: "green",
-              };
+            const chinaOffice = {
+              lat: 1.223,
+              lng: 1.223,
+              size: 10,
+              color: "#8D1B1C",
+            };
 
-              const Globe = new ThreeGlobe()
-                .globeImageUrl(
-                  "//unpkg.com/three-globe/example/img/earth-dark.jpg"
-                )
-                .bumpImageUrl(
-                  "//unpkg.com/three-globe/example/img/earth-topology.png"
-                )
-                .htmlElementsData(gData)
-                .htmlElement((d) => {
-                  const el = document.createElement("div");
-                  el.innerHTML = markerSvg;
-                  el.style.color = d.color;
-                  el.style.width = `${d.size}px`;
-                  return el;
-                });
-
-              // Setup renderers
-              const renderers = [
-                new THREE.WebGLRenderer(),
-                new THREE.CSS2DRenderer(),
-              ];
-              renderers.forEach((r, idx) => {
-                r.setSize(window.innerWidth, window.innerHeight);
-                if (idx > 0) {
-                  // overlay additional on top of main renderer
-                  r.domElement.style.position = "absolute";
-                  r.domElement.style.top = "0px";
-                  r.domElement.style.pointerEvents = "none";
-                }
-                document.getElementById("globeViz").appendChild(r.domElement);
+            const Globe = new ThreeGlobe()
+              .globeImageUrl(
+                "//unpkg.com/three-globe/example/img/earth-dark.jpg"
+              )
+              .bumpImageUrl(
+                "//unpkg.com/three-globe/example/img/earth-topology.png"
+              )
+              .htmlElementsData(gData)
+              .htmlElement((d) => {
+                const el = document.createElement("div");
+                el.innerHTML = markerSvg;
+                el.style.color = d.color;
+                el.style.width = `${d.size}px`;
+                return el;
               });
 
-              // Setup scene
-              const scene = new THREE.Scene();
-              scene.add(Globe);
-              scene.add(new THREE.AmbientLight(0xbbbbbb));
-              scene.add(new THREE.DirectionalLight(0xffffff, 0.6));
+            // Setup renderers
+            const renderers = [
+              new THREE.WebGLRenderer({ alpha: true }),
+              new THREE.CSS2DRenderer(),
+            ];
+            renderers.forEach((r, idx) => {
+              r.setSize(window.innerWidth, 400);
+              if (idx > 0) {
+                // overlay additional on top of main renderer
+                r.domElement.style.position = "absolute";
+                r.domElement.style.top = "0px";
+                r.domElement.style.pointerEvents = "none";
 
-              // Setup camera
-              const camera = new THREE.PerspectiveCamera();
-              camera.aspect = window.innerWidth / window.innerHeight;
-              camera.updateProjectionMatrix();
-              camera.position.z = 500;
-              camera.position.set(0, 20, 500);
+              }
+              document.getElementById("globeViz").appendChild(r.domElement);
+            });
 
-              // Add camera controls
-              // const tbControls = new THREE.TrackballControls(
-              //   camera,
-              //   renderers[0].domElement
-              // );
-              // tbControls.minDistance = 101;
-              // tbControls.rotateSpeed = 5;
-              // tbControls.zoomSpeed = 0.8;
-              // tbControls.noZoom = true;
+            // Setup scene
+            const scene = new THREE.Scene();
+            scene.add(Globe);
+            scene.add(new THREE.AmbientLight(0xbbbbbb));
+            scene.add(new THREE.DirectionalLight(0xffffff, 0.6));
 
-              const tbControls = new THREE.OrbitControls(
-                camera,
-                renderers[0].domElement
-              );
+            // Setup camera
+            const camera = new THREE.PerspectiveCamera();
+            camera.aspect = window.innerWidth / 400;
+            camera.updateProjectionMatrix();
+            // camera.position.z = 500;
+            camera.position.set(0, 20, 250);
 
-              tbControls.enableZoom = false;
-              tbControls.autoRotate = true;
+            // Add camera controls
+            // const tbControls = new THREE.TrackballControls(
+            //   camera,
+            //   renderers[0].domElement
+            // );
+            // tbControls.minDistance = 101;
+            // tbControls.rotateSpeed = 5;
+            // tbControls.zoomSpeed = 0.8;
+            // tbControls.noZoom = true;
 
-              // Update pov when camera moves
-              Globe.setPointOfView(camera.position, Globe.position);
-              tbControls.addEventListener("change", () =>
-                Globe.setPointOfView(camera.position, Globe.position)
-              );
+            const tbControls = new THREE.OrbitControls(
+              camera,
+              renderers[0].domElement
+            );
 
-              // Kick-off renderers
-              (function animate() {
-                // IIFE
-                // Frame cycle
-                tbControls.update();
-                renderers.forEach((r) => r.render(scene, camera));
-                requestAnimationFrame(animate);
-              })();
-            </script>
+            tbControls.enableZoom = false;
+            tbControls.autoRotate = true;
 
-            <!-- Process -->
-            <section class="cd-horizontal-timeline" data-scroll-section>
-              <div class="timeline">
-                <div class="events-wrapper">
-                  <div class="events">
-                    <ol>
-                      <li></li>
-                      <li>
-                        <a href="#0" data-date="1/1/2014" class="selected"
-                          ><img
-                            src="./assets/assessment.png"
-                            class="w-8 h-8 hover:scale-110"
-                        /></a>
-                      </li>
-                      <li>
-                        <a href="#0" data-date="1/2/2014"
-                          ><img src="./assets/design.png" class="w-8 h-8"
-                        /></a>
-                      </li>
-                      <li>
-                        <a href="#0" data-date="1/3/2014"
-                          ><img src="./assets/procuremnt.png" class="w-8 h-8"
-                        /></a>
-                      </li>
-                      <li>
-                        <a href="#0" data-date="1/4/2014"
-                          ><img src="./assets/production.png" class="w-8 h-8"
-                        /></a>
-                      </li>
-                      <li>
-                        <a href="#0" data-date="1/5/2014"
-                          ><img src="./assets/logistics.png" class="w-8 h-8"
-                        /></a>
-                      </li>
-                      <li>
-                        <a href="#0" data-date="1/6/2014"
-                          ><img src="./assets/delivery.png" class="w-8 h-8"
-                        /></a>
-                      </li>
-                      <li>
-                        <a href="#0" data-date="1/7/2014"
-                          ><img src="./assets/installation.png" class="w-8 h-8"
-                        /></a>
-                      </li>
-                    </ol>
+            // Update pov when camera moves
+            Globe.setPointOfView(camera.position, Globe.position);
+            tbControls.addEventListener("change", () =>
+              Globe.setPointOfView(camera.position, Globe.position)
+            );
 
-                    <span class="filling-line" aria-hidden="true"></span>
-                  </div>
-                  <!-- .events -->
+            // Kick-off renderers
+            (function animate() {
+              // IIFE
+              // Frame cycle
+              tbControls.update();
+              renderers.forEach((r) => r.render(scene, camera));
+              requestAnimationFrame(animate);
+            })();
+          </script>
+
+          <!-- Process -->
+
+          <div class="flex justify-center gap-2 items-center mt-[140px] mb-2" data-scroll-section>
+            <div class="pl-[10%] text-6xl playfair">Our Process</div>
+            <div class="h-1 bg-red-900 w-64"></div>
+          </div>
+          <section class="cd-horizontal-timeline" data-scroll-section>
+            <div class="timeline">
+              <div class="events-wrapper">
+                <div class="events">
+                  <ol>
+                    <li></li>
+                    <li>
+                      <a href="#0" data-date="1/1/2014" class="selected"><img src="./assets/assessment.png"
+                          class="w-8 h-8 hover:scale-110" /></a>
+                    </li>
+                    <li>
+                      <a href="#0" data-date="1/2/2014"><img src="./assets/design.png" class="w-8 h-8" /></a>
+                    </li>
+                    <li>
+                      <a href="#0" data-date="1/3/2014"><img src="./assets/procuremnt.png" class="w-8 h-8" /></a>
+                    </li>
+                    <li>
+                      <a href="#0" data-date="1/4/2014"><img src="./assets/production.png" class="w-8 h-8" /></a>
+                    </li>
+                    <li>
+                      <a href="#0" data-date="1/5/2014"><img src="./assets/logistics.png" class="w-8 h-8" /></a>
+                    </li>
+                    <li>
+                      <a href="#0" data-date="1/6/2014"><img src="./assets/delivery.png" class="w-8 h-8" /></a>
+                    </li>
+                    <li>
+                      <a href="#0" data-date="1/7/2014"><img src="./assets/installation.png" class="w-8 h-8" /></a>
+                    </li>
+                  </ol>
+
+                  <span class="filling-line" aria-hidden="true"></span>
                 </div>
-                <!-- .events-wrapper -->
-                <!-- 
+                <!-- .events -->
+              </div>
+              <!-- .events-wrapper -->
+              <!-- 
                 <ul class="cd-timeline-navigation">
                   <li><a href="#0" class="prev inactive">Prev</a></li>
                   <li><a href="#0" class="next">Next</a></li>
                 </ul> -->
-                <!-- .cd-timeline-navigation -->
+              <!-- .cd-timeline-navigation -->
+            </div>
+            <!-- .timeline -->
+
+            <div class="events-content">
+              <ol>
+                <li class="selected" data-date="1/1/2014">
+                  <h1>Assessment</h1>
+                  <p>
+                    We assess the site and business to ensure clarity on scope
+                    and budgeting. We provide cost engineering services to
+                    ensure the best use of your budget.
+                  </p>
+                  <p>
+                    We’ll provide expert recommendations, and full
+                    transparency. We make sure you’re optimizing your budget.
+                  </p>
+                </li>
+
+                <li data-date="1/2/2014">
+                  <h1>Design</h1>
+                  <p>
+                    Our in-house experts provide AUTOCAD illustrations
+                    ensuring precision and consistency.
+                  </p>
+                  <p>
+                    A fine-tuned, collaborative process ensures that the
+                    designs are exactly as you want them to be. Manufacturing
+                    begins only when clients are fully satisfied.
+                  </p>
+                </li>
+
+                <li data-date="1/3/2014">
+                  <h1>Procurement</h1>
+                  <p>
+                    We work with you to identify and source the ideal
+                    materials for your purposes, and provide samples to make
+                    sure you are fully satisfied.
+                  </p>
+                  <p>
+                    Our sourcing team has access to materials from across the
+                    globe and will find you the best balance between budget &
+                    quality.
+                  </p>
+                </li>
+
+                <li data-date="1/4/2014">
+                  <h1>Production</h1>
+                  <p>
+                    We source raw materials of the highest quality, and are
+                    equipped for the custom manufacture and engineering of all
+                    FF&E items in our own facilities.
+                  </p>
+                  <p>
+                    From light fixtures and ceiling work, to drapery,
+                    furniture, metal and glass work, all the way down to
+                    carpets, rugs, and flooring, everything is handled
+                    in-house.
+                  </p>
+                </li>
+
+                <li data-date="1/5/2014">
+                  <h1>Logistics</h1>
+                  <p>
+                    We navigate international regulations and provide
+                    logistical support to ensure seamless transportation.
+                  </p>
+                  <p>
+                    We have over 20 years of experience with managing the
+                    intricacies of transporting FF&E items internationally,
+                    and your experience will be hassle-free.
+                  </p>
+                </li>
+
+                <li data-date="1/6/2014">
+                  <h1>Delivery</h1>
+                  <p>
+                    Our streamlined process delivers your goods on time, in
+                    perfect condition, ready for installation.
+                  </p>
+                  <p>
+                    We rely on our own shipping division which provides
+                    on-time delivery and that all items are in mint condition.
+                  </p>
+                </li>
+
+                <li data-date="1/7/2014">
+                  <h1>Installation</h1>
+                  <p>
+                    Our highly-trained team installs your customized items,
+                    and handles fit-out work like painting, plastering, tiling
+                    and more.
+                  </p>
+                  <p>
+                    When we say turnkey, we mean it. When our expert team is
+                    done, the place is fully ready for our clients to get
+                    business going.
+                  </p>
+                </li>
+              </ol>
+            </div>
+            <!-- .events-content -->
+          </section>
+
+          <script src="./timeline.js"></script>
+
+          <!-- Achievements -->
+          <div class="container bg-white w-full h-full mt-40 mx-auto flex justify-center" data-scroll-section>
+            <div class="w-[60%] grid grid-cols-6 gap-4">
+              <div class="col-start-1 col-span-3 mx-auto flex justify-center">
+                <img class="object-contain" src="/assets/aahoa.png" alt="AAHOA" />
               </div>
-              <!-- .timeline -->
-
-              <div class="events-content">
-                <ol>
-                  <li class="selected" data-date="1/1/2014">
-                    <h1>Assessment</h1>
-                    <p>
-                      We assess the site and business to ensure clarity on scope
-                      and budgeting. We provide cost engineering services to
-                      ensure the best use of your budget.
-                    </p>
-                    <p>
-                      We’ll provide expert recommendations, and full
-                      transparency. We make sure you’re optimizing your budget.
-                    </p>
-                  </li>
-
-                  <li data-date="1/2/2014">
-                    <h1>Design</h1>
-                    <p>
-                      Our in-house experts provide AUTOCAD illustrations
-                      ensuring precision and consistency.
-                    </p>
-                    <p>
-                      A fine-tuned, collaborative process ensures that the
-                      designs are exactly as you want them to be. Manufacturing
-                      begins only when clients are fully satisfied.
-                    </p>
-                  </li>
-
-                  <li data-date="1/3/2014">
-                    <h1>Procurement</h1>
-                    <p>
-                      We work with you to identify and source the ideal
-                      materials for your purposes, and provide samples to make
-                      sure you are fully satisfied.
-                    </p>
-                    <p>
-                      Our sourcing team has access to materials from across the
-                      globe and will find you the best balance between budget &
-                      quality.
-                    </p>
-                  </li>
-
-                  <li data-date="1/4/2014">
-                    <h1>Production</h1>
-                    <p>
-                      We source raw materials of the highest quality, and are
-                      equipped for the custom manufacture and engineering of all
-                      FF&E items in our own facilities.
-                    </p>
-                    <p>
-                      From light fixtures and ceiling work, to drapery,
-                      furniture, metal and glass work, all the way down to
-                      carpets, rugs, and flooring, everything is handled
-                      in-house.
-                    </p>
-                  </li>
-
-                  <li data-date="1/5/2014">
-                    <h1>Logistics</h1>
-                    <p>
-                      We navigate international regulations and provide
-                      logistical support to ensure seamless transportation.
-                    </p>
-                    <p>
-                      We have over 20 years of experience with managing the
-                      intricacies of transporting FF&E items internationally,
-                      and your experience will be hassle-free.
-                    </p>
-                  </li>
-
-                  <li data-date="1/6/2014">
-                    <h1>Delivery</h1>
-                    <p>
-                      Our streamlined process delivers your goods on time, in
-                      perfect condition, ready for installation.
-                    </p>
-                    <p>
-                      We rely on our own shipping division which provides
-                      on-time delivery and that all items are in mint condition.
-                    </p>
-                  </li>
-
-                  <li data-date="1/7/2014">
-                    <h1>Installation</h1>
-                    <p>
-                      Our highly-trained team installs your customized items,
-                      and handles fit-out work like painting, plastering, tiling
-                      and more.
-                    </p>
-                    <p>
-                      When we say turnkey, we mean it. When our expert team is
-                      done, the place is fully ready for our clients to get
-                      business going.
-                    </p>
-                  </li>
-                </ol>
+              <div class="col-start-4 col-span-3 mx-auto flex justify-center">
+                <img class="object-contain" src="/assets/cfa.png" alt="CFA" />
               </div>
-              <!-- .events-content -->
-            </section>
-
-            <script src="./timeline.js"></script>
-
-            <!-- Achievements -->
-            <div
-              class="container bg-white w-full h-full mt-40 mx-auto flex justify-center"
-              data-scroll-section
-            >
-              <div class="w-[60%] grid grid-cols-6 gap-4">
-                <div class="col-start-1 col-span-3 mx-auto flex justify-center">
-                  <img
-                    class="object-contain"
-                    src="/assets/aahoa.png"
-                    alt="AAHOA"
-                  />
+              <div class="col-start-1 col-span-3 mx-auto flex justify-center text-center">
+                Member of Asian American Hotel Owners Association
+              </div>
+              <div class="col-start-4 col-span-3 mx-auto flex justify-center text-center">
+                Member of Chinese National Furniture Association
+              </div>
+              <div class="col-start-1 col-span-2 flex-col items-center justify-center text-center">
+                <div class="text-5xl text-black font-serif mx-auto flex justify-center">
+                  50
                 </div>
-                <div class="col-start-4 col-span-3 mx-auto flex justify-center">
-                  <img class="object-contain" src="/assets/cfa.png" alt="CFA" />
+                <div class="text-xl text-black font-serif mx-auto flex justify-center m-4">
+                  Completed Projects
                 </div>
-                <div
-                  class="col-start-1 col-span-3 mx-auto flex justify-center text-center"
-                >
-                  Member of Asian American Hotel Owners Association
+              </div>
+              <div class="col-start-3 col-span-2 text-center">
+                <div class="text-5xl text-black font-serif mx-auto flex justify-center">
+                  186
                 </div>
-                <div
-                  class="col-start-4 col-span-3 mx-auto flex justify-center text-center"
-                >
-                  Member of Chinese National Furniture Association
+                <div class="text-xl text-black font-serif mx-auto flex justify-center m-4">
+                  Trained Professionals
                 </div>
-                <div
-                  class="col-start-1 col-span-2 flex-col items-center justify-center text-center"
-                >
-                  <div
-                    class="text-5xl text-black font-serif mx-auto flex justify-center"
-                  >
-                    50
-                  </div>
-                  <div
-                    class="text-xl text-black font-serif mx-auto flex justify-center m-4"
-                  >
-                    Completed Projects
-                  </div>
+              </div>
+              <div class="col-start-5 col-span-2 text-center">
+                <div class="text-5xl text-black font-serif mx-auto flex justify-center">
+                  5
                 </div>
-                <div class="col-start-3 col-span-2 text-center">
-                  <div
-                    class="text-5xl text-black font-serif mx-auto flex justify-center"
-                  >
-                    186
-                  </div>
-                  <div
-                    class="text-xl text-black font-serif mx-auto flex justify-center m-4"
-                  >
-                    Trained Professionals
-                  </div>
-                </div>
-                <div class="col-start-5 col-span-2 text-center">
-                  <div
-                    class="text-5xl text-black font-serif mx-auto flex justify-center"
-                  >
-                    5
-                  </div>
-                  <div
-                    class="text-xl text-black font-serif mx-auto flex justify-center m-4"
-                  >
-                    International Offices
-                  </div>
+                <div class="text-xl text-black font-serif mx-auto flex justify-center m-4">
+                  International Offices
                 </div>
               </div>
             </div>
-
-            <!-- Impact -->
-            <div
-              class="static w-[100%] min-h-[100vh] overflow-hidden bg-white"
-              data-scroll-section
-            >
-              <div
-                class="relative lg:w-[70%] xs:w-full min-h-[55vh] bg-black lg:left-[20%] mt-20"
-              >
-                <div
-                  class="absolute top-16 left-10 h-1 bg-red-900 w-[35%]"
-                ></div>
-                <div class="absolute top-10 left-[40%] text-5xl text-white">
-                  Our Impact
-                </div>
-                <div
-                  class="absolute top-[25%] w-[50%] left-[25%] text-white text-xl m-8"
-                >
-                  I-Field is equipped with expert teams and world-class
-                  infrastructure to handle every aspect of our clients’ FF&E
-                  needs in-house. Every project is customized, in collaboration
-                  with luxury designers.
-                </div>
-                <div
-                  class="hidden md:block absolute w-[40%] min-h-[80%] -left-[20%] top-[40%] bg-yellow-400 p-10 pt-20 pb-20 z-10 text-xl text-center"
-                >
-                  We completely handle the process from logistics and design, to
-                  sourcing and production, to shipping and installation. Our
-                  quality control is unmatched.
-                </div>
-                <div
-                  class="absolute w-30 h-30 bg-white shadow-xl top-[80%] left-[25%] z-20 p-2 m-8 hover:scale-110 ease-in-out transition duration-700"
-                >
-                  <img class="m-auto" src="/assets/fiedl.png" alt="ok" />
-                  <div class="text-black text-sm text-center m-4">
-                    Field Experts
-                  </div>
-                </div>
-                <div
-                  class="absolute w-30 h-30 bg-white shadow-xl top-[80%] left-[45%] z-20 p-2 m-8 hover:scale-110 ease-in-out transition duration-700"
-                >
-                  <img class="m-auto" src="/assets/turnkey.png" alt="ok" />
-                  <div class="text-black text-sm text-center m-4">
-                    Turnkey Solutions
-                  </div>
-                </div>
-                <div
-                  class="absolute h-30 bg-white shadow-xl top-[80%] left-[65%] z-20 p-2 m-4 hover:scale-110 ease-in-out transition duration-700"
-                >
-                  <img class="m-auto" src="/assets/global.png" alt="ok" />
-                  <div class="text-black text-sm text-center m-4">
-                    Global Coverage
-                  </div>
-                </div>
-                <div
-                  class="absolute h-30 bg-white shadow-xl top-[80%] left-[85%] z-20 p-2 m-4 hover:scale-110 ease-in-out transition duration-700"
-                >
-                  <img class="m-auto" src="/assets/quality.png" alt="ok" />
-                  <div class="text-black text-sm text-center m-4">
-                    Unmatched Quality
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Projects -->
-            <div class="projectContainer" data-scroll-section>
-              <div class="flex justify-center gap-2 items-center">
-                <div class="pl-[10%] text-6xl">Our Projects</div>
-                <div class="h-1 bg-red-900 w-64"></div>
-              </div>
-              <div class="text-center text-xl px-[10%] py-[24px]">
-                All our projects are highly customized for the client, but each
-                one has the I-Field stamp of unmatched quality.
-              </div>
-
-              <div class="swiper pb-[64px] pt-8">
-                <!-- Additional required wrapper -->
-                <div class="swiper-wrapper h-[400px]">
-                  <!-- Slides -->
-                  <div class="swiper-slide w-full">
-                    <div class="max-w-[800px] relative h-full">
-                      <div
-                        class="absolute top-[6%] text-6xl left-[24px] text-gray-400"
-                      >
-                        01
-                      </div>
-                      <img
-                        class="max-w-[500px] w-[60vw] min-w-[260px] absolute right-0 top-[0%]"
-                        src="./assets/projects/hilton chad.png"
-                        alt=""
-                      />
-                      <img
-                        class="max-w-[400px] w-[50vw] min-w-[230px] absolute left-0 top-[28%]"
-                        src="./assets/projects/hilton chad2.png"
-                        alt=""
-                      />
-                      <div class="absolute bottom-0 right-[10%]">
-                        <button class="btn">View project</button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide w-full">
-                    <div class="max-w-[800px] relative h-full">
-                      <div
-                        class="absolute top-[6%] text-6xl left-[24px] text-gray-400"
-                      >
-                        02
-                      </div>
-                      <img
-                        class="max-w-[500px] w-[60vw] min-w-[260px] absolute right-0 top-[0%]"
-                        src="./assets/projects/marriot gujarat.png"
-                        alt=""
-                      />
-                      <img
-                        class="max-w-[400px] w-[50vw] min-w-[230px] absolute left-0 top-[28%]"
-                        src="./assets/projects/marriot gujarat2.png"
-                        alt=""
-                      />
-                      <div class="absolute bottom-0 right-[10%]">
-                        <button class="btn">View project</button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="swiper-slide w-full">
-                    <div class="max-w-[800px] relative h-full">
-                      <div
-                        class="absolute top-[6%] text-6xl left-[24px] text-gray-400"
-                      >
-                        03
-                      </div>
-                      <img
-                        class="max-w-[500px] w-[60vw] min-w-[260px] absolute right-0 top-[0%]"
-                        src="./assets/projects/nairobi crowne plaza.png"
-                        alt=""
-                      />
-                      <img
-                        class="max-w-[400px] w-[50vw] min-w-[230px] absolute left-0 top-[28%]"
-                        src="./assets/projects/nairobi crowne plaza.png"
-                        alt=""
-                      />
-                      <div class="absolute bottom-0 right-[10%]">
-                        <button class="btn">View project</button>
-                      </div>
-                    </div>
-                  </div>
-                  ...
-                </div>
-                <!-- If we need pagination -->
-                <div class="swiper-pagination"></div>
-
-                <!-- If we need navigation buttons -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-              </div>
-            </div>
-            <script>
-              const swiper = new Swiper(".swiper", {
-                navigation: {
-                  nextEl: ".swiper-button-next",
-                  prevEl: ".swiper-button-prev",
-                },
-              });
-            </script>
-
-            <!-- Clients -->
-
-            <div
-              class="flex flex-wrap h-full w-[80%] mx-auto justify-between"
-              id="clients"
-              data-scroll-section
-            ></div>
-
-            <script defer>
-              const c = document.getElementById("clients");
-
-              for (let i = 1; i < 25; i++) {
-                var elem = document.createElement("img");
-                elem.setAttribute(
-                  "src",
-                  "./assets/clients/" + i.toString() + ".png"
-                );
-                elem.setAttribute("class", "m-4 w-36 aspect-auto");
-                elem.setAttribute("alt", "client");
-                c.appendChild(elem);
-              }
-            </script>
           </div>
-        </section>
-      </div>
-      <!-- Footer -->
-      <div x-data=""></div>
+
+          <!-- Impact -->
+          <div class="static w-[100%] min-h-[100vh] overflow-hidden bg-white" data-scroll-section>
+            <div class="relative lg:w-[70%] xs:w-full min-h-[55vh] bg-black lg:left-[20%] mt-20">
+              <div class="absolute top-16 left-10 h-1 bg-red-900 w-[35%]"></div>
+              <div class="absolute top-10 left-[40%] text-5xl text-white playfair">
+                Our Impact
+              </div>
+              <div class="absolute top-[25%] w-[50%] left-[25%] text-white text-xl m-8">
+                I-Field is equipped with expert teams and world-class
+                infrastructure to handle every aspect of our clients’ FF&E
+                needs in-house. Every project is customized, in collaboration
+                with luxury designers.
+              </div>
+              <div
+                class="hidden md:block absolute w-[40%] min-h-[80%] -left-[20%] top-[40%] bg-yellow-400 p-10 pt-20 pb-20 z-10 text-xl text-center">
+                We completely handle the process from logistics and design, to
+                sourcing and production, to shipping and installation. Our
+                quality control is unmatched.
+              </div>
+              <div
+                class="absolute w-30 h-30 bg-white shadow-xl top-[80%] left-[25%] z-20 p-2 m-8 hover:scale-110 ease-in-out transition duration-700">
+                <img class="m-auto" src="/assets/fiedl.png" alt="ok" />
+                <div class="text-black text-sm text-center m-4 w-[100px]">
+                  Field <br>Experts
+                </div>
+              </div>
+              <div
+                class="absolute w-30 h-30 bg-white shadow-xl top-[80%] left-[45%] z-20 p-2 m-8 hover:scale-110 ease-in-out transition duration-700">
+                <img class="m-auto" src="/assets/turnkey.png" alt="ok" />
+                <div class="text-black text-sm text-center m-4 w-[100px]">
+                  Turnkey Solutions
+                </div>
+              </div>
+              <div
+                class="absolute h-30 bg-white shadow-xl top-[80%] left-[65%] z-20 p-2 m-8 hover:scale-110 ease-in-out transition duration-700">
+                <img class="m-auto" src="/assets/global.png" alt="ok" />
+                <div class="text-black text-sm text-center m-4 w-[100px]">
+                  Global Coverage
+                </div>
+              </div>
+              <div
+                class="absolute h-30 bg-white shadow-xl top-[80%] left-[85%] z-20 p-2 m-8 hover:scale-110 ease-in-out transition duration-700">
+                <img class="m-auto" src="/assets/quality.png" alt="ok" />
+                <div class="text-black text-sm text-center m-4 w-[100px]">
+                  Unmatched Quality
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Projects -->
+          <div class="projectContainer" data-scroll-section>
+            <div class="flex justify-center gap-2 items-center">
+              <div class="pl-[10%] text-6xl playfair">Our Projects</div>
+              <div class="h-1 bg-red-900 w-64"></div>
+            </div>
+            <div class="text-center text-xl px-[10%] py-[24px]">
+              All our projects are highly customized for the client, but each
+              one has the I-Field stamp of unmatched quality.
+            </div>
+
+            <div class="swiper pb-[64px] pt-8 mx-16">
+              <!-- Additional required wrapper -->
+              <div class="swiper-wrapper h-[400px]">
+                <!-- Slides -->
+                <div class="swiper-slide w-full">
+                  <div class="max-w-[800px] relative h-full">
+                    <div class="absolute top-[6%] text-6xl left-[24px] text-gray-400">
+                      01
+                    </div>
+                    <img class="max-w-[500px] w-[60vw] min-w-[260px] absolute right-0 top-[0%]"
+                      src="./assets/projects/hilton chad.png" alt="" />
+                    <img class="max-w-[400px] w-[50vw] min-w-[230px] absolute left-0 top-[28%]"
+                      src="./assets/projects/hilton chad2.png" alt="" />
+                    <div class="absolute bottom-0 right-[10%]">
+                      <button class="btn">View project</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="swiper-slide w-full">
+                  <div class="max-w-[800px] relative h-full">
+                    <div class="absolute top-[6%] text-6xl left-[24px] text-gray-400">
+                      02
+                    </div>
+                    <img class="max-w-[500px] w-[60vw] min-w-[260px] absolute right-0 top-[0%]"
+                      src="./assets/projects/marriot gujarat.png" alt="" />
+                    <img class="max-w-[400px] w-[50vw] min-w-[230px] absolute left-0 top-[28%]"
+                      src="./assets/projects/marriot gujarat2.png" alt="" />
+                    <div class="absolute bottom-0 right-[10%]">
+                      <button class="btn">View project</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="swiper-slide w-full">
+                  <div class="max-w-[800px] relative h-full">
+                    <div class="absolute top-[6%] text-6xl left-[24px] text-gray-400">
+                      03
+                    </div>
+                    <img class="max-w-[500px] w-[60vw] min-w-[260px] absolute right-0 top-[0%]"
+                      src="./assets/projects/nairobi crowne plaza.png" alt="" />
+                    <img class="max-w-[400px] w-[50vw] min-w-[230px] absolute left-0 top-[28%]"
+                      src="./assets/projects/nairobi crowne plaza2.png" alt="" />
+                    <div class="absolute bottom-0 right-[10%]">
+                      <button class="btn">View project</button>
+                    </div>
+                  </div>
+                </div>
+                ...
+              </div>
+              <!-- If we need pagination -->
+              <div class="swiper-pagination"></div>
+
+              <!-- If we need navigation buttons -->
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
+            </div>
+          </div>
+          <script>
+            const swiper = new Swiper(".swiper", {
+              navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              },
+            });
+          </script>
+
+          <!-- Clients -->
+
+          <div class="flex justify-center gap-2 items-center mt-14 mb-6" data-scroll-section>
+            <div class="pl-[10%] text-6xl playfair">Our Clients</div>
+            <div class="h-1 bg-red-900 w-64"></div>
+          </div>
+
+          <div class="flex flex-wrap h-full w-[80%] mx-auto justify-between" id="clients" data-scroll-section></div>
+
+          <script defer>
+            const c = document.getElementById("clients");
+
+            for (let i = 1; i < 25; i++) {
+              var elem = document.createElement("img");
+              elem.setAttribute(
+                "src",
+                "./assets/clients/" + i.toString() + ".png"
+              );
+              elem.setAttribute("class", "m-4 w-36 aspect-auto");
+              elem.setAttribute("alt", "client");
+              c.appendChild(elem);
+            }
+          </script>
+        </div>
+      </section>
     </div>
+    <!-- Footer -->
+    <div x-data=""></div>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
-    <script defer>
-      window.addEventListener("load", function (event) {
-        var scroll = new LocomotiveScroll({
-          el: document.querySelector("[data-scroll-container]"),
-          smooth: true,
-        });
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+  <script defer>
+    window.addEventListener("load", function (event) {
+      var scroll = new LocomotiveScroll({
+        el: document.querySelector("[data-scroll-container]"),
+        smooth: true,
       });
+    });
 
-      function map_range(value, low1, high1, low2, high2) {
-        return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
-      }
+    function map_range(value, low1, high1, low2, high2) {
+      return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
+    }
 
-      function mouse_position(e) {
-        // console.log("mouse location:", e.clientX, e.clientY);
-        let x = map_range(e.clientX, 0, window.innerWidth, -1, 1);
-        let y = map_range(e.clientY, 0, window.innerHeight, -1, 1);
-        // console.log(x)
+    function mouse_position(e) {
+      // console.log("mouse location:", e.clientX, e.clientY);
+      let x = map_range(e.clientX, 0, window.innerWidth, -1, 1);
+      let y = map_range(e.clientY, 0, window.innerHeight, -1, 1);
+      // console.log(x)
 
-        gsap.to(e.target.children[0], {
-          x: x * 10,
-          y: y * 10,
-          rotateX: y * 12,
-          rotateY: x * 12,
-          ease: "power1",
-          duration: 0.6,
-        });
-        gsap.to(e.target.children[1], {
-          x: x * 40,
-          y: y * 10,
-          rotateX: y * 16,
-          rotateY: x * 16,
-          ease: "power1",
-          duration: 1.2,
-        });
-        gsap.to(e.target.children[2], {
-          x: x * 100,
-          y: y * 60,
-          rotateX: y * -20,
-          rotateY: x * -20,
-          ease: "power1",
-          duration: 1.6,
-        });
-        gsap.to(e.target.children[3], {
-          x: x * 10,
-          y: y * 10,
-          rotateX: y * 10,
-          rotateY: x * 10,
-          ease: "power1",
-          duration: 0.6,
-        });
-        // gsap.to(e.target.children[4], {
-        //   x: x * 40,
-        //   y: y * 10,
-        //   rotateX: y * 16,
-        //   rotateY: x * 16,
-        //   ease: "power1",
-        //   duration: 1,
-        // });
-        // gsap.to(e.target.children[5], {
-        //   x: x * 100,
-        //   y: y * 40,
-        //   rotateX: y * -24,
-        //   rotateY: x * -24,
-        //   ease: "power1",
-        //   duration: 1.2,
-        // });
-        // gsap.to(e.target.children[6], {
-        //   x: x * 60,
-        //   y: y * 10,
-        //   rotateX: y * 10,
-        //   rotateY: x * 10,
-        //   skewX: y,
-        //   skewY: x,
-        //   ease: "power1",
-        //   duration: 0.6,
-        // });
-      }
-    </script>
-  </body>
+      gsap.to(e.target.children[0], {
+        x: x * 10,
+        y: y * 10,
+        rotateX: y * 12,
+        rotateY: x * 12,
+        ease: "power1",
+        duration: 0.6,
+      });
+      gsap.to(e.target.children[1], {
+        x: x * 40,
+        y: y * 10,
+        rotateX: y * 16,
+        rotateY: x * 16,
+        ease: "power1",
+        duration: 1.2,
+      });
+      gsap.to(e.target.children[2], {
+        x: x * 100,
+        y: y * 60,
+        rotateX: y * -20,
+        rotateY: x * -20,
+        ease: "power1",
+        duration: 1.6,
+      });
+      gsap.to(e.target.children[3], {
+        x: x * 10,
+        y: y * 10,
+        rotateX: y * 10,
+        rotateY: x * 10,
+        ease: "power1",
+        duration: 0.6,
+      });
+      // gsap.to(e.target.children[4], {
+      //   x: x * 40,
+      //   y: y * 10,
+      //   rotateX: y * 16,
+      //   rotateY: x * 16,
+      //   ease: "power1",
+      //   duration: 1,
+      // });
+      // gsap.to(e.target.children[5], {
+      //   x: x * 100,
+      //   y: y * 40,
+      //   rotateX: y * -24,
+      //   rotateY: x * -24,
+      //   ease: "power1",
+      //   duration: 1.2,
+      // });
+      // gsap.to(e.target.children[6], {
+      //   x: x * 60,
+      //   y: y * 10,
+      //   rotateX: y * 10,
+      //   rotateY: x * 10,
+      //   skewX: y,
+      //   skewY: x,
+      //   ease: "power1",
+      //   duration: 0.6,
+      // });
+    }
+  </script>
+</body>
+
 </html>

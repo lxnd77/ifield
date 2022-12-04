@@ -21,6 +21,7 @@
       defer
       src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
     ></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
     <!-- SEO Stuff -->
     <title>I-Field</title>
   </head>
@@ -162,10 +163,10 @@
       <div data-scroll-section>
         <!-- About US -->
 
-        <div class="container w-[92vw] h-fit mx-auto">
+        <div class="container w-[92vw] mx-auto">
           <!--Out Company-->
           <div class="md:grid md:grid-cols-2" id="ex1" data-scroll-section>
-            <div class="container mr-auto p-8 md:col-start-1 md:col-span-1">
+            <div class="container mr-auto md:col-start-1 md:col-span-1">
               <h1 class="text-6xl playfair md:mt-4 leading-normal">
                 Our <br />
                 Company
@@ -197,7 +198,7 @@
                   100 successfully completed contracts.
                 </div>
               </div>
-              <div class="container flex flex-row pt-8">
+              <div class="container flex flex-row pt-8 mx-4">
                 <div class="w-fit">
                   <div class="rounded-full bg-[#981620] w-4 h-4"></div>
                   <div
@@ -205,7 +206,7 @@
                   ></div>
                 </div>
                 <div>
-                  <p class="mx-4 ml-8 mt-16 text-justify italic">
+                  <p class="ml-8 mt-16 text-justify italic">
                     Our founder and CEO, Abhay, is an anchor in the FF&E
                     industry, and personally attends to every client and project
                     for the best outcomes. Each level of our operations is
@@ -251,7 +252,7 @@
           <div class="mt-32" data-scroll-section>
             <div class="md:grid md:grid-cols-3">
               <div
-                class="md:col-span-2 md:col-start-1 mx-4 flex flex-col justify-end"
+                class="md:col-span-2 md:col-start-1 flex flex-col justify-end"
               >
                 <h1 class="text-6xl playfair md:mt-4 leading-normal">
                   Our <br />
@@ -273,6 +274,12 @@
                   industries and workers. Wherever I-Field has operations, local
                   economies benefit from the employment opportunities, and
                   employees benefit from specialized training programs.
+                  <br /><br />
+                  His passion, talent, and decades of experience make Abhay an
+                  amazing leader. He has a matchless track record of building
+                  positive relationships with everyone from stakeholders, to
+                  clients, to floor staff. His ventures and efforts have led the
+                  company’s investments in expanding to hotels across the world.
                 </p>
               </div>
               <div
@@ -282,15 +289,19 @@
               </div>
             </div>
             <div>
-              <p class="mx-4">
-                <br />
-                His passion, talent, and decades of experience make Abhay an
-                amazing leader. He has a matchless track record of building
-                positive relationships with everyone from stakeholders, to
-                clients, to floor staff. His ventures and efforts have led the
-                company’s investments in expanding to hotels across the world.
-              </p>
+              <p class=""></p>
             </div>
+          </div>
+          <div
+            class="w-[70vw] h-full mx-auto flex flex-wrap justify-around mt-16"
+            data-scroll-section=""
+          >
+            <img src="assets/profile.png" class="mb-16 w-80 h-80" />
+            <img src="assets/profile.png" class="mb-16 w-80 h-80" />
+            <img src="assets/profile.png" class="mb-16 w-80 h-80" />
+            <img src="assets/profile.png" class="w-80 h-80" />
+            <img src="assets/profile.png" class="w-80 h-80" />
+            <img src="assets/profile.png" class="w-80 h-80" />
           </div>
         </div>
       </div>
@@ -299,11 +310,17 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
     <script defer>
+      let scrollContainer = document.querySelector("[data-scroll-container]");
+
       window.addEventListener("load", function (event) {
         var scroll = new LocomotiveScroll({
-          el: document.querySelector("[data-scroll-container]"),
+          el: scrollContainer,
           smooth: true,
         });
+      });
+
+      imagesLoaded(scrollContainer, { background: true }, function () {
+        scroll.update();
       });
 
       let constrain = 200;

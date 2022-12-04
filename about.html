@@ -28,7 +28,7 @@
   <body class="bg-white w-full" x-data>
     <div data-scroll-container>
       <!-- Header -->
-      <div class="w-full bg-black" x-data="{location:''}" data-scroll-section>
+      <div class="w-full bg-white" x-data="{location:''}" data-scroll-section>
         <div class="mx-14 py-7 flex flex-row items-center justify-between">
           <div class="hidden md:flex">
             <svg
@@ -38,7 +38,7 @@
             >
               <!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
               <path
-                fill="white"
+                fill="black"
                 d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
               />
             </svg>
@@ -49,23 +49,23 @@
             >
               <!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
               <path
-                fill="white"
+                fill="black"
                 d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"
               />
             </svg>
           </div>
           <div>
             <div class="text-white place-self-center">
-              <img width="100px" alt="logo" src="assets/logo.png" />
+              <img width="100px" alt="logo" src="assets/logoblack.png" />
             </div>
           </div>
           <div>
-            <div class="text-white">
+            <div class="text-black">
               <button class="navbar-burger">
                 <div class="space-y-2">
-                  <span class="block w-8 h-0.5 bg-white"></span>
-                  <span class="block w-5 h-0.5 bg-white"></span>
-                  <span class="block w-8 h-0.5 bg-white"></span>
+                  <span class="block w-8 h-0.5 bg-black"></span>
+                  <span class="block w-5 h-0.5 bg-black"></span>
+                  <span class="block w-8 h-0.5 bg-black"></span>
                 </div>
               </button>
             </div>
@@ -162,12 +162,187 @@
       <div data-scroll-section>
         <!-- About US -->
 
-        <h1 class="text-6xl">ABOUT US</h1>
+        <div class="container w-[92vw] h-fit mx-auto">
+          <!--Out Company-->
+          <div class="md:grid md:grid-cols-2" id="ex1" data-scroll-section>
+            <div class="container mr-auto p-8 md:col-start-1 md:col-span-1">
+              <h1 class="text-6xl playfair md:mt-4 leading-normal">
+                Our <br />
+                Company
+              </h1>
+              <br />
+              <p class="text-xl">
+                I-Field has been in the business of turnkey solutions for
+                hotels, restaurants, residential properties, and commercial
+                facilities. since 2003.
+              </p>
+              <br />
+              <div class="md:grid md:grid-cols-3">
+                <div class="container md:col-start-1 md:col-span-1">
+                  <img
+                    src="assets/pattern1.png"
+                    class="px-4 my-auto mx-auto py-4"
+                  />
+                </div>
+                <div
+                  class="container md:col-start-2 md:col-span-2 text-sm text-justify md:px-4"
+                >
+                  When we first started out as hotel contractors, I-Field was
+                  based in Hong Kong with a representative office in Guangzhou,
+                  China. Since then, we’ve grown to be one of the largest FF&E
+                  solutions companies in Asia, with reach in over 20 countries.
+                  Our clients are the owners and developers for high-end
+                  hospitality facilities around the world, and we consistently
+                  deliver custom projects of impeccable quality. We are nearing
+                  100 successfully completed contracts.
+                </div>
+              </div>
+              <div class="container flex flex-row pt-8">
+                <div class="w-fit">
+                  <div class="rounded-full bg-[#981620] w-4 h-4"></div>
+                  <div
+                    class="relative mx-auto right-[40%] h-48 border-r-4 border-[#981620]"
+                  ></div>
+                </div>
+                <div>
+                  <p class="mx-4 ml-8 mt-16 text-justify italic">
+                    Our founder and CEO, Abhay, is an anchor in the FF&E
+                    industry, and personally attends to every client and project
+                    for the best outcomes. Each level of our operations is
+                    optimized to provide our clients with guaranteed quality in
+                    services and products.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-start-2 col-span-1 persp onmousemove="mouse_position(event)"> -->
+            <div
+              class="md:relative w-full h-full md:col-start-2 md:col-span-1 ex1"
+            >
+              <img
+                src="assets/projects/marriot gujarat3.png"
+                class="md:absolute md:left-[10%] top-[10%] md:w-[60%] aspect-square object-cover pointer-events-none hImg overflow-hidden drop-shadow-2xl"
+                id="ex1-layer1"
+              />
+              <img
+                src="assets/projects/marriot gujarat3.png"
+                class="md:absolute md:right-[20%] md:top-[35%] md:w-[200px] md:h-[350px] object-cover pointer-events-none hImg overflow-hidden drop-shadow-2xl"
+                id="ex1-layer2"
+              />
+            </div>
+          </div>
+          <div class="md:grid md:grid-cols-2" data-scroll-section>
+            <p class="mx-4 my-4 md:col-span-1 md:col-start-1 my-auto">
+              We work with acclaimed architects and interior designers for our
+              custom manufacturing process, which fuses the handwork of skilled
+              craftspeople with state of the art technology, handling mid to
+              high volume production to satisfy each unique client and their
+              culture. We are well-versed in maintaining brand standards for
+              various reputed operators. No two I-Field projects are the same,
+              except for their quality. Our comprehensive end-to-end service
+              process ensures that projects are completed on time, at great
+              prices, so your operations can begin the moment you turn the key.
+            </p>
+            <img
+              src="assets/pattern2.png"
+              class="absolute md:col-span-1 md:col-start-2 -right-[10%] my-auto"
+            />
+          </div>
+          <div class="mt-32" data-scroll-section>
+            <div class="md:grid md:grid-cols-3">
+              <div
+                class="md:col-span-2 md:col-start-1 mx-4 flex flex-col justify-end"
+              >
+                <h1 class="text-6xl playfair md:mt-4 leading-normal">
+                  Our <br />
+                  Founder
+                </h1>
+                <br />
+                <p class="">
+                  Abhay moved from India to China in 2003 and quickly acquired
+                  the skills, knowledge, and network, to found I-Field as one of
+                  China’s leading turnkey manufacturers in FF&E. In 2012, Abhay
+                  led the initiative to invest in a customized furniture
+                  manufacturing unit in a joint venture with an established
+                  furniture company. Two short years later, he invested in
+                  establishing the GuangZhou Daka Import & Export Company so
+                  that I-Field could be entirely self-reliant in its operations.
+                  <br /><br />
+                  Abhay’s expertise in FF&E goes in hand with his understanding
+                  of how to manage people. He learned to work with local
+                  industries and workers. Wherever I-Field has operations, local
+                  economies benefit from the employment opportunities, and
+                  employees benefit from specialized training programs.
+                </p>
+              </div>
+              <div
+                class="md:col-span-1 md:col-start-3 flex flex-col justify-end"
+              >
+                <img src="assets/profile.png" class="" />
+              </div>
+            </div>
+            <div>
+              <p class="mx-4">
+                <br />
+                His passion, talent, and decades of experience make Abhay an
+                amazing leader. He has a matchless track record of building
+                positive relationships with everyone from stakeholders, to
+                clients, to floor staff. His ventures and efforts have led the
+                company’s investments in expanding to hotels across the world.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- Footer -->
       <div x-data=""></div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script defer>
+      window.addEventListener("load", function (event) {
+        var scroll = new LocomotiveScroll({
+          el: document.querySelector("[data-scroll-container]"),
+          smooth: true,
+        });
+      });
 
+      let constrain = 200;
+      let mouseOverContainer = document.getElementById("ex1");
+      let ex1Layer1 = document.getElementById("ex1-layer1");
+      let ex1Layer2 = document.getElementById("ex1-layer2");
+
+      function transforms(x, y, el) {
+        let box = el.getBoundingClientRect();
+        let calcX = -(y - box.y - box.height / 2) / constrain;
+        let calcY = (x - box.x - box.width / 2) / constrain;
+
+        return (
+          "perspective(100px) " +
+          "   rotateX(" +
+          calcX +
+          "deg) " +
+          "   rotateY(" +
+          calcY +
+          "deg)"
+        );
+      }
+
+      function transformElement(el, xyEl) {
+        el.style.transform = transforms.apply(null, xyEl);
+      }
+
+      mouseOverContainer.onmousemove = function (e) {
+        let xy = [e.clientX, e.clientY];
+
+        let position1 = xy.concat([ex1Layer1]);
+        let position2 = xy.concat([ex1Layer2]);
+
+        window.requestAnimationFrame(function () {
+          transformElement(ex1Layer1, position1);
+          transformElement(ex1Layer2, position2);
+        });
+      };
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
   </body>
 </html>

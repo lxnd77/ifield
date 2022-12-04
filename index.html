@@ -111,7 +111,7 @@
         </div>
         <div
           id="main-nav"
-          class="items-center hidden text-white flex flex-row-reverse ml-auto mr-18 position-absolute z-10"
+          class="items-center hidden text-white flex flex-row-reverse ml-auto mr-18 absolute z-50"
         >
           <div
             class="border border-gray-200 w-48 text-gray-900 text-sm font-medium text-right bg-white"
@@ -200,11 +200,11 @@
         <!-- Home Page -->
 
         <section>
-          <div class="">
+          <div class="static">
             <!-- Our distinction Hero -->
 
             <div
-              class="w-full h-[90vh] bg-black relative"
+              class="w-full h-[90vh] bg-black relative z-20"
               onmousemove="mouse_position(event)"
               data-scroll-section
             >
@@ -345,28 +345,46 @@
             <script>
               const markerSvg = `<svg viewBox="-4 0 36 36">
       <path fill="currentColor" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
-      <circle fill="black" cx="14" cy="14" r="7"></circle>
+      <circle fill="#8D1B1C" cx="14" cy="14" r="7"></circle>
     </svg>`;
 
-              // Gen random data
-              const N = 6;
-              const gData = [...Array(N).keys()].map(() => ({
-                lat: (Math.random() - 0.5) * 180,
-                lng: (Math.random() - 0.5) * 360,
-                size: 7 + Math.random() * 30,
-                color: "#8D1B1C",
-              }));
-
               const chinaOffice = {
-                lat: 1.223,
-                lng: 1.223,
-                size: 10,
-                color: "#8D1B1C",
+                lat: 23.128994,
+                lng: 113.25325,
               };
+              const chadOffice = {
+                lat: 12.134846,
+                lng: 15.055741,
+              };
+              const indiaOffice = {
+                lat: 26.912434,
+                lng: 75.78727,
+              };
+              const usaOffice = {
+                lat: 31.968599,
+                lng: -99.90181,
+              };
+              const nigeriaOffice = {
+                lat: 9.081999,
+                lng: 8.675277,
+              };
+              const spainOffice = {
+                lat: 40.463667,
+                lng: -3.74922,
+              };
+
+              const gData = [
+                chinaOffice,
+                chadOffice,
+                indiaOffice,
+                usaOffice,
+                nigeriaOffice,
+                spainOffice,
+              ];
 
               const Globe = new ThreeGlobe()
                 .globeImageUrl(
-                  "//unpkg.com/three-globe/example/img/earth-dark.jpg"
+                  "//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
                 )
                 .bumpImageUrl(
                   "//unpkg.com/three-globe/example/img/earth-topology.png"
@@ -375,11 +393,10 @@
                 .htmlElement((d) => {
                   const el = document.createElement("div");
                   el.innerHTML = markerSvg;
-                  el.style.color = d.color;
-                  el.style.width = `${d.size}px`;
+                  el.style.color = "black";
+                  el.style.width = `40px`;
                   return el;
                 });
-
               // Setup renderers
               const renderers = [
                 new THREE.WebGLRenderer({ alpha: true }),
@@ -426,13 +443,29 @@
 
               tbControls.enableZoom = false;
               tbControls.autoRotate = true;
-
+              tbControls.enableDamping = true;
+              tbControls.dynamicDampingFactor = 0.01;
+              tbControls.enablePan = false;
+              tbControls.minDistance = 200;
+              tbControls.maxDistance = 500;
+              tbControls.rotateSpeed = 0.8;
+              tbControls.zoomSpeed = 1;
+              tbControls.minPolarAngle = Math.PI / 3.5;
+              tbControls.maxPolarAngle = Math.PI - Math.PI / 3;
               // Update pov when camera moves
               Globe.setPointOfView(camera.position, Globe.position);
               tbControls.addEventListener("change", () =>
                 Globe.setPointOfView(camera.position, Globe.position)
               );
+              window.addEventListener("resize", onWindowResize, false);
 
+              function onWindowResize() {
+                camera.position.set(0, 20, 250);
+                camera.aspect = window.innerWidth / 400;
+                camera.updateProjectionMatrix();
+
+                renderer.setSize(window.innerWidth, 400);
+              }
               // Kick-off renderers
               (function animate() {
                 // IIFE
@@ -457,7 +490,6 @@
                 <div class="events-wrapper">
                   <div class="events">
                     <ol>
-                      <li></li>
                       <li>
                         <a href="#0" data-date="1/1/2014" class="selected"
                           ><img

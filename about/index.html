@@ -27,7 +27,7 @@
   </head>
 
   <body class="bg-white w-full" x-data>
-    <div data-scroll-container x-data="{selected:null}">
+    <div data-scroll-container>
       <!-- Header -->
       <div class="w-full bg-white" x-data="{location:''}" data-scroll-section>
         <div class="mx-14 py-7 flex flex-row items-center justify-between">
@@ -62,30 +62,11 @@
           </div>
           <div>
             <div class="text-black">
-              <button class="navbar-burger group relative z-60" 
-              type="button" 
-              @click="selected !== 1 ? selected = 1 : selected = null" 
-              @click.outside="selected = null"
-              :class="selected == 1? 'sticky' : ''">
-                <div
-                  class="relative flex h-[50px] w-[50px] transform items-center justify-center overflow-hidden rounded-full bg-white ring-0 ring-gray-300 ring-opacity-30 transition-all duration-200 hover:ring-8 group-focus:ring-4"
-                >
-                  <div
-                    class="flex h-[20px] w-[20px] origin-center transform flex-col justify-between overflow-hidden transition-all duration-300"
-                  >
-                    <div
-                      class="h-[2px] w-7 origin-left transform bg-black transition-all duration-300 "
-                      :class="selected == 1 ? 'rotate-[42deg]':''"
-                    ></div>
-                    <div
-                      class="h-[2px] w-1/2 transform rounded bg-black transition-all duration-300 "
-                      :class="selected == 1 ? '-translate-x-10':''"
-                    ></div>
-                    <div
-                      class="h-[2px] w-7 origin-left transform bg-black transition-all duration-300 "
-                      :class="selected == 1 ? '-rotate-[42deg]':''"
-                    ></div>
-                  </div>
+              <button class="navbar-burger">
+                <div class="space-y-2">
+                  <span class="block w-8 h-0.5 bg-black"></span>
+                  <span class="block w-5 h-0.5 bg-black"></span>
+                  <span class="block w-8 h-0.5 bg-black"></span>
                 </div>
               </button>
             </div>
@@ -93,27 +74,6 @@
         </div>
         
       </div>
-
-      <!--Sidebar-->
-      <aside
-          id="main-nav"
-          class="text-black bg-white/50 ml-auto absolute top-0 right-0 z-50 w-[400px] h-full overflow-hidden transition-all max-w-0 duration-700" 
-          x-ref="container1" 
-          style=""
-          x-bind:style="selected == 1 ? 'max-width: ' + '400px' : ''"
-        >
-        <div class="px-16 py-16 h-full">
-          <div class="flex flex-col playfair text-3xl justify-around h-full">
-            <a href="/">Home</a>
-            <a href="/about.html">About</a>
-            <a href="/services.html">Services</a>
-            <a href="/projects.html">Projects</a>
-            <a >Contact</a>
-          </div>
-        </div>
-      </aside>
-
-      <!--Sidebar Script-->
       <script>
         // Navbar Toggle
         document.addEventListener("DOMContentLoaded", function () {
@@ -123,10 +83,19 @@
             0
           );
 
-          var body = document.getElementById("content");
-          body.addEventListener("click", function() {
-            
-          });
+          // Check if there are any navbar burgers
+          if ($navbarBurgers.length > 0) {
+            // Add a click event on each of them
+            $navbarBurgers.forEach(function ($el) {
+              $el.addEventListener("click", function () {
+                // Get the "main-nav" element
+                var $target = document.getElementById("main-nav");
+
+                // Toggle the class on "main-nav"
+                $target.classList.toggle("hidden");
+              });
+            });
+          }
         });
       </script>
 
@@ -134,7 +103,7 @@
       <!-- <div x-data=""></div> -->
 
       <!-- About US -->
-      <div id="content">
+
       <div class="container w-[92vw] mx-auto">
         <!--Our Company-->
         <div class="md:grid md:grid-cols-2" id="ex1" data-scroll-section>
@@ -278,7 +247,6 @@
           <img src="assets/profile.png" class="w-80 h-80" />
         </div>
       </div>
-    </div>
 
       <script defer>
         let scrollContainer = document.querySelector("[data-scroll-container]");

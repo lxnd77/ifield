@@ -12,10 +12,40 @@ body {
   font-family: "Playfair Display", serif;
 }
 
-.marker::after {
+.markerchina::after {
   background-color: black;
   color: white;
-  content: "China Headquarters";
+  content: "China & HongKong";
+}
+
+.markerindia::after {
+  background-color: black;
+  color: white;
+  content: "India";
+}
+
+.markerspain::after {
+  background-color: black;
+  color: white;
+  content: "Spain";
+}
+
+.markerchad::after {
+  background-color: black;
+  color: white;
+  content: "Chad";
+}
+
+.markernigeria::after {
+  background-color: black;
+  color: white;
+  content: "Nigeria";
+}
+
+.markerusa::after {
+  background-color: black;
+  color: white;
+  content: "USA";
 }
 
 html.has-scroll-smooth {

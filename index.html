@@ -333,133 +333,132 @@
               <div class="pl-[10%] text-6xl playfair">Our Presence</div>
               <div class="h-1 bg-red-900 w-64"></div>
             </div>
+            <div data-scroll-section>
+              <div id="globeViz"></div>
 
-            <div id="globeViz" data-scroll-section></div>
+              <div class="text-center">
+                CHINA | HONGKONG (SAR) | INDIA | USA | UAE | NIGERIA | SPAIN
+              </div>
 
-            <div class="text-center" data-scroll-section>
-              CHINA | HONGKONG (SAR) | INDIA | USA | UAE | NIGERIA | SPAIN
-            </div>
-
-            <script>
-              const markerSvg = `
+              <script>
+                const markerSvg = `
               <svg viewBox="-4 0 36 36">
                 <path fill="white" d="M14,0 C21.732,0 28,5.641 28,12.6 C28,23.963 14,36 14,36 C14,36 0,24.064 0,12.6 C0,5.641 6.268,0 14,0 Z"></path>
                 <circle fill="#8D1B1C" cx="14" cy="14" r="7"></circle>
               </svg>`;
 
-              const chinaOffice = {
-                lat: 23.128994,
-                lng: 113.25325,
-                location: "china",
-              };
-              const chadOffice = {
-                lat: 12.134846,
-                lng: 15.055741,
-                location: "chad",
-              };
-              const indiaOffice = {
-                lat: 26.912434,
-                lng: 75.78727,
-                location: "india",
-              };
-              const usaOffice = {
-                lat: 31.968599,
-                lng: -99.90181,
-                location: "usa",
-              };
-              const nigeriaOffice = {
-                lat: 9.081999,
-                lng: 8.675277,
-                location: "nigeria",
-              };
-              const spainOffice = {
-                lat: 40.463667,
-                lng: -3.74922,
-                location: "spain",
-              };
+                const chinaOffice = {
+                  lat: 23.128994,
+                  lng: 113.25325,
+                  location: "china",
+                };
+                const chadOffice = {
+                  lat: 12.134846,
+                  lng: 15.055741,
+                  location: "chad",
+                };
+                const indiaOffice = {
+                  lat: 26.912434,
+                  lng: 75.78727,
+                  location: "india",
+                };
+                const usaOffice = {
+                  lat: 31.968599,
+                  lng: -99.90181,
+                  location: "usa",
+                };
+                const nigeriaOffice = {
+                  lat: 9.081999,
+                  lng: 8.675277,
+                  location: "nigeria",
+                };
+                const spainOffice = {
+                  lat: 40.463667,
+                  lng: -3.74922,
+                  location: "spain",
+                };
 
-              const gData = [
-                chinaOffice,
-                chadOffice,
-                indiaOffice,
-                usaOffice,
-                nigeriaOffice,
-                spainOffice,
-              ];
+                const gData = [
+                  chinaOffice,
+                  chadOffice,
+                  indiaOffice,
+                  usaOffice,
+                  nigeriaOffice,
+                  spainOffice,
+                ];
 
-              const globe = Globe()
-                .height("600")
-                .globeImageUrl("./assets/globe.png")
-                .bumpImageUrl(
-                  "//unpkg.com/three-globe/example/img/earth-topology.png"
-                )
-                .htmlElementsData(gData)
-                .htmlElement((d) => {
-                  const el = document.createElement("div");
-                  el.innerHTML = markerSvg;
-                  el.style.color = "black";
-                  el.style.width = `40px`;
-                  el.className = "marker";
-                  el.style["pointer-events"] = "auto";
-                  el.style.cursor = "pointer";
-                  el.onclick = () => console.info(d);
-                  return el;
-                })(
-                // .controls.enableZoom("false")
-                document.getElementById("globeViz")
-              );
+                const globe = Globe()
+                  .height("600")
+                  .globeImageUrl("./assets/globe.png")
+                  .bumpImageUrl(
+                    "//unpkg.com/three-globe/example/img/earth-topology.png"
+                  )
+                  .htmlElementsData(gData)
+                  .htmlElement((d) => {
+                    const el = document.createElement("div");
+                    el.innerHTML = markerSvg;
+                    el.style.color = "black";
+                    el.style.width = `40px`;
+                    el.className = `marker${d.location}`;
+                    el.style["pointer-events"] = "auto";
+                    el.style.cursor = "pointer";
+                    el.onclick = () => {
+                      switch (d.location) {
+                        case "china":
+                          console.log("china");
+                          break;
+                        case "chad":
+                          console.log("chad");
+                          break;
+                        case "india":
+                          console.log("india");
+                          break;
+                        case "usa":
+                          console.log("usa");
+                          break;
+                        case "nigeria":
+                          console.log("nigeria");
+                          break;
+                        case "spain":
+                          console.log("spain");
+                          break;
+                        default:
+                          break;
+                      }
+                    };
+                    return el;
+                  })(
+                  // .controls.enableZoom("false")
+                  document.getElementById("globeViz")
+                );
 
-              globe.controls().enableZoom = false;
-              globe.controls().enableDamping = true;
-              globe.controls().autoRotate = true;
-              globe.controls().dynamicDampingFactor = 0.01;
-              globe.controls().enablePan = false;
-              globe.controls().minDistance = 200;
-              globe.controls().maxDistance = 500;
-              globe.controls().rotateSpeed = 0.8;
-              globe.controls().zoomSpeed = 1;
-              globe.controls().minPolarAngle = Math.PI / 3.5;
-              globe.controls().maxPolarAngle = Math.PI - Math.PI / 3;
-              // Setup renderers
-              const renderers = [
-                new THREE.WebGLRenderer({ alpha: true }),
-                new THREE.CSS2DRenderer(),
-              ];
-              renderers.forEach((r, idx) => {
-                r.setSize(window.innerWidth, 400);
-                if (idx > 0) {
-                  // overlay additional on top of main renderer
-                  r.domElement.style.position = "absolute";
-                  r.domElement.style.top = "0px";
-                  r.domElement.style.pointerEvents = "none";
+                globe.controls().enableZoom = false;
+                globe.controls().enableDamping = true;
+                globe.controls().autoRotate = true;
+                globe.controls().dynamicDampingFactor = 0.01;
+                globe.controls().enablePan = false;
+                globe.controls().minDistance = 200;
+                globe.controls().maxDistance = 500;
+                globe.controls().rotateSpeed = 0.8;
+                globe.controls().zoomSpeed = 1;
+                globe.controls().minPolarAngle = Math.PI / 3.5;
+                globe.controls().maxPolarAngle = Math.PI - Math.PI / 3;
+
+                // Setup renderers
+
+                // Setup scene
+                const scene = new THREE.Scene();
+                scene.add(globe);
+                scene.add(new THREE.AmbientLight(0xbbbbbb));
+                scene.add(new THREE.DirectionalLight(0xffffff, 0.6));
+
+                window.addEventListener("resize", onWindowResize, false);
+
+                function onWindowResize() {
+                  globe.set;
                 }
-                document.getElementById("globeViz").appendChild(r.domElement);
-              });
-
-              // Setup scene
-              const scene = new THREE.Scene();
-              scene.add(globe);
-              scene.add(new THREE.AmbientLight(0xbbbbbb));
-              scene.add(new THREE.DirectionalLight(0xffffff, 0.6));
-
-              window.addEventListener("resize", onWindowResize, false);
-
-              function onWindowResize() {
-                globe.set;
-                renderers.forEach((r, idx) => {
-                  r.setSize(window.innerWidth, 400);
-                  if (idx > 0) {
-                    // overlay additional on top of main renderer
-                    r.domElement.style.position = "absolute";
-                    r.domElement.style.top = "0px";
-                    r.domElement.style.pointerEvents = "none";
-                  }
-                  document.getElementById("globeViz").appendChild(r.domElement);
-                });
-              }
-              // Kick-off renderers
-            </script>
-
+              </script>
+            </div>
             <!-- Process -->
 
             <div

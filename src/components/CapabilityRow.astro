@@ -1,0 +1,287 @@
+---
+/**
+ * CapabilityRow — one of the eight alternating rows on /capabilities.
+ *
+ * The cascade is the most precisely specified motion in the bundle and is
+ * reproduced exactly. Crucially the observer watches the TEXT BLOCK, not
+ * the row: the row is tall enough that observing it would fire the cascade
+ * while the heading is still below the fold. With rootMargin -40% the
+ * sequence starts only once the heading has genuinely arrived.
+ *
+ * Once `.is-in` lands:
+ *   0.2s  → the 84px accent rule grows from 0 over 1.4s
+ *   0.35s → scope item 1 rises, its bullet pulsing 0 → 1.6 → 1
+ *   0.62s → item 2
+ *   0.89s → item 3
+ *   1.16s → item 4
+ */
+import ImageSlot from './ImageSlot.astro';
+import type { Capability } from '../data/capabilities';
+
+interface Props {
+  capability: Capability;
+  /** Places the image on the right — every second row, above 760px. */
+  flip?: boolean;
+}
+
+const { capability, flip = false } = Astro.props;
+---
+
+<article class:list={['caprow', { 'caprow--flip': flip }]} id={capability.slug}>
+  <div class="caprow__media">
+    <ImageSlot
+      slot={capability.image}
+      alt={capability.name}
+      fill
+      filter="grayscale(40%)"
+      caption={capability.name}
+    />
+  </div>
+
+  <div class="caprow__text">
+    <span class="caprow__label">Capability</span>
+    <h3 class="caprow__name">{capability.name}</h3>
+    <span class="caprow__tag">{capability.tag}</span>
+    <span class="caprow__line" aria-hidden="true"></span>
+    <p class="body-text caprow__desc">{capability.desc}</p>
+
+    <ul class="caprow__scope">
+      {
+        capability.scope.map((item) => (
+          <li class="caprow__scopeItem">
+            <span class="caprow__dot" aria-hidden="true" />
+            <span class="caprow__scopeText">{item}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</article>
+
+<script>
+  /**
+   * Bundled once no matter how many rows render. Observes every text
+   * block on the page with the -40% bottom margin from the design source.
+   */
+  const blocks = document.querySelectorAll<HTMLElement>('.caprow__text:not(.is-in)');
+
+  if (blocks.length > 0) {
+    if (typeof IntersectionObserver === 'undefined') {
+      blocks.forEach((el) => el.classList.add('is-in'));
+    } else {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('is-in');
+            observer.unobserve(entry.target);
+          }
+        },
+        { threshold: 0, rootMargin: '0px 0px -40% 0px' },
+      );
+      blocks.forEach((el) => observer.observe(el));
+    }
+  }
+</script>
+
+<style>
+  .caprow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr));
+    gap: clamp(36px, 5vw, 72px);
+    align-items: center;
+    padding: clamp(44px, 6vw, 76px) 0;
+    border-top: 1px solid var(--border);
+    /* Fixed nav must not cover the row when linked to by anchor */
+    scroll-margin-top: var(--nav-h);
+  }
+
+  /* ── Image ── */
+  .caprow__media {
+    position: relative;
+    height: clamp(320px, 38vw, 460px);
+    overflow: hidden;
+    border: 1px solid rgba(26, 22, 20, 0.08);
+  }
+
+  .caprow__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26, 22, 20, 0) 55%, rgba(26, 22, 20, 0.42) 100%);
+    pointer-events: none;
+  }
+
+  .caprow__media :global(img) {
+    transition:
+      transform 1.1s var(--ease-out),
+      filter 0.7s ease;
+  }
+
+  .caprow__media:hover {
+    --imgslot-filter: grayscale(0%);
+  }
+
+  .caprow__media:hover :global(img) {
+    transform: scale(1.06);
+  }
+
+  /* ── Text ── */
+  .caprow__label {
+    font-family: var(--ff-body);
+    font-size: var(--t-xs);
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .caprow__name {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1.1;
+    margin: 12px 0 6px;
+    color: var(--text-primary);
+  }
+
+  .caprow__tag {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: clamp(18px, 1.7vw, 22px);
+    color: var(--text-muted);
+    display: block;
+  }
+
+  /* ── The growing rule ──
+     Rests at its final 84px so a scripting failure leaves the design
+     intact; only a script-capable document collapses it to animate. */
+  .caprow__line {
+    display: block;
+    height: 2px;
+    width: 84px;
+    background: var(--accent);
+    margin-top: 18px;
+  }
+
+  :global(.js) .caprow__line {
+    width: 0;
+    transition: width 1.4s var(--ease-out) 0.2s;
+  }
+
+  :global(.js) .caprow__text.is-in .caprow__line {
+    width: 84px;
+  }
+
+  .caprow__desc {
+    margin-top: 20px;
+    max-width: 52ch;
+  }
+
+  /* ── Scope cascade ── */
+  .caprow__scope {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px 24px;
+    margin-top: 24px;
+    max-width: 480px;
+    list-style: none;
+  }
+
+  .caprow__scopeItem {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+  }
+
+  :global(.js) .caprow__scopeItem {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 1.05s var(--ease-out),
+      transform 1.05s var(--ease-out);
+  }
+
+  :global(.js) .caprow__text.is-in .caprow__scopeItem {
+    opacity: 1;
+    transform: none;
+  }
+
+  .caprow__text.is-in .caprow__scopeItem:nth-child(1) {
+    transition-delay: 0.35s;
+  }
+  .caprow__text.is-in .caprow__scopeItem:nth-child(2) {
+    transition-delay: 0.62s;
+  }
+  .caprow__text.is-in .caprow__scopeItem:nth-child(3) {
+    transition-delay: 0.89s;
+  }
+  .caprow__text.is-in .caprow__scopeItem:nth-child(4) {
+    transition-delay: 1.16s;
+  }
+
+  .caprow__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    transform: translateY(-2px);
+  }
+
+  .caprow__text.is-in .caprow__scopeItem .caprow__dot {
+    animation: dotpulse 0.7s ease both;
+  }
+
+  .caprow__text.is-in .caprow__scopeItem:nth-child(1) .caprow__dot {
+    animation-delay: 0.35s;
+  }
+  .caprow__text.is-in .caprow__scopeItem:nth-child(2) .caprow__dot {
+    animation-delay: 0.62s;
+  }
+  .caprow__text.is-in .caprow__scopeItem:nth-child(3) .caprow__dot {
+    animation-delay: 0.89s;
+  }
+  .caprow__text.is-in .caprow__scopeItem:nth-child(4) .caprow__dot {
+    animation-delay: 1.16s;
+  }
+
+  @keyframes dotpulse {
+    0% {
+      transform: translateY(-2px) scale(0);
+    }
+    60% {
+      transform: translateY(-2px) scale(1.6);
+    }
+    100% {
+      transform: translateY(-2px) scale(1);
+    }
+  }
+
+  .caprow__scopeText {
+    font-family: var(--ff-body);
+    font-size: 15px;
+    font-weight: 400;
+    color: rgba(26, 22, 20, 0.72);
+    line-height: 1.45;
+  }
+
+  /* ── Alternating layout ──
+     The prototype swapped `order` from a resize handler; a media query
+     does the same job without JavaScript. 760px matches its threshold. */
+  @media (min-width: 761px) {
+    .caprow--flip .caprow__media {
+      order: 2;
+    }
+
+    .caprow--flip .caprow__text {
+      order: 1;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .caprow__scope {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

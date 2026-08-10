@@ -1,0 +1,150 @@
+---
+/**
+ * ClientTicker — infinite marquee of 24 hotel-brand logos.
+ *
+ * The set is rendered twice and translated -50%, so the loop is seamless.
+ * The duplicate is aria-hidden; the first set carries the real names.
+ */
+import { clientLogos } from '../../data/images';
+---
+
+<section class="clients" id="clients">
+  <p class="clients__label">Trusted by the world's leading hotel brands</p>
+
+  <div class="clients__viewport">
+    <div class="clients__track">
+      <ul class="clients__set">
+        {
+          clientLogos.map((logo) => (
+            <li class="clients__item">
+              <img src={`/${logo.path}`} alt={logo.alt} loading="lazy" decoding="async" />
+            </li>
+          ))
+        }
+      </ul>
+      <ul class="clients__set" aria-hidden="true">
+        {
+          clientLogos.map((logo) => (
+            <li class="clients__item">
+              <img src={`/${logo.path}`} alt="" loading="lazy" decoding="async" />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .clients {
+    background: var(--bg-warm);
+    padding: 84px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .clients__label {
+    font-family: var(--ff-body);
+    font-size: var(--t-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .clients__viewport {
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Edge fades, matched to the section ground */
+  .clients__viewport::before,
+  .clients__viewport::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .clients__viewport::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg-warm), transparent);
+  }
+
+  .clients__viewport::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg-warm), transparent);
+  }
+
+  .clients__track {
+    display: flex;
+    width: max-content;
+    animation: tickerScroll 42s linear infinite;
+  }
+
+  .clients__track:hover {
+    animation-play-state: paused;
+  }
+
+  .clients__set {
+    display: flex;
+    align-items: center;
+    list-style: none;
+  }
+
+  .clients__item {
+    width: 240px;
+    flex: 0 0 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .clients__item img {
+    max-height: 88px;
+    max-width: 188px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    opacity: 0.8;
+    transition: opacity 0.25s;
+    display: block;
+  }
+
+  .clients__item img:hover {
+    opacity: 1;
+  }
+
+  @keyframes tickerScroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* The global reduced-motion rule collapses the animation duration, which
+     would leave the track parked at -50%. Reset it to a static row that
+     the visitor can scroll through instead. */
+  @media (prefers-reduced-motion: reduce) {
+    .clients__viewport {
+      overflow-x: auto;
+    }
+
+    .clients__track {
+      animation: none;
+      transform: none;
+    }
+
+    .clients__set[aria-hidden='true'] {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,64 @@
+---
+/**
+ * SectionIntro — the two-column intro block that opens Capabilities
+ * and Process: heading stack on the left, running copy on the right.
+ * Columns collapse below ~340px each via auto-fit.
+ */
+interface Props {
+  eyebrow: string;
+  /** HTML, so `<em>` emphasis works. */
+  title: string;
+  subtitle?: string;
+  /** One or more paragraphs for the right column. */
+  paragraphs: readonly string[];
+  /** Trim the bottom padding where a following section carries its own. */
+  flushBottom?: boolean;
+}
+
+const { eyebrow, title, subtitle, paragraphs, flushBottom = false } = Astro.props;
+---
+
+<section class:list={['intro', { 'intro--flush': flushBottom }]}>
+  <div class="container">
+    <div class="intro__grid">
+      <div class="reveal">
+        <span class="eyebrow">{eyebrow}</span>
+        <h2 class="section-h2 intro__title" set:html={title} />
+        {subtitle && <span class="section-h2-sub section-h2-sub--accent">{subtitle}</span>}
+      </div>
+      <div class="reveal reveal-d1">
+        {paragraphs.map((text, i) => (
+          <p class="body-text" style={i > 0 ? 'margin-top:22px' : undefined}>
+            {text}
+          </p>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro {
+    background: var(--bg-cream);
+    padding: clamp(72px, 10vw, 120px) 0;
+  }
+
+  .intro--flush {
+    padding-bottom: clamp(40px, 5vw, 56px);
+  }
+
+  .intro__grid {
+    display: grid;
+    /* min() guards the track against exceeding the container on narrow
+       screens — a bare minmax(340px, 1fr) renders a 340px column inside a
+       335px grid at 375px wide, and worse on smaller devices. The
+       prototypes had this and relied on body { overflow-x: hidden }. */
+    grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+    gap: clamp(40px, 6vw, 80px);
+    align-items: start;
+  }
+
+  .intro__title {
+    max-width: 560px;
+  }
+</style>

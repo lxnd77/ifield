@@ -1,0 +1,76 @@
+---
+/**
+ * LegalLayout — compact dark header over a single prose column.
+ * Used by the privacy, terms and cookie pages.
+ */
+import BaseLayout from './BaseLayout.astro';
+import '../styles/prose.css';
+
+interface Props {
+  title: string;
+  description: string;
+  eyebrow?: string;
+  /** ISO date, rendered as the "Last updated" line. */
+  updated?: string;
+}
+
+const { title, description, eyebrow = 'Legal', updated } = Astro.props;
+
+const updatedLabel = updated
+  ? new Date(updated).toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  : null;
+---
+
+<BaseLayout title={title} description={description}>
+  <header class="legal-head">
+    <div class="container">
+      <span class="eyebrow">{eyebrow}</span>
+      <h1 class="legal-title">{title}</h1>
+      {updatedLabel && <p class="legal-updated">Last updated {updatedLabel}</p>}
+    </div>
+  </header>
+
+  <section class="legal-body">
+    <div class="container">
+      <div class="prose">
+        <slot />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-head {
+    background: var(--bg-dark);
+    padding: calc(var(--nav-h) + clamp(56px, 8vw, 96px)) 0 clamp(48px, 6vw, 72px);
+  }
+
+  .legal-head .eyebrow {
+    color: rgba(250, 248, 244, 0.55);
+  }
+
+  .legal-title {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    font-size: clamp(38px, 5vw, 64px);
+    line-height: 1.05;
+    color: #fff;
+  }
+
+  .legal-updated {
+    font-family: var(--ff-body);
+    font-size: var(--t-sm);
+    font-weight: 300;
+    color: rgba(250, 248, 244, 0.45);
+    margin-top: 18px;
+  }
+
+  .legal-body {
+    background: var(--bg-cream);
+    padding: clamp(56px, 8vw, 96px) 0 clamp(72px, 10vw, 120px);
+  }
+</style>

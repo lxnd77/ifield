@@ -1,0 +1,456 @@
+---
+/**
+ * ProcessTimeline — the six-stage vertical rail on /process.
+ *
+ * Unlike the homepage flow (which advances on a timer), this rail is
+ * driven by scroll position: an accent fill grows down the rail to a
+ * marker line at 55% of the viewport height, a comet rides its leading
+ * edge, and each node lights as its centre passes the marker.
+ *
+ * Above 860px the stages zig-zag around a centred rail, with the text
+ * always aligned toward it. Below that the rail moves to the left edge
+ * and every stage stacks in one column.
+ */
+import ImageSlot from '../ImageSlot.astro';
+import { processSteps } from '../../data/process';
+---
+
+<section class="ptl">
+  <div class="ptl__inner" id="processTimeline">
+    <div class="ptl__rail" id="ptlRail" aria-hidden="true"></div>
+    <div class="ptl__fill" id="ptlFill" aria-hidden="true"></div>
+    <div class="ptl__comet" id="ptlComet" aria-hidden="true"></div>
+
+    <ol class="ptl__steps">
+      {
+        processSteps.map((step, i) => (
+          <li class:list={['ptl__step', i % 2 === 1 ? 'ptl__step--right' : 'ptl__step--left']}>
+            <div class="ptl__text">
+              <div class="ptl__textInner">
+                <span class="ptl__stage">Stage {step.no}</span>
+                <h3 class="ptl__name">{step.name}</h3>
+                <span class="ptl__tag">{step.tag}</span>
+                <p class="body-text ptl__desc">{step.longDesc}</p>
+                <div class="ptl__out">
+                  <span class="ptl__outLabel">You receive</span>
+                  <span class="ptl__outValue">{step.output}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="ptl__nodeCell">
+              <div class="ptl__node" data-node>{step.no}</div>
+            </div>
+
+            <div class="ptl__media">
+              <div class="ptl__mediaInner">
+                <ImageSlot
+                  slot={step.image}
+                  alt={step.name}
+                  fill
+                  filter="grayscale(45%)"
+                  caption={step.name}
+                />
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<script>
+  const timeline = document.getElementById('processTimeline');
+  const rail = document.getElementById('ptlRail');
+  const fill = document.getElementById('ptlFill');
+  const comet = document.getElementById('ptlComet');
+
+  if (timeline && rail && fill && comet) {
+    const nodes = Array.from(timeline.querySelectorAll<HTMLElement>('[data-node]'));
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let railTop = 0;
+    let railHeight = 0;
+    let ticking = false;
+
+    /**
+     * The rail spans first node centre to last node centre, so it never
+     * overshoots past the outermost stages.
+     */
+    const measure = () => {
+      if (nodes.length === 0) return;
+      const boxRect = timeline.getBoundingClientRect();
+      const first = nodes[0]!.getBoundingClientRect();
+      const last = nodes[nodes.length - 1]!.getBoundingClientRect();
+      railTop = first.top + first.height / 2 - boxRect.top;
+      railHeight = last.top + last.height / 2 - boxRect.top - railTop;
+
+      rail.style.top = `${railTop}px`;
+      rail.style.height = `${railHeight}px`;
+      fill.style.top = `${railTop}px`;
+    };
+
+    const update = () => {
+      ticking = false;
+      if (nodes.length === 0 || railHeight <= 0) return;
+
+      const marker = window.innerHeight * 0.55;
+      const firstCentre =
+        nodes[0]!.getBoundingClientRect().top + nodes[0]!.getBoundingClientRect().height / 2;
+
+      const filled = Math.max(0, Math.min(railHeight, marker - firstCentre));
+      fill.style.height = `${filled}px`;
+
+      comet.style.opacity = filled > 2 && filled < railHeight ? '1' : '0';
+      comet.style.top = `${railTop + filled}px`;
+
+      for (const node of nodes) {
+        const rect = node.getBoundingClientRect();
+        node.classList.toggle('is-on', rect.top + rect.height / 2 <= marker + 4);
+      }
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    /**
+     * Reduced motion: light every node, hide the moving parts, and skip
+     * the scroll listener entirely. The rail still reads as a sequence.
+     */
+    const applyReduced = () => {
+      if (reduced.matches) {
+        window.removeEventListener('scroll', onScroll);
+        nodes.forEach((n) => n.classList.add('is-on'));
+        measure();
+        fill.style.height = `${railHeight}px`;
+        comet.style.opacity = '0';
+      } else {
+        window.addEventListener('scroll', onScroll, { passive: true });
+        measure();
+        update();
+      }
+    };
+
+    const remeasure = () => {
+      measure();
+      update();
+    };
+
+    // Late-loading images change the layout, so re-measure when they land.
+    window.addEventListener('load', remeasure);
+
+    /**
+     * Web fonts settle after `load` with font-display: swap, and the swap
+     * changes text height — which moves the last node and leaves the rail
+     * measurably short. Re-measure once the faces are ready.
+     */
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(remeasure).catch(() => {});
+    }
+
+    let resizeTimer: number | undefined;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        measure();
+        update();
+      }, 150);
+    });
+
+    reduced.addEventListener('change', applyReduced);
+    applyReduced();
+  }
+</script>
+
+<style>
+  .ptl {
+    background: var(--bg-cream);
+    padding: clamp(24px, 4vw, 48px) 0 clamp(72px, 9vw, 116px);
+  }
+
+  .ptl__inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 clamp(24px, 5vw, 64px);
+    position: relative;
+  }
+
+  .ptl__steps {
+    list-style: none;
+  }
+
+  /* ── Rail, fill, comet ── */
+  .ptl__rail,
+  .ptl__fill {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    top: 0;
+    height: 0;
+  }
+
+  .ptl__rail {
+    background: rgba(26, 22, 20, 0.12);
+  }
+
+  .ptl__fill {
+    background: var(--accent);
+  }
+
+  .ptl__comet {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow:
+      0 0 0 6px rgba(139, 26, 26, 0.15),
+      0 0 22px 4px rgba(139, 26, 26, 0.45);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    z-index: 3;
+  }
+
+  /* ── Step ── */
+  .ptl__step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 96px 1fr;
+    align-items: center;
+    column-gap: clamp(24px, 3vw, 52px);
+    padding: clamp(30px, 4vw, 52px) 0;
+  }
+
+  .ptl__nodeCell {
+    order: 2;
+    display: flex;
+    justify-content: center;
+  }
+
+  .ptl__node {
+    position: relative;
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ff-display);
+    font-size: 24px;
+    font-weight: 500;
+    /* Warm greys specific to this component, from the design source */
+    border: 2px solid #d8d2c7;
+    background: var(--bg-cream);
+    color: #b7afa3;
+    transition:
+      border-color 0.5s var(--ease-out),
+      background 0.5s var(--ease-out),
+      color 0.5s,
+      box-shadow 0.5s,
+      transform 0.5s var(--ease-out);
+    z-index: 2;
+  }
+
+  .ptl__node.is-on {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+    transform: scale(1.08);
+    box-shadow: 0 12px 30px rgba(139, 26, 26, 0.3);
+  }
+
+  .ptl__node.is-on::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    animation: pRing 1.15s var(--ease-out) forwards;
+  }
+
+  @keyframes pRing {
+    from {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+  }
+
+  /* ── Text ── */
+  .ptl__stage {
+    font-family: var(--ff-body);
+    font-size: var(--t-xs);
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .ptl__name {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    font-size: clamp(26px, 2.9vw, 40px);
+    line-height: 1.1;
+    margin: 10px 0 4px;
+    color: var(--text-primary);
+  }
+
+  .ptl__tag {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: clamp(17px, 1.6vw, 21px);
+    color: var(--text-muted);
+    display: block;
+  }
+
+  .ptl__desc {
+    margin-top: 16px;
+    max-width: 46ch;
+  }
+
+  .ptl__out {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .ptl__outLabel {
+    font-family: var(--ff-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #b7afa3;
+    flex-shrink: 0;
+  }
+
+  .ptl__outValue {
+    font-family: var(--ff-body);
+    font-size: 15px;
+    color: rgba(26, 22, 20, 0.74);
+    line-height: 1.5;
+  }
+
+  /* ── Image ── */
+  .ptl__mediaInner {
+    position: relative;
+    height: clamp(220px, 24vw, 300px);
+    overflow: hidden;
+    border: 1px solid rgba(26, 22, 20, 0.08);
+  }
+
+  .ptl__mediaInner :global(img) {
+    transition:
+      transform 1.1s var(--ease-out),
+      filter 0.7s ease;
+  }
+
+  .ptl__mediaInner:hover {
+    --imgslot-filter: grayscale(0%);
+  }
+
+  .ptl__mediaInner:hover :global(img) {
+    transform: scale(1.05);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     ZIG-ZAG — wide only. The prototype set `order`, `text-align`
+     and margins from a resize handler; the same result falls out
+     of two nth-child rules. 861px matches its > 860 threshold.
+  ══════════════════════════════════════════════════════════ */
+  @media (min-width: 861px) {
+    /* Text always sits on the inside edge, aligned toward the rail. */
+    .ptl__step--left .ptl__text {
+      order: 1;
+      text-align: right;
+    }
+
+    .ptl__step--left .ptl__textInner {
+      margin-left: auto;
+      margin-right: 0;
+    }
+
+    .ptl__step--left .ptl__out {
+      justify-content: flex-end;
+    }
+
+    .ptl__step--left .ptl__media {
+      order: 3;
+    }
+
+    .ptl__step--right .ptl__text {
+      order: 3;
+      text-align: left;
+    }
+
+    .ptl__step--right .ptl__textInner {
+      margin-left: 0;
+      margin-right: auto;
+    }
+
+    .ptl__step--right .ptl__out {
+      justify-content: flex-start;
+    }
+
+    .ptl__step--right .ptl__media {
+      order: 1;
+    }
+
+    /* The measure is capped, so centre it within its half. */
+    .ptl__step--left .ptl__desc {
+      margin-left: auto;
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     STACKED — rail moves to the left gutter
+  ══════════════════════════════════════════════════════════ */
+  @media (max-width: 860px) {
+    .ptl__rail,
+    .ptl__fill,
+    .ptl__comet {
+      left: calc(clamp(24px, 5vw, 64px) + 26px);
+    }
+
+    .ptl__step {
+      grid-template-columns: 52px 1fr;
+      align-items: start;
+      column-gap: 16px;
+    }
+
+    .ptl__nodeCell {
+      order: 1;
+      justify-content: flex-start;
+    }
+
+    .ptl__node {
+      width: 52px;
+      height: 52px;
+      font-size: 18px;
+    }
+
+    .ptl__text {
+      order: 2;
+      text-align: left;
+      margin-top: 4px;
+    }
+
+    .ptl__media {
+      order: 2;
+      grid-column: 2;
+      margin-top: 18px;
+    }
+  }
+</style>

@@ -1,0 +1,299 @@
+---
+/**
+ * Testimonials — dark slider, three cards per slide.
+ * Slides are chunked from the shared testimonial list so adding a
+ * seventh quote creates a third slide automatically.
+ */
+import { testimonials, TESTIMONIALS_PER_SLIDE } from '../../data/featured';
+
+const slides = Array.from(
+  { length: Math.ceil(testimonials.length / TESTIMONIALS_PER_SLIDE) },
+  (_, i) => testimonials.slice(i * TESTIMONIALS_PER_SLIDE, (i + 1) * TESTIMONIALS_PER_SLIDE),
+);
+---
+
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div class="testimonials__header reveal">
+      <span class="eyebrow">Client Testimonials</span>
+      <h2 class="section-h2 section-h2--light testimonials__title">
+        What our partners<br /><em>say about us</em>
+      </h2>
+    </div>
+
+    <div class="testimonials__wrap reveal reveal-d1">
+      <div class="testimonials__viewport">
+        <div class="testimonials__track" id="testimonialsTrack">
+          {
+            slides.map((slide, slideIndex) => (
+              <div
+                class="testimonials__slide"
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`Slide ${slideIndex + 1} of ${slides.length}`}
+              >
+                {slide.map((t) => (
+                  <figure class="testimonial">
+                    <blockquote class="testimonial__quote">{t.quote}</blockquote>
+                    <figcaption class="testimonial__author">
+                      <span class="testimonial__name">{t.name}</span>
+                      <span class="testimonial__role">{t.role}</span>
+                      <span class="testimonial__brand">{t.brand}</span>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      {
+        slides.length > 1 && (
+          <div class="testimonials__controls">
+            <button
+              type="button"
+              class="testimonials__btn"
+              id="testimonialsPrev"
+              aria-label="Previous testimonials"
+            >
+              ←
+            </button>
+            <div class="testimonials__dots" id="testimonialsDots">
+              {slides.map((_, i) => (
+                <button
+                  type="button"
+                  class:list={['testimonials__dot', { 'is-active': i === 0 }]}
+                  data-slide={i}
+                  aria-label={`Go to slide ${i + 1}`}
+                  aria-current={i === 0 ? 'true' : undefined}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              class="testimonials__btn"
+              id="testimonialsNext"
+              aria-label="Next testimonials"
+            >
+              →
+            </button>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const track = document.getElementById('testimonialsTrack');
+  const prev = document.getElementById('testimonialsPrev');
+  const next = document.getElementById('testimonialsNext');
+  const dotsWrap = document.getElementById('testimonialsDots');
+
+  if (track && prev && next && dotsWrap) {
+    const slides = track.querySelectorAll('.testimonials__slide');
+    const dots = Array.from(dotsWrap.querySelectorAll<HTMLElement>('.testimonials__dot'));
+    const count = slides.length;
+    let index = 0;
+
+    const goTo = (n: number) => {
+      index = ((n % count) + count) % count;
+      track.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((dot, i) => {
+        const active = i === index;
+        dot.classList.toggle('is-active', active);
+        if (active) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+      // Keep off-screen slides out of the tab order.
+      slides.forEach((slide, i) => {
+        if (i === index) slide.removeAttribute('inert');
+        else slide.setAttribute('inert', '');
+      });
+    };
+
+    prev.addEventListener('click', () => goTo(index - 1));
+    next.addEventListener('click', () => goTo(index + 1));
+    dots.forEach((dot) =>
+      dot.addEventListener('click', () => goTo(Number(dot.dataset.slide ?? 0))),
+    );
+
+    goTo(0);
+  }
+</script>
+
+<style>
+  .testimonials {
+    padding: 120px 0;
+    background: var(--bg-dark);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Oversized decorative quote mark */
+  .testimonials::before {
+    content: '\201C';
+    position: absolute;
+    top: -60px;
+    right: 60px;
+    font-family: var(--ff-display);
+    font-size: 480px;
+    color: rgba(139, 26, 26, 0.04);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .testimonials__header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .testimonials__title {
+    line-height: 1.05;
+  }
+
+  .testimonials__wrap {
+    position: relative;
+  }
+
+  .testimonials__viewport {
+    overflow: hidden;
+  }
+
+  .testimonials__track {
+    display: flex;
+    transition: transform 0.55s var(--ease-out);
+  }
+
+  .testimonials__slide {
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .testimonial {
+    padding: 48px 40px;
+    background: rgba(255, 255, 255, 0.028);
+    border-top: 2px solid transparent;
+    transition:
+      border-color 0.3s,
+      background 0.3s;
+  }
+
+  .testimonial:hover {
+    background: rgba(255, 255, 255, 0.055);
+    border-top-color: var(--accent);
+  }
+
+  .testimonial__quote {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: 32px;
+  }
+
+  .testimonial__quote::before {
+    content: '\201C';
+  }
+
+  .testimonial__quote::after {
+    content: '\201D';
+  }
+
+  .testimonial__author {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .testimonial__name {
+    font-family: var(--ff-body);
+    font-size: var(--t-sm);
+    font-weight: 500;
+    color: #fff;
+  }
+
+  .testimonial__role {
+    font-family: var(--ff-body);
+    font-size: var(--t-xs);
+    color: var(--text-muted);
+  }
+
+  .testimonial__brand {
+    font-family: var(--ff-body);
+    font-size: var(--t-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 2px;
+  }
+
+  .testimonials__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .testimonials__btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      border-color 0.2s,
+      color 0.2s,
+      background 0.2s;
+  }
+
+  .testimonials__btn:hover {
+    border-color: var(--accent);
+    color: #fff;
+    background: var(--accent);
+  }
+
+  .testimonials__dots {
+    display: flex;
+    gap: 8px;
+  }
+
+  .testimonials__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0;
+    transition:
+      background 0.2s,
+      transform 0.2s;
+  }
+
+  .testimonials__dot.is-active {
+    background: var(--accent);
+    transform: scale(1.35);
+  }
+
+  @media (max-width: 900px) {
+    .testimonials__slide {
+      grid-template-columns: 1fr;
+    }
+
+    .testimonials::before {
+      font-size: 280px;
+      right: 10px;
+    }
+  }
+</style>

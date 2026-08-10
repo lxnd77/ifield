@@ -1,0 +1,139 @@
+---
+/**
+ * Homepage — twelve sections, in the order of the design source.
+ *
+ * Per the agreed structure, the Capabilities / Process / Projects /
+ * Journal sections are teasers: each carries a link through to its own
+ * page rather than being the canonical content.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+import StatBand from '../components/StatBand.astro';
+import HomeHero from '../components/home/HomeHero.astro';
+import ServicesGrid from '../components/home/ServicesGrid.astro';
+import ProcessFlow from '../components/home/ProcessFlow.astro';
+import ProjectsGrid from '../components/home/ProjectsGrid.astro';
+import ClientTicker from '../components/home/ClientTicker.astro';
+import Testimonials from '../components/home/Testimonials.astro';
+import JournalCarousel from '../components/home/JournalCarousel.astro';
+import ContactSection from '../components/home/ContactSection.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout title={site.name} description={site.description}>
+  <HomeHero />
+
+  <!-- ── THE COMPANY ── -->
+  <section class="company" id="company">
+    <div class="container company__container">
+      <div class="company__grid">
+        <div class="reveal">
+          <span class="eyebrow">The Company</span>
+          <h2 class="section-h2" style="margin-bottom:6px;">Turnkey solutions,</h2>
+          <span class="section-h2-sub section-h2-sub--accent">delivered with precision</span>
+          <p class="body-text company__copy">
+            I-Field is a team of industry experts delivering turnkey solutions across fit-out
+            and FF&amp;E — including manufacturing, supply, and installation. Established and
+            operated by hotel owners and experienced professionals, we bring a deep
+            understanding of hospitality environments to every project.
+          </p>
+          <p class="body-text company__copy company__copy--last">
+            Our end-to-end approach ensures seamless execution, combining quality, efficiency,
+            and attention to detail at every stage. With a strong focus on delivering the right
+            products, competitive value, and reliable service, we consistently create outcomes
+            that meet and exceed client expectations globally.
+          </p>
+          <a href="/the-company" class="btn-outline">
+            About I-Field <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="company__imageWrap reveal reveal-d2">
+          <ImageSlot slot="homeCompanyPortrait" filter="grayscale(15%)" class="company__image" />
+          <div class="company__accent" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <StatBand
+    eyebrow="Our Global Presence"
+    title="Decades of expertise,"
+    subtitle="delivered across 20+ countries"
+  />
+
+  <ServicesGrid />
+  <ProcessFlow />
+  <ProjectsGrid />
+  <ClientTicker />
+  <Testimonials />
+  <JournalCarousel />
+  <ContactSection />
+</BaseLayout>
+
+<style>
+  .company {
+    padding: 120px 0;
+    background: var(--bg-cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Arch mark, flipped, bleeding off the top-right */
+  .company::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -60px;
+    width: 340px;
+    height: 340px;
+    background: url('/images/brand/element-03.png') center / contain no-repeat;
+    transform: scaleY(-1);
+    opacity: 0.18;
+    pointer-events: none;
+  }
+
+  .company__container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .company__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .company__copy {
+    margin-top: 28px;
+    margin-bottom: 20px;
+  }
+
+  .company__copy--last {
+    margin-bottom: 28px;
+  }
+
+  .company__imageWrap {
+    position: relative;
+  }
+
+  /* The offset red square sits behind the photo. Both are inside the
+     wrapper's stacking context, so z-index:-1 stays above the section. */
+  .company__accent {
+    position: absolute;
+    bottom: -24px;
+    left: -24px;
+    width: 110px;
+    height: 110px;
+    background: var(--accent);
+    z-index: -1;
+  }
+
+  @media (max-width: 900px) {
+    .company__grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+</style>

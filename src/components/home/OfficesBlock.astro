@@ -1,0 +1,398 @@
+---
+/**
+ * OfficesBlock — annotated world map, nine office cards, and a CTA row.
+ * Sits inside the Contact section in the design.
+ */
+import { offices, mapPins } from '../../data/offices';
+import { images } from '../../data/images';
+---
+
+<div class="offices reveal">
+  <div class="offices__head">
+    <span class="eyebrow">Our Global Offices</span>
+    <h3 class="offices__title">Nine offices, <em>worldwide</em></h3>
+  </div>
+
+  <div class="offices__mapWrap reveal">
+    <div class="offices__map">
+      <img src={`/${images.worldmap.path}`} alt={images.worldmap.alt} loading="lazy" decoding="async" />
+      {
+        mapPins.map((pin) => (
+          <span
+            class:list={['pin', { 'pin--hq': pin.isHq }]}
+            style={`left:${pin.left}%;top:${pin.top}%`}
+          >
+            <span class="pin__dot" aria-hidden="true" />
+            <span class:list={['pin__label', `pin__label--${pin.pos}`]}>{pin.label}</span>
+          </span>
+        ))
+      }
+    </div>
+    <div class="offices__legend">
+      <span class="offices__legendItem">
+        <span class="offices__legendDot offices__legendDot--hq" aria-hidden="true"></span> Head Office
+      </span>
+      <span class="offices__legendItem">
+        <span class="offices__legendDot" aria-hidden="true"></span> Regional Office
+      </span>
+    </div>
+  </div>
+
+  <ul class="offices__grid">
+    {
+      offices.map((office) => (
+        <li class:list={['office', { 'office--hq': office.isHq }]}>
+          <div class="office__nameRow">
+            <span class="office__dot" aria-hidden="true" />
+            <span class="office__name">{office.name}</span>
+            {office.tag && <span class="office__tag">{office.tag}</span>}
+          </div>
+          <p class="office__addr" set:html={office.address} />
+          {office.contact && <p class="office__contact" set:html={office.contact} />}
+        </li>
+      ))
+    }
+  </ul>
+
+  <a href="#contact" class="offices__cta">
+    <span class="offices__ctaLabel">Not sure which office to reach?</span>
+    <span class="offices__ctaLink">
+      Send us an enquiry <span aria-hidden="true">→</span>
+    </span>
+  </a>
+</div>
+
+<style>
+  .offices {
+    margin-top: 92px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .offices__head {
+    margin-bottom: 38px;
+  }
+
+  .offices__title {
+    font-family: var(--ff-display);
+    font-size: var(--t-h2-sub);
+    font-weight: 400;
+    color: var(--text-primary);
+    line-height: 1.1;
+    margin-top: 4px;
+  }
+
+  .offices__title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  /* ── Map ── */
+  .offices__mapWrap {
+    margin: 4px 0 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .offices__map {
+    position: relative;
+    width: 100%;
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+
+  .offices__map > img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .pin {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+
+  .pin__dot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(216, 77, 77, 0.16);
+  }
+
+  .pin--hq .pin__dot {
+    background: #fff;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 4px rgba(216, 77, 77, 0.22);
+  }
+
+  .pin__dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: oPing 2.8s ease-out infinite;
+  }
+
+  @keyframes oPing {
+    0% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    70%,
+    100% {
+      opacity: 0;
+      transform: scale(3);
+    }
+  }
+
+  .pin__label {
+    position: absolute;
+    font-family: var(--ff-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #2a2320;
+    white-space: nowrap;
+    text-shadow:
+      0 0 3px var(--bg-warm),
+      0 0 3px var(--bg-warm),
+      0 0 5px var(--bg-warm);
+  }
+
+  .pin--hq .pin__label {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .pin__label--r { left: 13px; top: 0; transform: translateY(-50%); }
+  .pin__label--l { right: 13px; top: 0; transform: translateY(-50%); }
+  .pin__label--t { left: 0; bottom: 12px; transform: translateX(-50%); }
+  .pin__label--b { left: 0; top: 12px; transform: translateX(-50%); }
+  .pin__label--tr { left: 11px; bottom: 8px; }
+  .pin__label--br { left: 11px; top: 8px; }
+  .pin__label--tl { right: 11px; bottom: 8px; }
+  .pin__label--bl { right: 11px; top: 8px; }
+
+  .offices__legend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+
+  .offices__legendItem {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--ff-body);
+    font-size: var(--t-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .offices__legendDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .offices__legendDot--hq {
+    background: #fff;
+    border: 2px solid var(--accent);
+  }
+
+  /* ── Cards ── */
+  .offices__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    list-style: none;
+  }
+
+  .office {
+    background: var(--bg-warm);
+    padding: 26px 24px 28px;
+    transition:
+      background 0.3s,
+      box-shadow 0.3s,
+      transform 0.3s;
+    position: relative;
+  }
+
+  .office:hover {
+    background: #fff;
+    box-shadow: 0 14px 34px rgba(26, 22, 20, 0.1);
+    transform: translateY(-2px);
+    z-index: 2;
+  }
+
+  .office__nameRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .office__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .office__dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: oPing 2.6s ease-out infinite;
+  }
+
+  .office__name {
+    font-family: var(--ff-display);
+    font-size: 19px;
+    font-weight: 400;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-strong);
+    padding-bottom: 3px;
+  }
+
+  .office--hq .office__name {
+    color: var(--accent);
+  }
+
+  .office__tag {
+    font-family: var(--ff-body);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--accent);
+    padding: 3px 7px;
+    border-radius: 2px;
+  }
+
+  .office__addr {
+    font-family: var(--ff-body);
+    font-size: var(--t-sm);
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .office__addr :global(em) {
+    font-style: italic;
+    opacity: 0.6;
+  }
+
+  .office__contact {
+    font-family: var(--ff-body);
+    font-size: var(--t-xs);
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-top: 12px;
+  }
+
+  .office__contact :global(a) {
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+
+  .office__contact :global(a:hover) {
+    color: var(--accent);
+  }
+
+  /* ── CTA row ── */
+  .offices__cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 1px;
+    padding: 22px 30px;
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    transition: background 0.3s;
+  }
+
+  .offices__cta:hover {
+    background: var(--accent-hover);
+  }
+
+  .offices__ctaLabel {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: 21px;
+    color: #fff;
+    line-height: 1.2;
+  }
+
+  .offices__ctaLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--ff-body);
+    font-size: var(--t-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    padding-bottom: 3px;
+    white-space: nowrap;
+  }
+
+  .offices__ctaLink span {
+    transition: transform 0.3s;
+  }
+
+  .offices__cta:hover .offices__ctaLink span {
+    transform: translateX(5px);
+  }
+
+  @media (max-width: 760px) {
+    .offices__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .pin__label {
+      font-size: 10px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .offices__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .offices__cta {
+      padding: 20px 22px;
+    }
+
+    .offices__ctaLabel {
+      font-size: 18px;
+    }
+  }
+</style>

@@ -1,0 +1,540 @@
+---
+/**
+ * Projects — hero · Flagship Work · filter chips · region-grouped
+ * directory · closing band.
+ *
+ * Filtering syncs to `?region=` so a filtered view is linkable and
+ * survives a reload. The page is prerendered, so the filter is applied
+ * on the client: every group ships in the HTML and the script hides
+ * the ones not asked for. Without JavaScript the whole portfolio is
+ * visible — the chips do nothing, but nothing is lost.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ImageSlot from '../../components/ImageSlot.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import {
+  directory,
+  directoryByRegion,
+  directoryKey,
+  REGION_LABELS,
+  REGION_ORDER,
+  REGION_IMAGE,
+} from '../../data/projects';
+import type { ImageKey } from '../../data/images';
+import { featuredProjectEntries, projectSlugByDirectoryKey } from '../../lib/projects';
+
+const featured = await featuredProjectEntries();
+const slugByKey = await projectSlugByDirectoryKey();
+
+/** Placeholder slots used until a project supplies its own card image. */
+const FALLBACK_CARD_SLOTS: readonly ImageKey[] = [
+  'projectsFeatured01',
+  'projectsFeatured02',
+  'projectsFeatured03',
+  'projectsFeatured04',
+  'projectsFeatured05',
+  'projectsFeatured06',
+  'projectsFeatured07',
+  'projectsFeatured08',
+];
+
+const chips = [
+  { key: 'all' as const, label: 'All Projects' },
+  ...REGION_ORDER.map((r) => ({ key: r, label: REGION_LABELS[r] })),
+];
+
+const groups = REGION_ORDER.map((key) => ({
+  key,
+  label: REGION_LABELS[key],
+  items: directoryByRegion(key),
+  image: REGION_IMAGE[key],
+}));
+
+const totalCount = directory.length;
+---
+
+<BaseLayout
+  title="Projects"
+  description="Signature hotels opened on brand across four continents — furnished and fitted end to end by one I-Field team."
+>
+  <PageHero
+    eyebrow="Our Portfolio"
+    title="Our Projects — <em>delivered in detail</em>"
+    lead="We see every project as a revealing expression of the operator's vision and the character of its place — highly individual spaces, furnished and fitted end-to-end by one I-Field team across four continents."
+    image="heroProjects"
+    stats={[
+      { value: '70+', label: 'Projects Delivered' },
+      { value: '20+', label: 'Countries' },
+      { value: '9', label: 'Global Offices' },
+    ]}
+    titleWidth="16ch"
+  />
+
+  <!-- ── FLAGSHIP WORK ── -->
+  <section class="flagship">
+    <div class="container">
+      <div class="flagship__head reveal">
+        <span class="eyebrow">Flagship Work</span>
+        <h2 class="section-h2">Signature hotels, <em>opened on brand</em></h2>
+        <span class="section-h2-sub section-h2-sub--accent">
+          A selection of landmark keys handed over turnkey.
+        </span>
+      </div>
+
+      <div class="flagship__grid">
+        {
+          featured.map((project, i) => (
+            <a
+              href={`/projects/${project.id}/`}
+              class:list={['flag', 'reveal', `reveal-d${i % 3}`]}
+            >
+              {project.data.cardImage ? (
+                <img
+                  class="flag__img"
+                  src={project.data.cardImage}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <ImageSlot
+                  slot={FALLBACK_CARD_SLOTS[i % FALLBACK_CARD_SLOTS.length]!}
+                  alt=""
+                  fill
+                />
+              )}
+              <span class="flag__meta">
+                {project.data.keys && <span class="flag__keys">{project.data.keys}</span>}
+                <span class="flag__name">{project.data.title}</span>
+                <span class="flag__loc">{project.data.location}</span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FULL PORTFOLIO ── -->
+  <section class="portfolio">
+    <div class="container">
+      <div class="portfolio__head reveal">
+        <div>
+          <span class="eyebrow">The Full Portfolio</span>
+          <h2 class="section-h2">Every space we've <em>touched</em></h2>
+        </div>
+        <span class="portfolio__count" id="projectCount">{totalCount} projects</span>
+      </div>
+
+      <nav class="portfolio__chips reveal" aria-label="Filter projects by region">
+        {
+          chips.map((chip) => (
+            <a
+              href={chip.key === 'all' ? '/projects/' : `/projects/?region=${chip.key}`}
+              class:list={['chip', { 'is-active': chip.key === 'all' }]}
+              data-region={chip.key}
+              aria-current={chip.key === 'all' ? 'true' : undefined}
+            >
+              {chip.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="portfolio__groups" id="portfolioGroups">
+        {
+          groups.map((group, i) => (
+            <section
+              class="group"
+              data-region={group.key}
+              style={`--group-delay:${i * 90}ms`}
+            >
+              <div class="group__banner full-bleed">
+                <ImageSlot
+                  slot={group.image}
+                  alt=""
+                  fill
+                  filter="grayscale(100%) brightness(0.50)"
+                  class="imgslot--on-dark"
+                />
+                <div class="group__scrim" aria-hidden="true" />
+                <div class="group__bannerInner">
+                  <div class="container group__bannerRow">
+                    <div>
+                      <span class="group__count">{group.items.length} Projects</span>
+                      <h3 class="group__region">{group.label}</h3>
+                    </div>
+                    <span class="group__rule" aria-hidden="true" />
+                  </div>
+                </div>
+              </div>
+
+              <ul class="group__list">
+                {group.items.map((entry) => {
+                  const slug = slugByKey.get(directoryKey(entry.name, entry.location));
+                  return (
+                    <li class="prow">
+                      {slug ? (
+                        <a class="prow__link" href={`/projects/${slug}/`}>
+                          <span class="prow__name">{entry.name}</span>
+                          <span class="prow__loc">{entry.location}</span>
+                        </a>
+                      ) : (
+                        <span class="prow__link prow__link--plain">
+                          <span class="prow__name">{entry.name}</span>
+                          <span class="prow__loc">{entry.location}</span>
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Your project, next on this list"
+    subtitle="Bring us the brief — we'll take it all the way to handover."
+    actions={[
+      { label: 'Request a Consultation →', href: '/#contact' },
+      { label: 'See Our Process', href: '/process', ghost: true },
+    ]}
+  />
+</BaseLayout>
+
+<script>
+  /**
+   * Progressive enhancement: intercept the chip links and filter in
+   * place, keeping the URL in sync. Without JS the same links still
+   * work — they are ordinary hrefs to a server-rendered filtered page.
+   */
+  const chips = Array.from(document.querySelectorAll<HTMLAnchorElement>('.chip[data-region]'));
+  const groups = Array.from(document.querySelectorAll<HTMLElement>('.group[data-region]'));
+  const count = document.getElementById('projectCount');
+
+  if (chips.length > 0 && groups.length > 0) {
+    const apply = (region: string, pushState: boolean) => {
+      let visible = 0;
+
+      groups.forEach((group) => {
+        const show = region === 'all' || group.dataset.region === region;
+        group.hidden = !show;
+        if (show) {
+          visible += group.querySelectorAll('.prow').length;
+          // Restart the stagger so a filter change animates in.
+          group.style.animation = 'none';
+          void group.offsetHeight;
+          group.style.animation = '';
+        }
+      });
+
+      chips.forEach((chip) => {
+        const active = chip.dataset.region === region;
+        chip.classList.toggle('is-active', active);
+        if (active) chip.setAttribute('aria-current', 'true');
+        else chip.removeAttribute('aria-current');
+      });
+
+      if (count) count.textContent = `${visible} projects`;
+
+      if (pushState) {
+        const url = region === 'all' ? '/projects/' : `/projects/?region=${region}`;
+        history.pushState({ region }, '', url);
+      }
+    };
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+        event.preventDefault();
+        apply(chip.dataset.region ?? 'all', true);
+      });
+    });
+
+    // Apply any ?region= present on first load.
+    const initial = new URLSearchParams(location.search).get('region');
+    if (initial && chips.some((c) => c.dataset.region === initial)) apply(initial, false);
+
+    // Back/forward should move between filters, not reload the page.
+    window.addEventListener('popstate', () => {
+      const region = new URLSearchParams(location.search).get('region') ?? 'all';
+      apply(region, false);
+    });
+  }
+</script>
+
+<style>
+  /* ── Flagship ── */
+  .flagship {
+    background: var(--bg-cream);
+    padding: clamp(72px, 10vw, 120px) 0 clamp(40px, 5vw, 56px);
+  }
+
+  .flagship__head {
+    max-width: 720px;
+    margin-bottom: clamp(40px, 5vw, 64px);
+  }
+
+  .flagship__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: clamp(18px, 2vw, 26px);
+  }
+
+  .flag {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background-image: repeating-linear-gradient(
+      135deg,
+      #e7e3da 0px,
+      #e7e3da 1px,
+      #f3f1ea 1px,
+      #f3f1ea 13px
+    );
+  }
+
+  .flag__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(38%);
+    transition:
+      transform 0.7s var(--ease-out),
+      filter 0.45s ease;
+  }
+
+  .flag :global(img) {
+    transition:
+      transform 0.7s var(--ease-out),
+      filter 0.45s ease;
+  }
+
+  .flag:hover .flag__img,
+  .flag:hover :global(img),
+  .flag:focus-visible :global(img) {
+    transform: scale(1.05);
+    filter: grayscale(0%);
+  }
+
+  .flag::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(8, 6, 4, 0.85) 0%,
+      rgba(8, 6, 4, 0.35) 45%,
+      rgba(8, 6, 4, 0) 75%
+    );
+    pointer-events: none;
+  }
+
+  .flag__meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    padding: 26px 24px;
+    display: block;
+  }
+
+  .flag__keys {
+    font-family: var(--ff-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+    display: block;
+  }
+
+  .flag__name {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    font-size: clamp(22px, 2vw, 27px);
+    line-height: 1.12;
+    color: #fff;
+    margin: 6px 0 4px;
+    display: block;
+  }
+
+  .flag__loc {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* ── Portfolio ── */
+  .portfolio {
+    background: var(--bg-cream);
+    padding: clamp(48px, 6vw, 72px) 0 clamp(72px, 9vw, 116px);
+  }
+
+  .portfolio__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: clamp(28px, 3vw, 40px);
+  }
+
+  .portfolio__count {
+    font-family: var(--ff-body);
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+  }
+
+  .portfolio__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: clamp(32px, 4vw, 48px);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 26px;
+  }
+
+  .portfolio__groups {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(48px, 6vw, 72px);
+  }
+
+  .group {
+    animation: gridfade 0.6s var(--ease-out) both;
+    animation-delay: var(--group-delay, 0ms);
+  }
+
+  .group[hidden] {
+    display: none;
+  }
+
+  /* ── Region banner ── */
+  .group__banner {
+    position: relative;
+    overflow: hidden;
+    height: clamp(260px, 34vw, 440px);
+    background: var(--bg-dark);
+  }
+
+  .group__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(17, 16, 9, 0.3) 0%,
+      rgba(17, 16, 9, 0.28) 42%,
+      rgba(17, 16, 9, 0.82) 100%
+    );
+  }
+
+  .group__bannerInner {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .group__bannerRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: clamp(30px, 3.4vw, 48px);
+    width: 100%;
+  }
+
+  .group__count {
+    font-family: var(--ff-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.58);
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .group__region {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    font-size: clamp(34px, 4.4vw, 64px);
+    line-height: 0.98;
+    color: #fff;
+  }
+
+  .group__rule {
+    width: 56px;
+    height: 2px;
+    background: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  /* ── Directory rows ── */
+  .group__list {
+    column-width: 330px;
+    column-gap: clamp(32px, 4vw, 64px);
+    margin-top: clamp(40px, 4.5vw, 64px);
+    list-style: none;
+  }
+
+  .prow {
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+  }
+
+  .prow__link {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .prow__name {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.2;
+    color: var(--text-primary);
+    transition:
+      color 0.3s,
+      padding-left 0.3s;
+  }
+
+  a.prow__link:hover .prow__name {
+    color: var(--accent);
+    padding-left: 6px;
+  }
+
+  /* Rows without a case study read as text, not as dead links */
+  .prow__link--plain {
+    cursor: default;
+  }
+
+  .prow__loc {
+    font-family: var(--ff-body);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-muted);
+    text-align: right;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+</style>

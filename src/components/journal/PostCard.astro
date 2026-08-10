@@ -1,0 +1,180 @@
+---
+/**
+ * PostCard — 4:5 card used by the Journal grid and the "Related" shelf
+ * on article pages. Full-image with a permanent scrim, tag top-left,
+ * title/meta over the bottom, matching the homepage's journal-card
+ * treatment but as a static grid item rather than a carousel entry.
+ */
+import type { Post } from '../../lib/posts';
+import { CATEGORY_LABELS, formatPostDateShort } from '../../lib/posts';
+import ImageSlot from '../ImageSlot.astro';
+
+interface Props {
+  post: Post;
+  /** Stagger index for the grid-fade entrance. */
+  index?: number;
+}
+
+const { post, index = 0 } = Astro.props;
+const { data } = post;
+
+const metaParts = [
+  CATEGORY_LABELS[data.category],
+  formatPostDateShort(data.publishedAt),
+  data.readingTime,
+].filter(Boolean);
+---
+
+<a
+  href={`/journal/${post.id}/`}
+  class="pcard"
+  style={`animation-delay:${index * 70}ms`}
+>
+  {
+    data.coverImage ? (
+      <img class="pcard__img" src={data.coverImage} alt="" loading="lazy" decoding="async" />
+    ) : (
+      <ImageSlot slot="heroJournal" alt="" fill class="pcard__slot" />
+    )
+  }
+  <span class="pcard__scrim" aria-hidden="true"></span>
+  <span class="pcard__tag">{CATEGORY_LABELS[data.category]}</span>
+  <span class="pcard__content">
+    <span class="pcard__meta">{metaParts.join(' · ')}</span>
+    <span class="pcard__title">{data.title}</span>
+    <span class="pcard__arrow" aria-hidden="true">Read <span>→</span></span>
+  </span>
+</a>
+
+<style>
+  .pcard {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background-image: repeating-linear-gradient(
+      135deg,
+      #e7e3da 0px,
+      #e7e3da 1px,
+      #f3f1ea 1px,
+      #f3f1ea 13px
+    );
+    animation: gridfade 0.6s var(--ease-out) both;
+  }
+
+  .pcard__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(34%);
+    transition:
+      transform 0.7s var(--ease-out),
+      filter 0.45s ease;
+  }
+
+  .pcard :global(.pcard__slot img) {
+    transition:
+      transform 0.7s var(--ease-out),
+      filter 0.45s ease;
+  }
+
+  .pcard:hover .pcard__img,
+  .pcard:focus-visible .pcard__img {
+    transform: scale(1.05);
+    filter: grayscale(0%);
+  }
+
+  .pcard:hover :global(.pcard__slot img),
+  .pcard:focus-visible :global(.pcard__slot img) {
+    transform: scale(1.05);
+    --imgslot-filter: grayscale(0%);
+  }
+
+  .pcard__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      rgba(8, 6, 4, 0.88) 0%,
+      rgba(8, 6, 4, 0.4) 50%,
+      rgba(8, 6, 4, 0.08) 100%
+    );
+  }
+
+  .pcard__tag {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    z-index: 2;
+    font-family: var(--ff-body);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(26, 22, 20, 0.55);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    padding: 7px 12px;
+    border-radius: 2px;
+  }
+
+  .pcard__content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 26px 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pcard__meta {
+    font-family: var(--ff-body);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .pcard__title {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    font-size: clamp(21px, 1.9vw, 25px);
+    line-height: 1.16;
+    color: #fff;
+    margin: 8px 0 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .pcard__arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    font-family: var(--ff-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .pcard__arrow span {
+    font-size: 15px;
+    transition: transform 0.2s;
+  }
+
+  .pcard:hover .pcard__arrow span,
+  .pcard:focus-visible .pcard__arrow span {
+    transform: translateX(4px);
+  }
+</style>

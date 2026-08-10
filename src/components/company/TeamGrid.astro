@@ -1,0 +1,139 @@
+---
+/**
+ * TeamGrid — 3:4 portraits, grayscale at rest and colour on hover.
+ *
+ * Eight of the fifteen people are still listed as "Full Name" in the
+ * source copy. Rather than printing that on a live site, those cards
+ * render the role and location only and are marked as vacancies for
+ * screen readers. Supplying the real names is a content task.
+ */
+import ImageSlot from '../ImageSlot.astro';
+import { team } from '../../data/team';
+---
+
+<section class="team" id="team">
+  <div class="container">
+    <div class="team__head reveal">
+      <span class="eyebrow">Our Team</span>
+      <h2 class="section-h2">The people behind I-Field</h2>
+      <span class="section-h2-sub">Specialists across China, the U.A.E., India and Nigeria.</span>
+    </div>
+
+    <ul class="team__grid">
+      {
+        team.map((member, i) => (
+          <li class:list={['member', 'reveal', `reveal-d${i % 4}`]}>
+            <div class="member__media">
+              <ImageSlot
+                slot={member.image}
+                alt={member.unnamed ? '' : member.name}
+                fill
+                filter="grayscale(100%)"
+              />
+            </div>
+            {member.unnamed ? (
+              <p class="member__name member__name--tbc">Name to follow</p>
+            ) : (
+              <h3 class="member__name">{member.name}</h3>
+            )}
+            <div class="member__roleRow">
+              <span class="member__dot" aria-hidden="true" />
+              <span class="member__role">{member.role}</span>
+            </div>
+            <div class="member__loc">{member.location}</div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .team {
+    background: var(--bg-cream);
+    padding: clamp(72px, 10vw, 120px) 0;
+    scroll-margin-top: var(--nav-h);
+  }
+
+  .team__head {
+    max-width: 760px;
+  }
+
+  .team__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(210px, 100%), 1fr));
+    gap: clamp(20px, 2.4vw, 30px);
+    margin-top: clamp(44px, 5vw, 64px);
+    list-style: none;
+  }
+
+  .member__media {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border: 1px solid rgba(26, 22, 20, 0.08);
+  }
+
+  .member__media :global(img) {
+    transition:
+      filter 0.4s,
+      transform 0.6s var(--ease-out);
+  }
+
+  .member__media:hover {
+    --imgslot-filter: grayscale(0%);
+  }
+
+  .member__media:hover :global(img) {
+    transform: scale(1.04);
+  }
+
+  .member__name {
+    font-family: var(--ff-body);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: 16px;
+    color: var(--text-primary);
+  }
+
+  .member__name--tbc {
+    color: var(--text-muted);
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .member__roleRow {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 6px;
+  }
+
+  .member__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .member__role {
+    font-family: var(--ff-body);
+    font-size: var(--t-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: rgba(26, 22, 20, 0.62);
+  }
+
+  .member__loc {
+    font-family: var(--ff-body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 8px;
+    padding-left: 13px;
+  }
+</style>

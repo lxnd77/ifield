@@ -1,0 +1,118 @@
+---
+/**
+ * BaseLayout — the document shell every page uses.
+ * Head, stylesheets, skip link, nav, footer and the consent layer.
+ */
+import '../styles/tokens.css';
+import '../styles/fonts.css';
+import '../styles/global.css';
+import CookieConsent from '../components/CookieConsent.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { resolveImage } from '../lib/assets';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Overrides the default social share image. */
+  ogImage?: string;
+  /** Set on pages that should not be indexed (e.g. thank-you pages). */
+  noindex?: boolean;
+  /**
+   * Force the nav into its opaque state from the top. Required on any
+   * page that does not open with a dark hero, or the white logo and
+   * links render invisible against cream.
+   */
+  solidNav?: boolean;
+}
+
+const { title, description, ogImage, noindex = false, solidNav = false } = Astro.props;
+
+const SITE_NAME = 'I-Field';
+const fullTitle = title === SITE_NAME ? title : `${title} — ${SITE_NAME}`;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://www.ifield.ae');
+const ogFallback = resolveImage('ogDefault');
+const ogUrl = ogImage
+  ? new URL(ogImage, canonical).href
+  : ogFallback.src
+    ? new URL(ogFallback.src, canonical).href
+    : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta name="theme-color" content="#1A1614" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    {ogUrl && <meta property="og:image" content={ogUrl} />}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    {ogUrl && <meta name="twitter:image" content={ogUrl} />}
+
+    <!-- Fonts are self-hosted; preload the two faces used above the fold -->
+    <link
+      rel="preload"
+      href="/fonts/jost-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/playfair-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!--
+      Marks the document as script-capable before first paint. Every
+      pre-animation "hidden" state (scroll reveals, the capability
+      cascade) is scoped to `.js`, so if scripting is blocked or the
+      bundle fails to execute, content renders plainly visible instead
+      of staying at opacity 0 forever.
+    -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <Nav solid={solidNav} />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <CookieConsent />
+
+    <script>
+      import { initReveal } from '../scripts/reveal';
+      initReveal();
+    </script>
+  </body>
+</html>

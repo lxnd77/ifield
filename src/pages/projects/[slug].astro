@@ -1,0 +1,559 @@
+---
+/**
+ * Project case study — designed from the existing system, since the
+ * bundle contained no detail page.
+ *
+ * Hero · The Brief · Scope Delivered · Gallery · By the Numbers ·
+ * Pull quote · Prev/Next pager · closing band.
+ *
+ * Every narrative section is optional and disappears cleanly when the
+ * CMS entry has nothing in it — the seeded projects carry only facts,
+ * so today they render as hero + scope + pager without looking broken.
+ */
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import ImageSlot from '../../components/ImageSlot.astro';
+import { REGION_LABELS } from '../../data/projects';
+import { allProjects, projectSiblings, hasTestimonial, type Project } from '../../lib/projects';
+import '../../styles/prose.css';
+
+export async function getStaticPaths() {
+  const projects = await allProjects();
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+
+const { Content } = await render(project);
+const { prev, next } = await projectSiblings(project);
+
+const facts = [
+  data.keys && { label: 'Keys', value: data.keys },
+  data.scope && { label: 'Scope', value: data.scope },
+  data.year && { label: 'Completed', value: data.year },
+  data.duration && { label: 'Duration', value: data.duration },
+].filter(Boolean) as Array<{ label: string; value: string }>;
+
+const gallery = data.gallery.filter((item) => item.image);
+const showTestimonial = hasTestimonial(project);
+const description = `${data.title}, ${data.location}${data.keys ? ` — ${data.keys}` : ''}. Delivered turnkey by I-Field.`;
+---
+
+<BaseLayout title={`${data.title}, ${data.location}`} description={description}>
+  <!-- ── HERO ── -->
+  <section class="phero">
+    <div class="phero__media">
+      {
+        data.heroImage ? (
+          <img src={data.heroImage} alt="" fetchpriority="high" decoding="async" />
+        ) : (
+          <ImageSlot slot="heroProjects" fill class="imgslot--on-dark" />
+        )
+      }
+    </div>
+    <div class="phero__scrim" aria-hidden="true"></div>
+
+    <div class="container phero__inner">
+      <p class="phero__eyebrow">{REGION_LABELS[data.region]}</p>
+      <h1 class="phero__title">{data.title}</h1>
+      <p class="phero__loc">{data.location}</p>
+
+      {
+        facts.length > 0 && (
+          <dl class="phero__facts">
+            {facts.map((fact) => (
+              <div class="phero__fact">
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- ── THE BRIEF ── -->
+  {
+    project.body?.trim() && (
+      <section class="pbrief">
+        <div class="container">
+          <div class="pbrief__grid">
+            <div class="reveal">
+              <span class="eyebrow">The Brief</span>
+              <h2 class="section-h2 pbrief__title">What the property needed</h2>
+            </div>
+            <div class="prose reveal reveal-d1">
+              <Content />
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ── SCOPE DELIVERED ── -->
+  {
+    data.scopeDelivered.length > 0 && (
+      <section class="pscope">
+        <div class="container">
+          <div class="reveal">
+            <span class="eyebrow">Scope Delivered</span>
+            <h2 class="section-h2">Every discipline, <em>under one roof</em></h2>
+          </div>
+          <ul class="pscope__list reveal reveal-d1">
+            {data.scopeDelivered.map((item) => (
+              <li class="pscope__item">
+                <span class="pscope__dot" aria-hidden="true" />
+                <span class="pscope__text">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ── GALLERY ── -->
+  {
+    gallery.length > 0 && (
+      <section class="pgallery">
+        <div class="container">
+          <div class="section-header reveal">
+            <div>
+              <span class="eyebrow">The Work</span>
+              <h2 class="section-h2">Inside <em>{data.title}</em></h2>
+            </div>
+          </div>
+          <div class="pgallery__grid">
+            {gallery.map((item, i) => (
+              <figure class:list={['pshot', 'reveal', `reveal-d${i % 3}`]}>
+                <img src={item.image!} alt={item.caption} loading="lazy" decoding="async" />
+                {item.caption && <figcaption>{item.caption}</figcaption>}
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ── BY THE NUMBERS ── -->
+  {
+    data.stats.length > 0 && (
+      <section class="pstats">
+        <div class="container">
+          <div class="pstats__grid">
+            {data.stats.map((stat) => (
+              <div class="pstats__cell">
+                <div class="pstats__value">{stat.value}</div>
+                <div class="pstats__label">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ── PULL QUOTE ── -->
+  {
+    showTestimonial && (
+      <section class="pquote">
+        <div class="container">
+          <figure class="pquote__figure reveal">
+            <blockquote class="pquote__text">{data.testimonial.quote}</blockquote>
+            {(data.testimonial.name || data.testimonial.role) && (
+              <figcaption class="pquote__author">
+                {data.testimonial.name && (
+                  <span class="pquote__name">{data.testimonial.name}</span>
+                )}
+                {data.testimonial.role && (
+                  <span class="pquote__role">{data.testimonial.role}</span>
+                )}
+              </figcaption>
+            )}
+          </figure>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ── PAGER ── -->
+  {
+    (prev || next) && (
+      <nav class="ppager" aria-label="More projects">
+        {prev && (
+          <a class="ppager__link" href={`/projects/${prev.id}/`} rel="prev">
+            <span class="ppager__dir">← Previous</span>
+            <span class="ppager__name">{prev.data.title}</span>
+            <span class="ppager__loc">{prev.data.location}</span>
+          </a>
+        )}
+        {next && (
+          <a class="ppager__link ppager__link--next" href={`/projects/${next.id}/`} rel="next">
+            <span class="ppager__dir">Next →</span>
+            <span class="ppager__name">{next.data.title}</span>
+            <span class="ppager__loc">{next.data.location}</span>
+          </a>
+        )}
+      </nav>
+    )
+  }
+
+  <CtaBand
+    title="Your project, next on this list"
+    subtitle="Bring us the brief — we'll take it all the way to handover."
+    actions={[
+      { label: 'Request a Consultation →', href: '/#contact' },
+      { label: 'View All Projects', href: '/projects', ghost: true },
+    ]}
+  />
+</BaseLayout>
+
+<style>
+  /* ── Hero ── */
+  .phero {
+    position: relative;
+    min-height: 72vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: var(--bg-dark);
+    overflow: hidden;
+    padding: 148px 0 80px;
+  }
+
+  .phero__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .phero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) brightness(0.4);
+    animation: kenburns 18s ease-in-out infinite alternate;
+  }
+
+  .phero__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(17, 16, 9, 0.55) 0%,
+      rgba(17, 16, 9, 0.25) 40%,
+      rgba(17, 16, 9, 0.92) 100%
+    );
+  }
+
+  .phero__inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  .phero__eyebrow {
+    font-family: var(--ff-body);
+    font-size: var(--t-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 22px;
+  }
+
+  .phero__title {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    font-size: var(--t-h1);
+    line-height: 1.04;
+    color: #fff;
+    max-width: 18ch;
+  }
+
+  .phero__loc {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: clamp(20px, 2.2vw, 30px);
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 6px;
+  }
+
+  .phero__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(20px, 4vw, 56px);
+    margin-top: 46px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .phero__fact dt {
+    font-family: var(--ff-body);
+    font-size: var(--t-xs);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 6px;
+  }
+
+  .phero__fact dd {
+    font-family: var(--ff-display);
+    font-size: clamp(20px, 2vw, 26px);
+    color: #fff;
+    line-height: 1;
+  }
+
+  /* ── Brief ── */
+  .pbrief {
+    background: var(--bg-cream);
+    padding: clamp(72px, 10vw, 120px) 0;
+  }
+
+  .pbrief__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+    gap: clamp(40px, 6vw, 80px);
+    align-items: start;
+  }
+
+  .pbrief__title {
+    max-width: 12ch;
+  }
+
+  .pbrief .prose {
+    margin: 0;
+  }
+
+  /* ── Scope ── */
+  .pscope {
+    background: var(--bg-warm);
+    padding: clamp(64px, 8vw, 100px) 0;
+  }
+
+  .pscope__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+    gap: 12px 32px;
+    margin-top: clamp(32px, 4vw, 48px);
+    list-style: none;
+  }
+
+  .pscope__item {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pscope__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    transform: translateY(-2px);
+  }
+
+  .pscope__text {
+    font-family: var(--ff-body);
+    font-size: 16px;
+    color: rgba(26, 22, 20, 0.75);
+    line-height: 1.5;
+  }
+
+  /* ── Gallery ── */
+  .pgallery {
+    background: var(--bg-cream);
+    padding: clamp(72px, 9vw, 116px) 0;
+  }
+
+  .pgallery__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: clamp(18px, 2vw, 26px);
+  }
+
+  .pshot {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pshot img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: grayscale(40%);
+    transition:
+      transform 0.7s var(--ease-out),
+      filter 0.45s ease;
+  }
+
+  .pshot:hover img {
+    transform: scale(1.04);
+    filter: grayscale(0%);
+  }
+
+  .pshot figcaption {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-top: 12px;
+  }
+
+  /* ── Stats ── */
+  .pstats {
+    background: var(--bg-dark);
+    color: var(--on-dark);
+    padding: clamp(56px, 7vw, 88px) 0;
+  }
+
+  .pstats__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+    gap: clamp(28px, 4vw, 48px);
+    text-align: center;
+  }
+
+  .pstats__value {
+    font-family: var(--ff-display);
+    font-size: clamp(38px, 4.4vw, 60px);
+    font-weight: 400;
+    line-height: 1;
+    color: var(--on-dark);
+  }
+
+  .pstats__label {
+    font-family: var(--ff-body);
+    font-size: var(--t-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(250, 248, 244, 0.55);
+    margin-top: 14px;
+  }
+
+  /* ── Pull quote ── */
+  .pquote {
+    background: var(--bg-dark);
+    color: var(--on-dark);
+    padding: clamp(64px, 8vw, 104px) 0;
+    border-top: 1px solid rgba(250, 248, 244, 0.08);
+  }
+
+  .pquote__figure {
+    max-width: 60ch;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .pquote__text {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: clamp(22px, 2.6vw, 32px);
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  .pquote__text::before {
+    content: '\201C';
+  }
+
+  .pquote__text::after {
+    content: '\201D';
+  }
+
+  .pquote__author {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pquote__name {
+    font-family: var(--ff-body);
+    font-size: var(--t-sm);
+    font-weight: 500;
+    color: #fff;
+  }
+
+  .pquote__role {
+    font-family: var(--ff-body);
+    font-size: var(--t-xs);
+    color: var(--text-muted);
+  }
+
+  /* ── Pager ── */
+  .ppager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: rgba(250, 248, 244, 0.08);
+  }
+
+  .ppager__link {
+    background: var(--bg-dark);
+    padding: clamp(32px, 4vw, 52px) clamp(24px, 4vw, 48px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: background 0.3s;
+  }
+
+  .ppager__link:hover {
+    background: #221d1a;
+  }
+
+  .ppager__link--next {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  .ppager__dir {
+    font-family: var(--ff-body);
+    font-size: var(--t-xs);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .ppager__name {
+    font-family: var(--ff-display);
+    font-size: clamp(22px, 2.4vw, 30px);
+    color: #fff;
+    line-height: 1.15;
+  }
+
+  .ppager__loc {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  @media (max-width: 600px) {
+    .ppager {
+      grid-template-columns: 1fr;
+    }
+
+    .ppager__link--next {
+      text-align: left;
+      align-items: flex-start;
+    }
+  }
+</style>

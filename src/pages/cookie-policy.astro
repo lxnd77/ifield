@@ -1,0 +1,54 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+---
+
+<LegalLayout
+  title="Cookie Policy"
+  description="Which cookies I-Field sets, what they do, and how to change your choice at any time."
+  updated="2026-08-10"
+>
+  <p class="lead">
+    This site sets as little as possible. Nothing that tracks you runs unless you have
+    actively allowed it.
+  </p>
+
+  <h2>Strictly necessary</h2>
+  <p>
+    We store your cookie choice in your browser's local storage so we do not have to ask on
+    every visit. It contains only your decision and the date you made it. No third party can
+    read it, and it is not used to identify you.
+  </p>
+
+  <h2>Analytics</h2>
+  <p>
+    If you allow analytics, we load Google Analytics 4 to count visits and see which pages
+    people find useful. It sets first-party cookies, typically <code>_ga</code> and
+    <code>_ga_&lt;id&gt;</code>, which distinguish one browser from another so repeat visits
+    are not double-counted. IP addresses are anonymised.
+  </p>
+  <p>
+    <strong>If you decline, nothing is loaded at all</strong> — no request is made to Google,
+    and no analytics cookie is created. If you allow analytics and later change your mind,
+    we stop collecting and delete those cookies from your browser.
+  </p>
+
+  <h2>Advertising</h2>
+  <p>
+    None. This site runs no advertising or remarketing tags, and the corresponding consent
+    signals are permanently set to denied.
+  </p>
+
+  <h2>Changing your mind</h2>
+  <p>
+    You can change your choice whenever you like.
+  </p>
+  <p>
+    <button type="button" class="chip" data-cc-action="preferences">
+      Open cookie preferences
+    </button>
+  </p>
+  <p>
+    Clearing your browser's storage for this site also resets the choice, and you will be
+    asked again on your next visit.
+  </p>
+</LegalLayout>

@@ -1,0 +1,568 @@
+---
+/**
+ * Cookie consent banner + preferences dialog.
+ *
+ * Styled from the existing design system: dark band, Playfair heading,
+ * accent primary action. "Decline" carries the same visual weight as
+ * "Accept" — under GDPR, refusing must be exactly as easy as consenting,
+ * so this is deliberately not a de-emphasised text link.
+ *
+ * Rendered on every page via BaseLayout. Hidden until the client script
+ * confirms no valid stored decision exists, so it never flashes for
+ * returning visitors.
+ */
+---
+
+<div
+  class="cc"
+  id="cookieBanner"
+  role="region"
+  aria-label="Cookie consent"
+  hidden
+  data-state="hidden"
+>
+  <div class="cc__inner">
+    <div class="cc__copy">
+      <p class="cc__title">We use cookies</p>
+      <p class="cc__text">
+        Essential cookies keep this site working. With your permission we also use Google
+        Analytics to understand how the site is used. You can change your mind at any time.
+        <a href="/cookie-policy">Read our cookie policy</a>.
+      </p>
+    </div>
+    <div class="cc__actions">
+      <button type="button" class="cc__btn cc__btn--ghost" data-cc-action="preferences">
+        Preferences
+      </button>
+      <button type="button" class="cc__btn cc__btn--ghost" data-cc-action="decline">
+        Decline
+      </button>
+      <button type="button" class="cc__btn cc__btn--solid" data-cc-action="accept">
+        Accept
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="ccm" id="cookieModal" hidden>
+  <div class="ccm__backdrop" data-cc-action="close"></div>
+  <div
+    class="ccm__panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="ccmTitle"
+    aria-describedby="ccmDesc"
+  >
+    <button type="button" class="ccm__close" data-cc-action="close" aria-label="Close preferences">
+      &times;
+    </button>
+
+    <span class="eyebrow">Privacy</span>
+    <h2 class="ccm__title" id="ccmTitle">Cookie preferences</h2>
+    <p class="ccm__desc" id="ccmDesc">
+      Choose which cookies I-Field may set on your device. Your choice is stored locally and
+      applies to this browser.
+    </p>
+
+    <div class="ccm__group">
+      <div class="ccm__row">
+        <div>
+          <p class="ccm__rowTitle">Strictly necessary</p>
+          <p class="ccm__rowText">
+            Required for the site to function — page delivery, security, and remembering this
+            preference. No tracking, and these set no third-party cookies.
+          </p>
+        </div>
+        <span class="ccm__always">Always on</span>
+      </div>
+
+      <div class="ccm__row">
+        <div>
+          <p class="ccm__rowTitle">Analytics</p>
+          <p class="ccm__rowText">
+            Google Analytics 4, used to count visits and see which pages are useful. Loaded
+            only if you allow it — decline and no request is ever made to Google.
+          </p>
+        </div>
+        <label class="ccm__switch">
+          <input type="checkbox" id="ccAnalytics" />
+          <span class="ccm__track" aria-hidden="true"><span class="ccm__thumb"></span></span>
+          <span class="ccm__switchLabel">Allow analytics</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="ccm__footer">
+      <button type="button" class="cc__btn cc__btn--outline" data-cc-action="decline">
+        Decline all
+      </button>
+      <button type="button" class="cc__btn cc__btn--solid" data-cc-action="save">
+        Save preferences
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { restoreConsent, setConsent, getConsent } from '../scripts/consent';
+
+  const banner = document.getElementById('cookieBanner');
+  const modal = document.getElementById('cookieModal');
+  const analyticsToggle = document.getElementById('ccAnalytics') as HTMLInputElement | null;
+
+  if (banner && modal && analyticsToggle) {
+    let lastFocused: HTMLElement | null = null;
+
+    /**
+     * Flush pending layout so a transition has a start value to animate
+     * from. A rAF would be the usual trick, but rAF never fires while the
+     * document is hidden — a visitor opening the site in a background tab
+     * would find the banner stuck off-screen.
+     */
+    const flushLayout = (el: HTMLElement) => void el.offsetHeight;
+
+    const showBanner = () => {
+      banner.hidden = false;
+      flushLayout(banner);
+      banner.setAttribute('data-state', 'shown');
+    };
+
+    /** Matches the .cc transform transition. */
+    const SLIDE_MS = 450;
+    let hideTimer: number | undefined;
+
+    const hideBanner = () => {
+      banner.setAttribute('data-state', 'hidden');
+      // Timer rather than `transitionend`: the latter never fires when a
+      // transition is interrupted or while frames are not being produced,
+      // which would leave the banner's buttons in the tab order off-screen.
+      window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(() => {
+        if (banner.getAttribute('data-state') === 'hidden') banner.hidden = true;
+      }, SLIDE_MS);
+    };
+
+    const openModal = () => {
+      lastFocused = document.activeElement as HTMLElement | null;
+      analyticsToggle.checked = getConsent()?.analytics ?? false;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      flushLayout(modal);
+      modal.setAttribute('data-state', 'shown');
+      analyticsToggle.focus();
+    };
+
+    const closeModal = () => {
+      modal.hidden = true;
+      modal.removeAttribute('data-state');
+      document.body.style.overflow = '';
+      lastFocused?.focus();
+    };
+
+    const decide = (analytics: boolean) => {
+      setConsent(analytics);
+      closeModal();
+      hideBanner();
+    };
+
+    // Keep focus inside the dialog while it is open.
+    modal.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeModal();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const focusables = modal.querySelectorAll<HTMLElement>(
+        'button, input, a[href], [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0]!;
+      const last = focusables[focusables.length - 1]!;
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      const trigger = (event.target as HTMLElement | null)?.closest<HTMLElement>(
+        '[data-cc-action]',
+      );
+      if (!trigger) return;
+
+      switch (trigger.dataset.ccAction) {
+        case 'accept':
+          decide(true);
+          break;
+        case 'decline':
+          decide(false);
+          break;
+        case 'save':
+          decide(analyticsToggle.checked);
+          break;
+        case 'preferences':
+          openModal();
+          break;
+        case 'close':
+          closeModal();
+          break;
+      }
+    });
+
+    // Footer "Cookie Settings" link and the cookie policy page reopen this.
+    window.openCookiePreferences = openModal;
+
+    // Re-apply any stored decision; prompt only when there isn't one.
+    if (restoreConsent() === null) showBanner();
+  }
+</script>
+
+<style>
+  /* ── BANNER ── */
+  .cc {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 250;
+    background: var(--bg-dark);
+    border-top: 1px solid rgba(250, 248, 244, 0.12);
+    transform: translateY(100%);
+    transition: transform 0.45s var(--ease-out);
+  }
+
+  .cc[data-state='shown'] {
+    transform: translateY(0);
+  }
+
+  .cc__inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 24px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(20px, 4vw, 48px);
+    flex-wrap: wrap;
+  }
+
+  .cc__copy {
+    flex: 1 1 420px;
+  }
+
+  .cc__title {
+    font-family: var(--ff-display);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--on-dark);
+    margin-bottom: 6px;
+  }
+
+  .cc__text {
+    font-family: var(--ff-body);
+    font-size: var(--t-sm);
+    font-weight: 300;
+    line-height: 1.65;
+    color: rgba(250, 248, 244, 0.62);
+    max-width: 68ch;
+  }
+
+  .cc__text a {
+    color: rgba(250, 248, 244, 0.9);
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 1px;
+    transition: color 0.2s;
+  }
+
+  .cc__text a:hover {
+    color: #fff;
+  }
+
+  .cc__actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* ── BUTTONS ── */
+  .cc__btn {
+    font-family: var(--ff-body);
+    font-size: var(--t-xs);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 13px 24px;
+    border-radius: 2px;
+    transition:
+      background 0.2s,
+      border-color 0.2s,
+      color 0.2s;
+    white-space: nowrap;
+  }
+
+  .cc__btn--solid {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .cc__btn--solid:hover {
+    background: var(--accent-hover);
+  }
+
+  .cc__btn--ghost {
+    border: 1px solid rgba(250, 248, 244, 0.35);
+    color: rgba(250, 248, 244, 0.9);
+  }
+
+  .cc__btn--ghost:hover {
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .cc__btn--outline {
+    border: 1px solid var(--border-strong);
+    color: var(--text-primary);
+  }
+
+  .cc__btn--outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  /* ── MODAL ── */
+  .ccm {
+    position: fixed;
+    inset: 0;
+    z-index: 260;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  /* MUST come after the rule above. A class selector setting `display`
+     overrides the user-agent's `[hidden] { display: none }`, which would
+     leave this full-viewport overlay layered above the whole page while
+     "hidden" — invisible, but swallowing every click on the site. */
+  .ccm[hidden],
+  .cc[hidden] {
+    display: none;
+  }
+
+  .ccm__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 6, 4, 0.62);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-out);
+  }
+
+  .ccm[data-state='shown'] .ccm__backdrop {
+    opacity: 1;
+  }
+
+  .ccm__panel {
+    position: relative;
+    background: var(--bg-cream);
+    max-width: 640px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: clamp(32px, 5vw, 48px);
+    border-radius: 2px;
+    box-shadow: 0 30px 80px rgba(8, 6, 4, 0.35);
+    transform: translateY(16px);
+    opacity: 0;
+    transition:
+      transform 0.35s var(--ease-out),
+      opacity 0.35s var(--ease-out);
+  }
+
+  .ccm[data-state='shown'] .ccm__panel {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .ccm__close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+
+  .ccm__close:hover {
+    color: var(--text-primary);
+  }
+
+  .ccm__title {
+    font-family: var(--ff-display);
+    font-size: clamp(28px, 3.4vw, 36px);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text-primary);
+  }
+
+  .ccm__desc {
+    font-family: var(--ff-body);
+    font-size: var(--t-sm);
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-top: 12px;
+  }
+
+  .ccm__group {
+    margin-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .ccm__row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .ccm__rowTitle {
+    font-family: var(--ff-body);
+    font-size: var(--t-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .ccm__rowText {
+    font-family: var(--ff-body);
+    font-size: var(--t-sm);
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    max-width: 46ch;
+  }
+
+  .ccm__always {
+    font-family: var(--ff-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+
+  /* ── SWITCH ── */
+  .ccm__switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    padding-top: 1px;
+  }
+
+  .ccm__switch input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  .ccm__track {
+    width: 44px;
+    height: 24px;
+    border-radius: 12px;
+    background: rgba(26, 22, 20, 0.18);
+    position: relative;
+    transition: background 0.25s var(--ease-out);
+    flex-shrink: 0;
+  }
+
+  .ccm__thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(8, 6, 4, 0.3);
+    transition: transform 0.25s var(--ease-out);
+  }
+
+  .ccm__switch input:checked + .ccm__track {
+    background: var(--accent);
+  }
+
+  .ccm__switch input:checked + .ccm__track .ccm__thumb {
+    transform: translateX(20px);
+  }
+
+  .ccm__switch input:focus-visible + .ccm__track {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .ccm__switchLabel {
+    font-family: var(--ff-body);
+    font-size: var(--t-xs);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .ccm__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .cc__inner {
+      padding: 22px 24px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cc__inner {
+      padding: 20px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 18px;
+    }
+
+    .cc__actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* Accept spans the full width beneath the two equal-weight options */
+    .cc__btn--solid {
+      grid-column: span 2;
+    }
+
+    .ccm__footer .cc__btn {
+      flex: 1;
+    }
+  }
+</style>

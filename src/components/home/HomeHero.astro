@@ -1,0 +1,220 @@
+---
+/**
+ * HomeHero — full-height B&W video hero.
+ *
+ * The footage is already black and white, so no grayscale filter is
+ * applied to the video itself (only a slight darken for legibility);
+ * the poster image does carry one, since it stands in before playback.
+ *
+ * Note the title is set in Jost, uppercase — not Playfair. That is
+ * deliberate in the design and the only place the body face is used at
+ * display size.
+ */
+import { resolveImage } from '../../lib/assets';
+
+const poster = resolveImage('heroHomePoster');
+---
+
+<section class="hero" id="home">
+  <div
+    class="hero__media"
+    style={poster.src ? `background-image:url('${poster.src}')` : undefined}
+  >
+    <video
+      id="heroVideo"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster={poster.src ?? undefined}
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <source src="/video/home-hero.mp4" type="video/mp4" />
+    </video>
+  </div>
+
+  <div class="hero__content">
+    <p class="hero__eyebrow">Luxury Hospitality Fit-Out &amp; FF&amp;E</p>
+    <h1 class="hero__title">Turnkey,<br />end to end</h1>
+    <p class="hero__subtitle">Fit-out &amp; FF&amp;E for the world's<br />finest spaces</p>
+    <div class="hero__actions">
+      <a href="#contact" class="btn-primary">Request a Consultation →</a>
+      <a href="/projects" class="btn-ghost">View Our Projects</a>
+    </div>
+  </div>
+
+  <div class="hero__scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="hero__scrollLine"></div>
+  </div>
+</section>
+
+<script>
+  /**
+   * Autoplay can be refused (low-power mode, some mobile browsers, or a
+   * user preference). Retry once on the first interaction rather than
+   * leaving a still poster with no explanation.
+   */
+  const video = document.getElementById('heroVideo') as HTMLVideoElement | null;
+
+  if (video) {
+    const play = () => {
+      video.muted = true;
+      const attempt = video.play();
+      attempt?.catch(() => {
+        const retry = () => {
+          video.play().catch(() => {});
+          window.removeEventListener('pointerdown', retry);
+        };
+        window.addEventListener('pointerdown', retry, { once: true });
+      });
+    };
+
+    // A visitor who has asked for reduced motion gets the poster frame.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      video.removeAttribute('autoplay');
+      video.pause();
+    } else {
+      play();
+    }
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 640px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center 30%;
+  }
+
+  .hero__media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* Source footage is already B&W — just darken slightly. */
+    filter: brightness(0.88) contrast(1.05);
+    transform: scale(1.04);
+    animation: heroZoom 14s var(--ease-out) forwards;
+  }
+
+  .hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(8, 6, 4, 0.18) 0%,
+      rgba(8, 6, 4, 0.42) 50%,
+      rgba(8, 6, 4, 0.68) 100%
+    );
+  }
+
+  @keyframes heroZoom {
+    to {
+      transform: scale(1);
+    }
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 24px;
+    max-width: 960px;
+    animation: fadeUp 1s 0.5s var(--ease-out) both;
+  }
+
+  .hero__eyebrow {
+    font-family: var(--ff-body);
+    font-size: var(--t-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 18px;
+  }
+
+  .hero__title {
+    font-family: var(--ff-body);
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 0.95;
+    margin-bottom: 6px;
+  }
+
+  .hero__subtitle {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: clamp(28px, 4vw, 56px);
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.1;
+    margin-bottom: 48px;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Centred with left/right rather than translateX(-50%): fadeUp animates
+     `transform`, which would overwrite the centring translate and leave the
+     cue offset by half its width. The prototype has exactly that bug. */
+  .hero__scroll {
+    position: absolute;
+    bottom: 36px;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: fadeUp 1s 1.6s var(--ease-out) both;
+  }
+
+  .hero__scroll span {
+    font-family: var(--ff-body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .hero__scrollLine {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+</style>

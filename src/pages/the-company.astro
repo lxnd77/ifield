@@ -1,0 +1,250 @@
+---
+/**
+ * The Company — hero · story · stats · journey · vision & mission ·
+ * approach · founder · team · closing band.
+ *
+ * `#approach` and `#team` anchors are linked from the footer.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionIntro from '../components/SectionIntro.astro';
+import StatBand from '../components/StatBand.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+import JourneyTimeline from '../components/company/JourneyTimeline.astro';
+import TeamGrid from '../components/company/TeamGrid.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+
+<BaseLayout
+  title="The Company"
+  description="Built by hospitality people, for hospitality spaces. I-Field has delivered turnkey fit-out and FF&E since 2003, from nine offices worldwide."
+>
+  <PageHero
+    eyebrow="The Company"
+    title="Crafting the <em>epitome</em> of luxury hospitality"
+    lead="An end-to-end fit-out and FF&E partner — established and run by hotel owners and industry professionals who understand hospitality from the inside out."
+    image="heroCompany"
+    facts={['Est. 2003 · Hong Kong', '20+ Countries', '9 Global Offices', 'Luxury Hospitality']}
+    minHeight="80vh"
+    titleWidth="14ch"
+  />
+
+  <SectionIntro
+    eyebrow="Our Story"
+    title="Built by hospitality people, for hospitality spaces"
+    subtitle="Turnkey solutions since 2003."
+    paragraphs={[
+      "We began as hotel contractors based in Hong Kong, with a representative office in Guangzhou. Since then we've grown into one of Asia's largest fit-out and FF&E companies — trusted by the owners and developers behind the world's finest hospitality properties.",
+      'We work alongside acclaimed architects and interior designers, fusing the handwork of skilled craftspeople with state-of-the-art technology. No two I-Field projects are the same — except for their quality. Our end-to-end process means every project is delivered on time and on value, so your doors can open the moment you turn the key.',
+    ]}
+    flushBottom
+  />
+
+  <section class="storyImage">
+    <div class="container">
+      <div class="storyImage__frame reveal">
+        <ImageSlot slot="companyStory" fill filter="grayscale(18%)" />
+      </div>
+    </div>
+  </section>
+
+  <StatBand variant="dark" />
+
+  <JourneyTimeline />
+
+  <!-- ── VISION & MISSION ── -->
+  <section class="vm">
+    <div class="container">
+      <div class="vm__grid">
+        <div class="reveal">
+          <span class="eyebrow">Our Vision</span>
+          <h2 class="vm__statement">
+            To be the most trusted name in luxury hospitality fit-out and FF&amp;E.
+          </h2>
+          <p class="body-text vm__copy">
+            Relentless in our commitment to unmatched quality for the world's most acclaimed
+            hotels — assuring clients of immaculate attention to detail in services that are
+            streamlined, sustainable and cost-efficient.
+          </p>
+        </div>
+        <div class="reveal reveal-d2">
+          <span class="eyebrow">Our Mission</span>
+          <h2 class="vm__statement">
+            To deliver the right products, real value and reliable service — every time.
+          </h2>
+          <p class="body-text vm__copy">
+            Driven by excellence at every level, from first drawing to final handover. We
+            combine quality, efficiency and an obsessive attention to detail to create outcomes
+            that consistently exceed expectations.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── OUR APPROACH ── -->
+  <section class="split" id="approach">
+    <div class="container">
+      <div class="split__grid">
+        <div class="split__media reveal">
+          <ImageSlot slot="companyApproach" fill filter="grayscale(18%)" />
+        </div>
+        <div class="reveal reveal-d1">
+          <span class="eyebrow">Our Approach</span>
+          <h2 class="section-h2">Every detail, handled<br />in-house</h2>
+          <p class="body-text split__copy">
+            We support owners and operators creating environments unlike any other. Our
+            resources make room for new technologies and solutions while ensuring everything we
+            do adds value and lifts the return on every investment.
+          </p>
+          <p class="body-text split__copy">
+            We see every project as an expression of our client's character and the context of
+            its environment — highly individual spaces and furnishings that speak to the
+            operator's vision and the brand's values.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOUNDER ── -->
+  <section class="split split--warm">
+    <div class="container">
+      <div class="split__grid split__grid--founder">
+        <div class="split__media split__media--portrait reveal">
+          <ImageSlot slot="companyFounder" fill filter="grayscale(18%)" />
+        </div>
+        <div class="reveal reveal-d1">
+          <span class="eyebrow">Our Founder</span>
+          <h2 class="section-h2">Hands-on, by design</h2>
+          <p class="body-text split__copy">
+            Abhay moved from India to China in 2003 and quickly built the skills, knowledge and
+            network to found I-Field as one of the region's leading turnkey FF&amp;E
+            manufacturers. In 2012 he led the investment into a dedicated furniture
+            manufacturing unit, and two years later established Guangzhou Daka Import &amp;
+            Export — making I-Field fully self-reliant.
+          </p>
+          <p class="body-text split__copy">
+            His decades of expertise pair a deep command of FF&amp;E with a rare understanding
+            of people. Wherever I-Field operates, he invests in local talent and training — and
+            personally attends to every client and project.
+          </p>
+          <p class="founder__sig">
+            Abhay Bhargava<span class="founder__role">— Founder &amp; Managing Director</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <TeamGrid />
+
+  <CtaBand
+    title="Tell us about your project"
+    subtitle="Let's build something enduring, together."
+    actions={[
+      { label: 'Request a Consultation →', href: '/#contact' },
+      { label: 'View Our Projects', href: '/projects', ghost: true },
+    ]}
+  />
+</BaseLayout>
+
+<style>
+  /* ── Wide story image ── */
+  .storyImage {
+    background: var(--bg-cream);
+    padding: 0 0 clamp(72px, 10vw, 120px);
+  }
+
+  .storyImage__frame {
+    position: relative;
+    height: clamp(300px, 42vw, 500px);
+    overflow: hidden;
+    border: 1px solid rgba(26, 22, 20, 0.08);
+  }
+
+  /* ── Vision & Mission ── */
+  .vm {
+    background: var(--bg-dark);
+    color: var(--on-dark);
+    padding: clamp(72px, 10vw, 116px) 0;
+  }
+
+  .vm__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: clamp(48px, 6vw, 96px);
+  }
+
+  .vm__statement {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(26px, 3vw, 40px);
+    line-height: 1.3;
+    color: var(--on-dark);
+  }
+
+  .vm__copy {
+    color: var(--on-dark-muted);
+    margin-top: 24px;
+  }
+
+  /* ── Approach / Founder split ── */
+  .split {
+    background: var(--bg-cream);
+    padding: clamp(72px, 10vw, 120px) 0;
+    scroll-margin-top: var(--nav-h);
+  }
+
+  .split--warm {
+    background: var(--bg-warm);
+  }
+
+  .split__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr));
+    gap: clamp(40px, 6vw, 80px);
+    align-items: center;
+  }
+
+  .split__grid--founder {
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: clamp(40px, 6vw, 84px);
+  }
+
+  .split__media {
+    position: relative;
+    height: clamp(340px, 40vw, 540px);
+    overflow: hidden;
+    border: 1px solid rgba(26, 22, 20, 0.08);
+  }
+
+  .split__media--portrait {
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  .split__copy {
+    margin-top: 24px;
+  }
+
+  .founder__sig {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: clamp(20px, 1.8vw, 24px);
+    color: var(--accent);
+    margin-top: 30px;
+  }
+
+  .founder__role {
+    font-family: var(--ff-body);
+    font-style: normal;
+    font-size: var(--t-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(26, 22, 20, 0.5);
+    margin-left: 12px;
+  }
+</style>

@@ -1,0 +1,260 @@
+---
+/**
+ * Footer — the homepage footer, used on every page without exception.
+ *
+ * Per the agreed structure the inner-page footer variants (and their
+ * "United States" country strip, which contradicts the nine-office list)
+ * are discarded entirely. Copy here is the homepage's, verbatim.
+ */
+import {
+  site,
+  contact,
+  officeSummary,
+  footerCompanyLinks,
+  footerServiceLinks,
+  footerLegalLinks,
+  socialLinks,
+} from '../data/site';
+import { images } from '../data/images';
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <img
+          class="footer-logo-img"
+          src={`/${images.logoWhite.path}`}
+          alt={site.name}
+          width="125"
+          height="34"
+          loading="lazy"
+        />
+        <p class="footer-tagline">
+          Delivering the epitome of luxury<br />to hospitality environments worldwide.
+        </p>
+        <div class="footer-social">
+          {
+            socialLinks.map((s) => (
+              <a href={s.href} class="social-link" aria-label={s.label}>
+                <span aria-hidden="true">{s.short}</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div>
+        <h2 class="footer-col-title">Company</h2>
+        <ul class="footer-links">
+          {footerCompanyLinks.map((l) => (
+            <li><a href={l.href}>{l.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="footer-col-title">Services</h2>
+        <ul class="footer-links">
+          {footerServiceLinks.map((l) => (
+            <li><a href={l.href}>{l.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="footer-col-title">Our Offices</h2>
+        <p class="footer-contact-item">{officeSummary}</p>
+        <p class="footer-contact-item" style="margin-top:14px;">
+          <a href={contact.phonePrimary.href}>{contact.phonePrimary.label}</a>
+        </p>
+        <p class="footer-contact-item">
+          <a href={contact.email.href}>{contact.email.label}</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        &copy; {site.copyrightYear} {site.name}. All rights reserved.
+      </p>
+      <nav class="footer-legal" aria-label="Legal">
+        {
+          footerLegalLinks.map((l) => (
+            <a
+              href={l.href}
+              data-cookie-settings={l.label === 'Cookie Settings' ? '' : undefined}
+            >
+              {l.label}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /**
+   * "Cookie Settings" opens the preferences dialog in place. It keeps its
+   * href to /cookie-policy so it still works without JS, and so middle-click
+   * and "open in new tab" behave as a normal link.
+   */
+  document.querySelectorAll<HTMLAnchorElement>('[data-cookie-settings]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+      if (typeof window.openCookiePreferences !== 'function') return;
+      event.preventDefault();
+      window.openCookiePreferences();
+    });
+  });
+</script>
+
+<style>
+  .footer {
+    background: var(--bg-darker);
+    padding: 72px 0 36px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 64px;
+  }
+
+  .footer-logo-img {
+    height: 34px;
+    width: auto;
+    margin-bottom: 18px;
+  }
+
+  .footer-tagline {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: var(--t-sm);
+    color: rgba(255, 255, 255, 0.28);
+    margin-bottom: 28px;
+    line-height: 1.65;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 12px;
+  }
+
+  .social-link {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: var(--ff-body);
+    font-size: 12px;
+    font-weight: 500;
+    transition:
+      border-color 0.2s,
+      color 0.2s;
+  }
+
+  .social-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .footer-col-title {
+    font-family: var(--ff-body);
+    font-size: var(--t-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.28);
+    margin-bottom: 20px;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-links a {
+    font-family: var(--ff-body);
+    font-size: var(--t-sm);
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.48);
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .footer-contact-item {
+    font-family: var(--ff-body);
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+
+  .footer-contact-item a {
+    color: rgba(255, 255, 255, 0.4);
+    transition: color 0.2s;
+  }
+
+  .footer-contact-item a:hover {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .footer-bottom {
+    padding-top: 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-copy {
+    font-family: var(--ff-body);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  .footer-legal {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .footer-legal a {
+    font-family: var(--ff-body);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.2);
+    transition: color 0.2s;
+  }
+
+  .footer-legal a:hover {
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  @media (max-width: 900px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,177 @@
+---
+/**
+ * NewsletterForm — single-field subscribe form for the Journal.
+ *
+ * Same honesty policy as the contact form (ContactSection.astro): it
+ * POSTs to /api/newsletter, which does not exist until phase 9, and on
+ * failure says so plainly rather than faking a success state.
+ */
+---
+
+<form class="nform" id="newsletterForm" method="post" action="/api/newsletter" novalidate>
+  <label class="nform__label" for="nlEmail">Email address</label>
+  <div class="nform__row">
+    <input
+      class="nform__input"
+      type="email"
+      id="nlEmail"
+      name="email"
+      autocomplete="email"
+      placeholder="Your email address"
+      required
+    />
+    <button type="submit" class="btn-on-accent nform__submit">Subscribe →</button>
+  </div>
+  <p class="nform__status" id="newsletterStatus" role="status" aria-live="polite"></p>
+
+  {/* Honeypot — hidden from people, tempting to bots. */}
+  <p class="nform__hp" aria-hidden="true">
+    <label for="nlWebsite">Leave this field empty</label>
+    <input type="text" id="nlWebsite" name="website" tabindex="-1" autocomplete="off" />
+  </p>
+
+  {/* Set by JS on load — see the same field on the contact form for why. */}
+  <input type="hidden" name="loadedAt" value="" />
+</form>
+
+<script>
+  const form = document.getElementById('newsletterForm') as HTMLFormElement | null;
+  const status = document.getElementById('newsletterStatus');
+
+  if (form && status) {
+    const submit = form.querySelector<HTMLButtonElement>('.nform__submit');
+    const originalLabel = submit?.textContent ?? '';
+
+    const loadedAtInput = form.querySelector<HTMLInputElement>('[name="loadedAt"]');
+    if (loadedAtInput) loadedAtInput.value = String(Date.now());
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      status.textContent = '';
+      status.removeAttribute('data-kind');
+      if (submit) {
+        submit.disabled = true;
+        submit.textContent = 'Sending…';
+      }
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(form),
+        });
+
+        if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+
+        form.reset();
+        status.textContent = "Thank you — you're on the list.";
+        status.dataset.kind = 'ok';
+      } catch {
+        status.textContent =
+          'Sorry, that could not be sent. Please email info@ifield.ae to be added instead.';
+        status.dataset.kind = 'error';
+      } finally {
+        if (submit) {
+          submit.disabled = false;
+          submit.textContent = originalLabel;
+        }
+      }
+    });
+  }
+</script>
+
+<style>
+  .nform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .nform__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .nform__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .nform__input {
+    flex: 1;
+    min-width: 240px;
+    max-width: 380px;
+    padding: 16px 20px;
+    border: 1px solid rgba(250, 248, 244, 0.4);
+    background: rgba(250, 248, 244, 0.06);
+    color: #fff;
+    font-family: var(--ff-body);
+    font-size: 15px;
+    font-weight: 300;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .nform__input::placeholder {
+    color: rgba(250, 248, 244, 0.55);
+  }
+
+  .nform__input:focus {
+    border-color: #fff;
+    background: rgba(250, 248, 244, 0.12);
+  }
+
+  .nform__submit {
+    border: none;
+    cursor: pointer;
+  }
+
+  .nform__submit[disabled] {
+    opacity: 0.7;
+    cursor: default;
+  }
+
+  .nform__status {
+    font-family: var(--ff-body);
+    font-size: var(--t-sm);
+    line-height: 1.6;
+    min-height: 1.6em;
+  }
+
+  .nform__status[data-kind='ok'] {
+    color: #d7f5df;
+  }
+
+  .nform__status[data-kind='error'] {
+    color: #ffd9d9;
+  }
+
+  /* Honeypot: removed from view and from assistive tech, but still
+     submitted — bots that fill every field give themselves away. */
+  .nform__hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+</style>

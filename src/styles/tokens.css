@@ -1,0 +1,62 @@
+/* ============================================================
+   DESIGN TOKENS — I-Field
+   Lifted verbatim from the homepage design source
+   (uploads/ifield-final.html :root). This file is the single
+   source of truth: no component may hard-code a brand value.
+============================================================ */
+:root {
+  /* ── SURFACES ── */
+  --bg-cream: #faf8f4;
+  --bg-warm: #f2efe8;
+  --bg-dark: #1a1614;
+  --bg-darker: #111009;
+
+  /* ── ACCENT ── */
+  --accent: #8b1a1a;
+  --accent-hover: #6f1414;
+  --accent-light: rgba(139, 26, 26, 0.08);
+
+  /* ── TEXT ── */
+  --text-primary: #1a1614;
+  --text-secondary: #5c5249;
+  --text-muted: #8c857d;
+
+  /* ── LINES ── */
+  --border: rgba(26, 22, 20, 0.1);
+  --border-strong: rgba(26, 22, 20, 0.18);
+
+  /* ── TEXT ON DARK ──
+     The prototypes restate these rgba values inline on every dark
+     section; naming them keeps the dark bands consistent. */
+  --on-dark: #faf8f4;
+  --on-dark-strong: #ffffff;
+  --on-dark-muted: rgba(250, 248, 244, 0.62);
+  --on-dark-faint: rgba(250, 248, 244, 0.45);
+  --on-dark-border: rgba(250, 248, 244, 0.16);
+  --nav-link: rgba(255, 255, 255, 0.78);
+
+  /* ── TYPE FAMILIES ── */
+  --ff-display: 'Playfair Display', Georgia, serif;
+  --ff-body: 'Jost', 'Helvetica Neue', sans-serif;
+
+  /* ── UNIFIED TYPE SCALE ── */
+  --t-eyebrow: 13px;
+  --t-h2: clamp(38px, 4.2vw, 56px);
+  --t-h2-sub: clamp(22px, 2.5vw, 32px);
+  --t-h1: clamp(42px, 5.6vw, 82px);
+  --t-body: 17px;
+  --t-sm: 14px;
+  --t-xs: 12px;
+
+  /* ── MOTION ── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-reveal: 0.8s;
+
+  /* ── LAYOUT ── */
+  --max-w: 1320px;
+  --nav-h: 72px;
+
+  /* Long-form measure. The prototypes never needed this — it is the
+     one deliberate extension, for Journal article bodies and legal pages. */
+  --measure: 68ch;
+}

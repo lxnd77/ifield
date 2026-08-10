@@ -1,0 +1,288 @@
+---
+/**
+ * StatBand — the five-figure statistics row.
+ *
+ * Two variants from the designs:
+ *   warm — homepage "Global Presence": cream-warm ground, vertical hairline
+ *          dividers between cells, arch elements bleeding off both sides,
+ *          and the figures counting up when scrolled into view.
+ *   dark — The Company: dark ground, no dividers, no count-up.
+ *
+ * Figures come from src/data/site.ts; the homepage numbers are
+ * authoritative across the site.
+ */
+import { stats } from '../data/site';
+import { images } from '../data/images';
+
+interface Props {
+  variant?: 'warm' | 'dark';
+  /** Count the figures up on first scroll into view. */
+  animate?: boolean;
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  variant = 'warm',
+  animate = variant === 'warm',
+  eyebrow,
+  title,
+  subtitle,
+} = Astro.props;
+---
+
+<section class:list={['stats', `stats--${variant}`]} data-animate={animate ? '' : undefined}>
+  {
+    variant === 'warm' && (
+      <>
+        <img class="stats__el stats__el--l" src={`/${images.element02.path}`} alt="" loading="lazy" />
+        <img class="stats__el stats__el--r" src={`/${images.element03.path}`} alt="" loading="lazy" />
+      </>
+    )
+  }
+
+  <div class="container stats__container">
+    {
+      (eyebrow || title || subtitle) && (
+        <div class="stats__head reveal">
+          {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+          {title && <p class="stats__title">{title}</p>}
+          {subtitle && <p class="stats__subtitle">{subtitle}</p>}
+        </div>
+      )
+    }
+
+    <div class="stats__grid reveal reveal-d1">
+      {
+        stats.map((stat) => (
+          <div class="stats__cell">
+            {/* The real figure is rendered server-side; the count-up resets
+                it to zero only once it is about to animate. Shipping "0" in
+                the HTML would leave "0 Projects Completed" on screen if the
+                script never ran. */}
+            <div
+              class="stats__number"
+              data-target={animate && stat.target !== null ? String(stat.target) : undefined}
+            >
+              {stat.display}{stat.sup && <sup>{stat.sup}</sup>}
+            </div>
+            <div class="stats__label">{stat.label}</div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const easeOutCubic = (p: number) => 1 - Math.pow(1 - p, 3);
+
+  document.querySelectorAll<HTMLElement>('.stats[data-animate]').forEach((section) => {
+    const numbers = section.querySelectorAll<HTMLElement>('.stats__number[data-target]');
+    if (numbers.length === 0) return;
+
+    let hasRun = false;
+
+    const run = () => {
+      if (hasRun) return;
+      hasRun = true;
+
+      numbers.forEach((el) => {
+        const target = Number(el.dataset.target);
+        if (!Number.isFinite(target)) return;
+        const sup = el.querySelector('sup')?.outerHTML ?? '';
+        el.innerHTML = '0' + sup;
+        const start = performance.now();
+        const duration = 1800;
+
+        const tick = (now: number) => {
+          const progress = Math.min((now - start) / duration, 1);
+          el.innerHTML = Math.round(easeOutCubic(progress) * target) + sup;
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+    };
+
+    // Respect reduced motion: the server-rendered figures are already the
+    // final values, so simply leave them alone.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          run();
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
+    observer.observe(section);
+  });
+</script>
+
+<style>
+  .stats {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats--warm {
+    background: var(--bg-warm);
+    padding: 90px 0 110px;
+  }
+
+  .stats--dark {
+    background: var(--bg-dark);
+    color: var(--on-dark);
+    padding: clamp(64px, 8vw, 96px) 0;
+  }
+
+  .stats__el {
+    position: absolute;
+    width: 300px;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  .stats__el--l {
+    left: -40px;
+    top: -30px;
+  }
+
+  .stats__el--r {
+    right: -40px;
+    bottom: -30px;
+  }
+
+  .stats__container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .stats__head {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .stats__title {
+    font-family: var(--ff-display);
+    font-size: var(--t-h2);
+    font-weight: 400;
+    color: var(--text-primary);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .stats__subtitle {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-size: var(--t-h2-sub);
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .stats__grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stats__cell {
+    text-align: center;
+    position: relative;
+  }
+
+  .stats--warm .stats__cell {
+    padding: 52px 36px;
+  }
+
+  .stats--dark .stats__cell {
+    padding: 18px 20px;
+  }
+
+  .stats--warm .stats__cell:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 15%;
+    bottom: 15%;
+    width: 1px;
+    background: var(--border-strong);
+  }
+
+  .stats__number {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .stats--warm .stats__number {
+    font-size: clamp(44px, 5vw, 64px);
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+
+  .stats--dark .stats__number {
+    font-size: clamp(38px, 4.4vw, 60px);
+    color: var(--on-dark);
+  }
+
+  .stats__number sup {
+    font-size: 0.42em;
+    vertical-align: super;
+    color: var(--accent);
+  }
+
+  .stats__label {
+    font-family: var(--ff-body);
+    font-size: var(--t-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .stats--warm .stats__label {
+    color: var(--text-muted);
+  }
+
+  .stats--dark .stats__label {
+    color: rgba(250, 248, 244, 0.55);
+    margin-top: 14px;
+  }
+
+  @media (max-width: 900px) {
+    .stats__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .stats--warm .stats__cell:nth-child(3)::after {
+      display: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .stats__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats--warm .stats__cell:nth-child(2)::after,
+    .stats--warm .stats__cell:nth-child(4)::after {
+      display: none;
+    }
+
+    .stats--warm .stats__cell {
+      padding: 32px 16px;
+    }
+
+    .stats__el {
+      width: 200px;
+    }
+  }
+</style>

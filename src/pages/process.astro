@@ -1,0 +1,69 @@
+---
+/**
+ * Process — hero · intro · six-stage vertical rail · pillars · closing band.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionIntro from '../components/SectionIntro.astro';
+import ProcessTimeline from '../components/process/ProcessTimeline.astro';
+import DarkPillars from '../components/DarkPillars.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+const pillars = [
+  {
+    title: 'Single accountability',
+    text: 'One project manager owns the brief across all six stages — no gaps between trades, no finger-pointing.',
+  },
+  {
+    title: 'In-house manufacturing',
+    text: 'Our own factory means we control quality, cost and timeline rather than chasing outside suppliers.',
+  },
+  {
+    title: 'Specification integrity',
+    text: 'What is approved is what is delivered — samples signed off once and carried through to handover.',
+  },
+];
+---
+
+<BaseLayout
+  title="Process"
+  description="Six deliberate stages take a hotel interior from first survey to final styling, each owned by an in-house I-Field team."
+>
+  <PageHero
+    eyebrow="How We Work"
+    title="Our Process — <em>it's all in the details</em>"
+    lead="Six deliberate stages take a hotel interior from first survey to final styling — every one owned by an in-house I-Field team, so quality, cost and timeline stay under one roof from concept to handover."
+    image="heroProcess"
+    facts={['Six Stages, One Team', 'Cost-Engineered Throughout', 'Turnkey Handover']}
+    minHeight="76vh"
+    titleWidth="16ch"
+  />
+
+  <SectionIntro
+    eyebrow="The Journey"
+    title="A single, accountable path from brief to opening"
+    subtitle="Assess, design, procure, produce, deliver."
+    paragraphs={[
+      "Because every discipline sits inside one company, the handovers that usually slow a project down simply don't exist. Each stage feeds cleanly into the next — the same team that costs the scope is the team that manufactures it, ships it and installs it.",
+      'Follow the line below to see how a specification travels through I-Field, and what you receive at the end of every stage.',
+    ]}
+    flushBottom
+  />
+
+  <ProcessTimeline />
+
+  <DarkPillars
+    title="One team owns the line, <em>end</em> to end"
+    intro="Most interiors are relayed between a dozen suppliers, and every handover is a chance for something to drift. Our process keeps a single project manager — and a single specification — travelling the whole way, so what you approve at stage one is what you open with at stage six."
+    pillars={pillars}
+  />
+
+  <CtaBand
+    title="Start at stage one"
+    subtitle="Bring us the brief — we'll take it all the way to handover."
+    actions={[
+      { label: 'Request a Consultation →', href: '/#contact' },
+      { label: 'See Our Capabilities', href: '/capabilities', ghost: true },
+    ]}
+  />
+</BaseLayout>

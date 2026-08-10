@@ -1,0 +1,89 @@
+---
+/**
+ * DarkPillars — the "Why It Matters" band on Capabilities and Process,
+ * also reused for Careers' "Why I-Field".
+ *
+ * Intro block capped at 780px, then auto-fitting columns each topped by
+ * a hairline rule, with a Playfair-italic heading.
+ */
+export interface Pillar {
+  readonly title: string;
+  readonly text: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  /** HTML, so `<em>` emphasis works. */
+  title: string;
+  intro?: string;
+  pillars: readonly Pillar[];
+}
+
+const { eyebrow = 'Why It Matters', title, intro, pillars } = Astro.props;
+---
+
+<section class="pillars">
+  <div class="container">
+    <div class="pillars__head reveal">
+      <span class="eyebrow">{eyebrow}</span>
+      <h2 class="section-h2 section-h2--light" set:html={title} />
+      {intro && <p class="body-text pillars__intro">{intro}</p>}
+    </div>
+
+    <div class="pillars__grid">
+      {
+        pillars.map((p, i) => (
+          <div class:list={['pillars__item', 'reveal', `reveal-d${Math.min(i + 1, 4)}`]}>
+            <h3 class="pillars__title">{p.title}</h3>
+            <p class="body-text pillars__text">{p.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .pillars {
+    background: var(--bg-dark);
+    color: var(--on-dark);
+    padding: clamp(72px, 10vw, 116px) 0;
+  }
+
+  .pillars__head {
+    max-width: 780px;
+  }
+
+  .pillars__intro {
+    color: var(--on-dark-muted);
+    margin-top: 24px;
+    max-width: 60ch;
+  }
+
+  .pillars__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+    gap: clamp(28px, 4vw, 56px);
+    margin-top: clamp(44px, 5vw, 68px);
+  }
+
+  .pillars__item {
+    border-top: 1px solid var(--on-dark-border);
+    padding-top: 22px;
+  }
+
+  .pillars__title {
+    font-family: var(--ff-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(22px, 2.2vw, 28px);
+    line-height: 1.25;
+    color: var(--on-dark);
+  }
+
+  .pillars__text {
+    color: rgba(250, 248, 244, 0.6);
+    margin-top: 12px;
+    font-size: 16px;
+  }
+</style>

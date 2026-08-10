@@ -1,0 +1,101 @@
+---
+/**
+ * Capabilities — the priority page.
+ *
+ * Hero · intro · eight alternating capability rows · "Why It Matters"
+ * pillars · red closing band.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionIntro from '../components/SectionIntro.astro';
+import CapabilityRow from '../components/CapabilityRow.astro';
+import DarkPillars from '../components/DarkPillars.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { capabilities } from '../data/capabilities';
+
+const pillars = [
+  {
+    title: 'Single accountability',
+    text: 'One project manager owns the brief end to end — no gaps between trades, no finger-pointing.',
+  },
+  {
+    title: 'In-house manufacturing',
+    text: 'Our own factory means we control quality, cost and timeline rather than chasing suppliers.',
+  },
+  {
+    title: 'Specification integrity',
+    text: 'What is drawn is what is delivered — samples signed off once and carried through to handover.',
+  },
+];
+---
+
+<BaseLayout
+  title="Capabilities"
+  description="Fit-out and FF&E, fully integrated. Every discipline a hotel interior needs — designed, manufactured and installed by I-Field's own teams."
+>
+  <PageHero
+    eyebrow="Capabilities"
+    title="Transforming hospitality environments through <em>end-to-end</em> craft"
+    lead="From the first drawing to the final accessory, every discipline a hotel needs is held under one roof — designed, manufactured and installed by I-Field's own teams."
+    image="heroCapabilities"
+    facts={['Every Discipline In-House', 'In-House Manufacturing', 'Turnkey Delivery']}
+  />
+
+  <SectionIntro
+    eyebrow="What We Do"
+    title="One partner for every element of the interior"
+    subtitle="Fit-out and FF&amp;E, fully integrated."
+    paragraphs={[
+      'Most hospitality projects are stitched together from a dozen specialist suppliers. We replace that complexity with a single, accountable team — managing fit-out, fixed and loose furniture, lighting, soft furnishings and accessories as one coordinated programme.',
+      'Because we design, manufacture and install in-house, quality, cost and timeline stay in our control from concept to handover. The result is a space delivered exactly as drawn — on time, on value, ready to open.',
+    ]}
+    flushBottom
+  />
+
+  <section class="caprows">
+    <div class="container">
+      <h2 class="visually-hidden">Our capabilities</h2>
+      {
+        capabilities.map((capability, i) => (
+          <CapabilityRow capability={capability} flip={i % 2 === 1} />
+        ))
+      }
+    </div>
+  </section>
+
+  <DarkPillars
+    title="Every discipline, <em>one</em> accountable team"
+    intro="When every capability sits inside one company, nothing falls through the gaps between trades. Specifications carry through cleanly, samples are signed off once, and a single project manager owns the outcome — from the factory floor in Dongguan to the final styling on site."
+    pillars={pillars}
+  />
+
+  <CtaBand
+    title="Bring us your scope"
+    subtitle="One brief, one team, one seamless delivery."
+    actions={[
+      { label: 'Request a Consultation →', href: '/#contact' },
+      { label: 'View Our Projects', href: '/projects', ghost: true },
+    ]}
+  />
+</BaseLayout>
+
+<style>
+  .caprows {
+    background: var(--bg-cream);
+    padding: 0 0 clamp(72px, 9vw, 112px);
+  }
+
+  /* The rows are <article>s under an <h3> each; this gives them a parent
+     heading for screen readers without altering the visual design. */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

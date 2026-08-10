@@ -1,0 +1,420 @@
+---
+/**
+ * JournalCarousel — horizontally scrollable portrait cards with a
+ * progress bar and arrow controls.
+ *
+ * Card width is calculated so exactly four fill the 1320px container:
+ * (container − padding − gaps) ÷ 4. That formula is from the design and
+ * is why the cards line up with the grid above them.
+ *
+ * Reads the same CMS entries as the Journal page — one definition of
+ * "recent articles" — and hides itself entirely if nothing has been
+ * published yet, rather than rendering an empty track.
+ */
+import ImageSlot from '../ImageSlot.astro';
+import { allPosts, CATEGORY_LABELS } from '../../lib/posts';
+
+const posts = (await allPosts()).slice(0, 8);
+---
+
+{posts.length > 0 && (
+
+<section class="journal" id="journal">
+  <div class="container">
+    <div class="section-header reveal">
+      <div>
+        <span class="eyebrow">Our Journal</span>
+        <h2 class="section-h2">Insights &amp; <em>Industry Thinking</em></h2>
+      </div>
+      <a href="/journal" class="link-viewall">View All Articles →</a>
+    </div>
+
+    <div class="journal__wrap reveal">
+      <div class="journal__viewport" id="journalViewport" tabindex="0" aria-label="Journal articles, scrollable">
+        <ul class="journal__track" id="journalTrack">
+          {
+            posts.map((post) => (
+              <li class="jcard">
+                <a href={`/journal/${post.id}/`} class="jcard__link">
+                  {post.data.coverImage ? (
+                    <img
+                      class="jcard__img"
+                      src={post.data.coverImage}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <ImageSlot slot="heroJournal" alt="" fill filter="grayscale(100%)" class="imgslot--on-dark" />
+                  )}
+                  <span class="jcard__tag">{CATEGORY_LABELS[post.data.category]}</span>
+                  <span class="jcard__content">
+                    <span class="jcard__title">{post.data.title}</span>
+                    <span class="jcard__excerpt">{post.data.excerpt}</span>
+                    <span class="jcard__arrow" aria-hidden="true">
+                      →
+                    </span>
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="journal__controls">
+        <button type="button" class="journal__btn" id="journalPrev" aria-label="Previous articles">
+          ←
+        </button>
+        <div class="journal__progressTrack">
+          <div class="journal__progressBar" id="journalProgress"></div>
+        </div>
+        <button type="button" class="journal__btn" id="journalNext" aria-label="Next articles">
+          →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+)}
+
+<script>
+  const viewport = document.getElementById('journalViewport');
+  const track = document.getElementById('journalTrack');
+  const bar = document.getElementById('journalProgress');
+  const prev = document.getElementById('journalPrev');
+  const next = document.getElementById('journalNext');
+
+  if (viewport && track && bar && prev && next) {
+    const GAP = 3;
+
+    const updateProgress = () => {
+      const max = viewport.scrollWidth - viewport.clientWidth;
+      const pct = max > 0 ? (viewport.scrollLeft / max) * 100 : 0;
+      // Floor at 25% so the thumb reads as "one of four visible", not empty.
+      bar.style.width = `${Math.max(25, pct)}%`;
+
+      prev.toggleAttribute('disabled', viewport.scrollLeft <= 1);
+      next.toggleAttribute('disabled', viewport.scrollLeft >= max - 1);
+    };
+
+    const scrollByCard = (direction: number) => {
+      const card = track.firstElementChild as HTMLElement | null;
+      const step = (card?.offsetWidth ?? 260) + GAP;
+      viewport.scrollBy({ left: direction * step, behavior: 'smooth' });
+    };
+
+    viewport.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    prev.addEventListener('click', () => scrollByCard(-1));
+    next.addEventListener('click', () => scrollByCard(1));
+    updateProgress();
+
+    // ── Drag to scroll ──
+    let dragging = false;
+    let startX = 0;
+    let startScroll = 0;
+    let moved = 0;
+
+    viewport.addEventListener('pointerdown', (event) => {
+      // Ignore secondary buttons and pen/touch, which already pan natively.
+      if (event.button !== 0 || event.pointerType !== 'mouse') return;
+      dragging = true;
+      moved = 0;
+      startX = event.clientX;
+      startScroll = viewport.scrollLeft;
+      viewport.classList.add('is-dragging');
+    });
+
+    window.addEventListener('pointermove', (event) => {
+      if (!dragging) return;
+      const dx = event.clientX - startX;
+      moved = Math.abs(dx);
+      viewport.scrollLeft = startScroll - dx;
+    });
+
+    const endDrag = () => {
+      if (!dragging) return;
+      dragging = false;
+      viewport.classList.remove('is-dragging');
+    };
+
+    window.addEventListener('pointerup', endDrag);
+    window.addEventListener('pointercancel', endDrag);
+
+    // Suppress the click that ends a drag, so dragging never navigates.
+    viewport.addEventListener(
+      'click',
+      (event) => {
+        if (moved > 6) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      },
+      true,
+    );
+  }
+</script>
+
+<style>
+  .journal {
+    padding: 120px 0;
+    background: var(--bg-cream);
+  }
+
+  .journal__wrap {
+    position: relative;
+  }
+
+  .journal__viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
+  }
+
+  .journal__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .journal__viewport.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+    scroll-behavior: auto;
+  }
+
+  .journal__track {
+    display: flex;
+    gap: 3px;
+    width: max-content;
+    list-style: none;
+  }
+
+  /* Exactly four cards across the 1320px container */
+  .jcard {
+    width: calc((min(1320px, 100vw) - 96px - 9px) / 4);
+    min-width: 240px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 2 / 3;
+  }
+
+  .jcard__link {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  .jcard__ph {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      135deg,
+      #2a2622 0px,
+      #2a2622 1px,
+      #1f1b18 1px,
+      #1f1b18 13px
+    );
+  }
+
+  /* CMS-supplied cover images render as a plain <img>, not ImageSlot, so
+     they need the same absolute-fill + grayscale treatment ImageSlot
+     gives its own images. */
+  .jcard__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+  }
+
+  .jcard :global(img) {
+    transition:
+      filter 0.45s ease,
+      transform 0.6s var(--ease-out);
+  }
+
+  .jcard:hover {
+    --imgslot-filter: grayscale(0%);
+  }
+
+  .jcard:hover .jcard__img,
+  .jcard:hover :global(img) {
+    transform: scale(1.04);
+  }
+
+  .jcard:hover .jcard__img {
+    filter: grayscale(0%);
+  }
+
+  /* Permanent scrim so the text is always legible */
+  .jcard__link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      rgba(8, 6, 4, 0.9) 0%,
+      rgba(8, 6, 4, 0.55) 45%,
+      rgba(8, 6, 4, 0.2) 70%,
+      rgba(8, 6, 4, 0.1) 100%
+    );
+    transition: background 0.45s ease;
+  }
+
+  .jcard:hover .jcard__link::before {
+    background: linear-gradient(
+      to top,
+      rgba(8, 6, 4, 0.92) 0%,
+      rgba(8, 6, 4, 0.65) 50%,
+      rgba(8, 6, 4, 0.3) 75%,
+      rgba(8, 6, 4, 0.12) 100%
+    );
+  }
+
+  .jcard__tag {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    z-index: 3;
+    font-family: var(--ff-body);
+    font-size: var(--t-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .jcard__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding: 0 20px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .jcard__title {
+    font-family: var(--ff-display);
+    font-size: 17px;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .jcard__excerpt {
+    font-family: var(--ff-body);
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.6;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .jcard__arrow {
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.3s,
+      transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .jcard:hover .jcard__arrow,
+  .jcard__link:focus-visible .jcard__arrow {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Progress + controls ── */
+  .journal__controls {
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .journal__progressTrack {
+    flex: 1;
+    height: 2px;
+    background: var(--border-strong);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .journal__progressBar {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    width: 25%;
+    transition: width 0.15s ease;
+  }
+
+  .journal__btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 16px;
+    flex-shrink: 0;
+    transition:
+      border-color 0.2s,
+      color 0.2s,
+      background 0.2s,
+      opacity 0.2s;
+  }
+
+  .journal__btn:hover:not([disabled]) {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .journal__btn[disabled] {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  @media (max-width: 900px) {
+    .jcard {
+      width: calc((100vw - 48px - 3px) / 2);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .jcard {
+      width: calc(100vw - 40px);
+    }
+  }
+</style>

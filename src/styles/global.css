@@ -1,0 +1,491 @@
+/* ============================================================
+   GLOBAL — reset, layout, shared type + button primitives.
+   Every value here comes from the homepage design source.
+============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  /* Fixed nav must not cover anchor targets */
+  scroll-padding-top: var(--nav-h);
+}
+
+body {
+  font-family: var(--ff-body);
+  background: var(--bg-cream);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  font-size: var(--t-body);
+  line-height: 1.7;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--ff-body);
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+/* ── FOCUS ──
+   The prototypes ship no focus styles at all. Anything focusable
+   gets a visible accent ring; :focus-visible keeps it off mouse clicks. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.on-dark :focus-visible,
+[data-theme='dark'] :focus-visible {
+  outline-color: var(--on-dark-strong);
+}
+
+/* Skip link — keyboard users land here first */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 300;
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 20px;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: top 0.2s var(--ease-out);
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+/* ============================================================
+   LAYOUT
+============================================================ */
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+@media (max-width: 900px) {
+  .container {
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0 20px;
+  }
+}
+
+/* Full-bleed escape hatch — used by the Projects region banners */
+.full-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+/* Standard vertical rhythm for inner-page sections */
+.section {
+  padding: clamp(72px, 10vw, 120px) 0;
+}
+
+.section--tight {
+  padding: clamp(48px, 6vw, 72px) 0;
+}
+
+.section--cream {
+  background: var(--bg-cream);
+}
+.section--warm {
+  background: var(--bg-warm);
+}
+.section--dark {
+  background: var(--bg-dark);
+  color: var(--on-dark);
+}
+.section--accent {
+  background: var(--accent);
+  color: var(--on-dark);
+}
+
+/* ============================================================
+   TYPE PRIMITIVES
+============================================================ */
+.eyebrow {
+  font-family: var(--ff-body);
+  font-size: var(--t-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 14px;
+}
+
+.eyebrow--light {
+  color: rgba(250, 248, 244, 0.85);
+}
+
+.section-h2 {
+  font-family: var(--ff-display);
+  font-size: var(--t-h2);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text-primary);
+}
+
+.section-h2--light {
+  color: #fff;
+}
+
+.section-h2 em {
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.section-h2--light em {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.section-h2-sub {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: var(--t-h2-sub);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 4px;
+}
+
+.section-h2-sub--accent {
+  color: var(--accent);
+}
+
+.body-text {
+  font-family: var(--ff-body);
+  font-size: var(--t-body);
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--text-secondary);
+}
+
+.body-text--light {
+  color: var(--on-dark-muted);
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 52px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* ============================================================
+   BUTTONS + LINKS
+============================================================ */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 36px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 36px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.btn-ghost:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 28px;
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    color 0.2s;
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+/* Inverted CTA — sits on the red band */
+.btn-on-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-cream);
+  color: var(--accent);
+  padding: 16px 32px;
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  transition: opacity 0.2s;
+}
+
+.btn-on-accent:hover {
+  opacity: 0.86;
+}
+
+.btn-on-accent--ghost {
+  background: transparent;
+  border: 1px solid rgba(250, 248, 244, 0.5);
+  color: var(--on-dark);
+  transition: background 0.2s;
+}
+
+.btn-on-accent--ghost:hover {
+  opacity: 1;
+  background: rgba(250, 248, 244, 0.1);
+}
+
+.btn-arrow {
+  font-size: 15px;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.btn-outline:hover .btn-arrow,
+.btn-primary:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+.link-viewall {
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--border-strong);
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.link-viewall:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.link-viewall--light {
+  color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.link-viewall--light:hover {
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Filter chips — Projects + Journal + article tags */
+.chip {
+  font-family: var(--ff-body);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 11px 20px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 2px;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chip[aria-pressed='true'],
+.chip.is-active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ============================================================
+   SCROLL REVEAL
+   Unified on the homepage values (24px / 0.8s) — the inner-page
+   prototypes used 26px / 0.85s, an imperceptible difference not
+   worth maintaining as a second system.
+============================================================ */
+/* Scoped to `.js` — see the inline head script in BaseLayout. Without
+   scripting the element simply renders in place, rather than being
+   stranded at opacity 0 with nothing to reveal it. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity var(--dur-reveal) var(--ease-out),
+    transform var(--dur-reveal) var(--ease-out);
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-d1 {
+  transition-delay: 0.1s;
+}
+.reveal-d2 {
+  transition-delay: 0.2s;
+}
+.reveal-d3 {
+  transition-delay: 0.3s;
+}
+.reveal-d4 {
+  transition-delay: 0.4s;
+}
+
+/* ============================================================
+   SHARED KEYFRAMES
+============================================================ */
+@keyframes kenburns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.12) translate(-1.5%, -1.5%);
+  }
+}
+
+@keyframes floatdrift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(22px) rotate(3deg);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gridfade {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   Kills ken-burns, the process comet, the client ticker and the
+   hero zoom; reveals resolve instantly rather than never.
+============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

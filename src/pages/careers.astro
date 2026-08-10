@@ -1,0 +1,208 @@
+---
+/**
+ * Careers — hero · pillars · open roles · speculative-application CTA.
+ *
+ * NOTE: this page has no design in the bundle — the footer linked to it
+ * but nothing was ever drawn. Copy below is written from the company's
+ * own language on The Company page and should be reviewed before launch.
+ * The role list itself (src/data/roles.ts) is placeholder content and
+ * needs to be replaced with the company's actual openings.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import DarkPillars from '../components/DarkPillars.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { roles, rolesByDepartment, DEPARTMENT_LABELS, DEPARTMENT_ORDER } from '../data/roles';
+
+const groups = DEPARTMENT_ORDER.map((key) => ({
+  key,
+  label: DEPARTMENT_LABELS[key],
+  items: rolesByDepartment(key),
+})).filter((g) => g.items.length > 0);
+
+const pillars = [
+  {
+    title: 'Work across disciplines',
+    text: 'Design, manufacturing, procurement, logistics and installation all sit inside one company — so careers here rarely stay in one lane.',
+  },
+  {
+    title: 'Built on local talent',
+    text: 'Wherever I-Field opens, we invest in hiring and training locally rather than flying teams in and out.',
+  },
+  {
+    title: 'Projects you can point at',
+    text: 'Landmark properties across four continents, delivered turnkey — the kind of work that is still standing decades later.',
+  },
+];
+---
+
+<BaseLayout
+  title="Careers"
+  description="Join I-Field — designers, makers, project managers and installers delivering luxury hospitality interiors across four continents."
+>
+  <PageHero
+    eyebrow="Careers"
+    title="Build the spaces the world's <em>finest hotels</em> open with"
+    lead="We are a team of designers, makers, project managers and installers working across nine offices and four continents. If you care about getting the detail right, we would like to hear from you."
+    image="heroCareers"
+    facts={['Nine Global Offices', 'In-House Manufacturing', 'Local Hiring & Training']}
+    minHeight="70vh"
+    titleWidth="16ch"
+  />
+
+  <DarkPillars
+    eyebrow="Why I-Field"
+    title="One company, <em>every</em> discipline"
+    intro="Because we design, manufacture and install under one roof, the work here spans further than it would at a specialist supplier — and the results are yours to stand behind."
+    pillars={pillars}
+  />
+
+  <!-- ── OPEN ROLES ── -->
+  <section class="roles" id="roles">
+    <div class="container">
+      <div class="roles__head reveal">
+        <div>
+          <span class="eyebrow">Open Roles</span>
+          <h2 class="section-h2">
+            Where we're <em>hiring</em>
+          </h2>
+        </div>
+        <span class="roles__count">{roles.length} open positions</span>
+      </div>
+
+      {
+        groups.length > 0 ? (
+          <div class="roles__groups">
+            {groups.map((group) => (
+              <div class="roles__group">
+                <h3 class="roles__dept">{group.label}</h3>
+                <ul class="rlist">
+                  {group.items.map((role) => (
+                    <li class="rrow">
+                      <span class="rrow__title">{role.title}</span>
+                      <span class="rrow__meta">
+                        <span class="rrow__type">{role.type}</span>
+                        <span class="rrow__sep" aria-hidden="true">
+                          ·
+                        </span>
+                        <span class="rrow__loc">{role.location}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="body-text roles__empty">
+            No open positions right now — send a speculative application below and we'll keep
+            it on file.
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <CtaBand
+    eyebrow="Open Applications"
+    title="Don't see the right role?"
+    subtitle="We review speculative applications from every discipline."
+    actions={[{ label: 'Get in Touch →', href: '/#contact' }]}
+  />
+</BaseLayout>
+
+<style>
+  .roles {
+    background: var(--bg-cream);
+    padding: clamp(72px, 10vw, 120px) 0;
+    scroll-margin-top: var(--nav-h);
+  }
+
+  .roles__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: clamp(32px, 4vw, 48px);
+  }
+
+  .roles__count {
+    font-family: var(--ff-body);
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+  }
+
+  .roles__groups {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(32px, 4vw, 48px);
+  }
+
+  .roles__dept {
+    font-family: var(--ff-body);
+    font-size: var(--t-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .rlist {
+    list-style: none;
+  }
+
+  .rrow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .rrow__title {
+    font-family: var(--ff-display);
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.25;
+    color: var(--text-primary);
+  }
+
+  .rrow__meta {
+    display: flex;
+    align-items: baseline;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .rrow__type {
+    font-family: var(--ff-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .rrow__sep {
+    font-family: var(--ff-body);
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0 8px;
+  }
+
+  .rrow__loc {
+    font-family: var(--ff-body);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .roles__empty {
+    max-width: 60ch;
+  }
+</style>

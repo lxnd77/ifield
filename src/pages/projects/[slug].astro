@@ -45,7 +45,16 @@ const facts = [
 
 const gallery = data.gallery.filter((item) => item.image);
 const showTestimonial = hasTestimonial(project);
-const description = `${data.title}, ${data.location}${data.keys ? ` — ${data.keys}` : ''}. Delivered turnkey by I-Field.`;
+
+// Builds a natural sentence from whichever facts this entry has —
+// scope and region make the description meaningfully different from
+// one project to the next, rather than every case study reading as a
+// near-duplicate of every other.
+const factsPart = [data.keys, data.scope].filter(Boolean).join(', ');
+const regionPart = REGION_LABELS[data.region] ? ` in ${REGION_LABELS[data.region]}` : '';
+const description = factsPart
+  ? `${data.title} in ${data.location} — ${factsPart}. A turnkey hospitality fit-out and FF&E project delivered by I-Field${regionPart}.`
+  : `${data.title} in ${data.location}. A turnkey hospitality fit-out and FF&E project delivered by I-Field${regionPart}.`;
 ---
 
 <BaseLayout title={`${data.title}, ${data.location}`} description={description}>

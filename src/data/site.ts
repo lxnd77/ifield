@@ -10,8 +10,15 @@
 export const site = {
   name: 'I-Field',
   tagline: 'Delivering the epitome of luxury to hospitality environments worldwide.',
+  /**
+   * Homepage-only <title>. Passed to BaseLayout as-is (it already
+   * contains the brand name, so BaseLayout won't append it again) —
+   * every other page instead passes just its own segment and lets
+   * BaseLayout add " — I-Field".
+   */
+  homeTitle: 'I-Field | Luxury Hospitality Fit-Out & FF&E Company',
   description:
-    "Turnkey fit-out and FF&E for luxury hospitality — designed, manufactured and installed in-house across four continents.",
+    "I-Field designs, manufactures and installs turnkey fit-out and FF&E for luxury hotels worldwide — one accountable team, nine offices, four continents.",
   /** Rendered in the footer copyright line. */
   copyrightYear: 2025,
 } as const;

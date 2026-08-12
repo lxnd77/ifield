@@ -3,7 +3,7 @@ import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import markdoc from "@astrojs/markdoc";
 import keystatic from "@keystatic/astro";
-import node from "@astrojs/node";
+import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,10 +16,9 @@ export default defineConfig({
   // endpoint in phase 9.
   output: "static",
 
-  // Node adapter so those two routes can render on demand. Swap for
-  // @astrojs/netlify or @astrojs/vercel at deploy time — the rest of
-  // the config is host-agnostic.
-  adapter: node({ mode: "standalone" }),
+  // Vercel adapter so those two routes render on demand as serverless
+  // functions; every other route is prerendered to static HTML.
+  adapter: vercel(),
 
   integrations: [react(), markdoc(), keystatic()],
 

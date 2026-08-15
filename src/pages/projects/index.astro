@@ -9,10 +9,10 @@
  * the ones not asked for. Without JavaScript the whole portfolio is
  * visible — the chips do nothing, but nothing is lost.
  */
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageHero from '../../components/PageHero.astro';
-import ImageSlot from '../../components/ImageSlot.astro';
-import CtaBand from '../../components/CtaBand.astro';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import ImageSlot from "../../components/ImageSlot.astro";
+import CtaBand from "../../components/CtaBand.astro";
 import {
   directory,
   directoryByRegion,
@@ -20,27 +20,30 @@ import {
   REGION_LABELS,
   REGION_ORDER,
   REGION_IMAGE,
-} from '../../data/projects';
-import type { ImageKey } from '../../data/images';
-import { featuredProjectEntries, projectSlugByDirectoryKey } from '../../lib/projects';
+} from "../../data/projects";
+import type { ImageKey } from "../../data/images";
+import {
+  featuredProjectEntries,
+  projectSlugByDirectoryKey,
+} from "../../lib/projects";
 
 const featured = await featuredProjectEntries();
 const slugByKey = await projectSlugByDirectoryKey();
 
 /** Placeholder slots used until a project supplies its own card image. */
 const FALLBACK_CARD_SLOTS: readonly ImageKey[] = [
-  'projectsFeatured01',
-  'projectsFeatured02',
-  'projectsFeatured03',
-  'projectsFeatured04',
-  'projectsFeatured05',
-  'projectsFeatured06',
-  'projectsFeatured07',
-  'projectsFeatured08',
+  "projectsFeatured01",
+  "projectsFeatured02",
+  "projectsFeatured03",
+  "projectsFeatured04",
+  "projectsFeatured05",
+  "projectsFeatured06",
+  "projectsFeatured07",
+  "projectsFeatured08",
 ];
 
 const chips = [
-  { key: 'all' as const, label: 'All Projects' },
+  { key: "all" as const, label: "All Projects" },
   ...REGION_ORDER.map((r) => ({ key: r, label: REGION_LABELS[r] })),
 ];
 
@@ -56,17 +59,17 @@ const totalCount = directory.length;
 
 <BaseLayout
   title="Hospitality Fit-Out & FF&E Projects"
-  description="Browse I-Field's portfolio of hotel fit-out and FF&E projects — 70+ properties delivered across 20+ countries for the world's leading hospitality brands."
+  description="Browse I-Field's portfolio of hotel fit-out and FF&E projects — 100+ properties delivered across 20+ countries for the world's leading hospitality brands."
 >
   <PageHero
     eyebrow="Our Portfolio"
     title="Our Projects — <em>delivered in detail</em>"
-    lead="We see every project as a revealing expression of the operator's vision and the character of its place — highly individual spaces, furnished and fitted end-to-end by one I-Field team across four continents."
+    lead="Every project began as someone else's vision. Here's where it ended up, furnished and fitted end-to-end by one I-Field team across four continents."
     image="heroProjects"
     stats={[
-      { value: '70+', label: 'Projects Delivered' },
-      { value: '20+', label: 'Countries' },
-      { value: '9', label: 'Global Offices' },
+      { value: "100+", label: "Projects Delivered" },
+      { value: "20+", label: "Countries" },
+      { value: "9", label: "Global Offices" },
     ]}
     titleWidth="16ch"
   />
@@ -76,9 +79,9 @@ const totalCount = directory.length;
     <div class="container">
       <div class="flagship__head reveal">
         <span class="eyebrow">Flagship Work</span>
-        <h2 class="section-h2">Signature hotels, <em>opened on brand</em></h2>
+        <h2 class="section-h2">Signature hotels, <em>delivered in full</em></h2>
         <span class="section-h2-sub section-h2-sub--accent">
-          A selection of landmark keys handed over turnkey.
+          A selection of landmark properties, handed over turnkey.
         </span>
       </div>
 
@@ -87,7 +90,7 @@ const totalCount = directory.length;
           featured.map((project, i) => (
             <a
               href={`/projects/${project.id}/`}
-              class:list={['flag', 'reveal', `reveal-d${i % 3}`]}
+              class:list={["flag", "reveal", `reveal-d${i % 3}`]}
             >
               {project.data.cardImage ? (
                 <img
@@ -105,7 +108,9 @@ const totalCount = directory.length;
                 />
               )}
               <span class="flag__meta">
-                {project.data.keys && <span class="flag__keys">{project.data.keys}</span>}
+                {project.data.keys && (
+                  <span class="flag__keys">{project.data.keys}</span>
+                )}
                 <span class="flag__name">{project.data.title}</span>
                 <span class="flag__loc">{project.data.location}</span>
               </span>
@@ -124,17 +129,26 @@ const totalCount = directory.length;
           <span class="eyebrow">The Full Portfolio</span>
           <h2 class="section-h2">Every space we've <em>touched</em></h2>
         </div>
-        <span class="portfolio__count" id="projectCount">{totalCount} projects</span>
+        <span class="portfolio__count" id="projectCount"
+          >{totalCount} projects</span
+        >
       </div>
 
-      <nav class="portfolio__chips reveal" aria-label="Filter projects by region">
+      <nav
+        class="portfolio__chips reveal"
+        aria-label="Filter projects by region"
+      >
         {
           chips.map((chip) => (
             <a
-              href={chip.key === 'all' ? '/projects/' : `/projects/?region=${chip.key}`}
-              class:list={['chip', { 'is-active': chip.key === 'all' }]}
+              href={
+                chip.key === "all"
+                  ? "/projects/"
+                  : `/projects/?region=${chip.key}`
+              }
+              class:list={["chip", { "is-active": chip.key === "all" }]}
               data-region={chip.key}
-              aria-current={chip.key === 'all' ? 'true' : undefined}
+              aria-current={chip.key === "all" ? "true" : undefined}
             >
               {chip.label}
             </a>
@@ -162,7 +176,9 @@ const totalCount = directory.length;
                 <div class="group__bannerInner">
                   <div class="container group__bannerRow">
                     <div>
-                      <span class="group__count">{group.items.length} Projects</span>
+                      <span class="group__count">
+                        {group.items.length} Projects
+                      </span>
                       <h3 class="group__region">{group.label}</h3>
                     </div>
                     <span class="group__rule" aria-hidden="true" />
@@ -172,7 +188,9 @@ const totalCount = directory.length;
 
               <ul class="group__list">
                 {group.items.map((entry) => {
-                  const slug = slugByKey.get(directoryKey(entry.name, entry.location));
+                  const slug = slugByKey.get(
+                    directoryKey(entry.name, entry.location),
+                  );
                   return (
                     <li class="prow">
                       {slug ? (
@@ -201,8 +219,8 @@ const totalCount = directory.length;
     title="Your project, next on this list"
     subtitle="Bring us the brief — we'll take it all the way to handover."
     actions={[
-      { label: 'Request a Consultation →', href: '/#contact' },
-      { label: 'See Our Process', href: '/process', ghost: true },
+      { label: "Request a Consultation →", href: "/#contact" },
+      { label: "See Our Process", href: "/process", ghost: true },
     ]}
   />
 </BaseLayout>
@@ -213,56 +231,69 @@ const totalCount = directory.length;
    * place, keeping the URL in sync. Without JS the same links still
    * work — they are ordinary hrefs to a server-rendered filtered page.
    */
-  const chips = Array.from(document.querySelectorAll<HTMLAnchorElement>('.chip[data-region]'));
-  const groups = Array.from(document.querySelectorAll<HTMLElement>('.group[data-region]'));
-  const count = document.getElementById('projectCount');
+  const chips = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>(".chip[data-region]"),
+  );
+  const groups = Array.from(
+    document.querySelectorAll<HTMLElement>(".group[data-region]"),
+  );
+  const count = document.getElementById("projectCount");
 
   if (chips.length > 0 && groups.length > 0) {
     const apply = (region: string, pushState: boolean) => {
       let visible = 0;
 
       groups.forEach((group) => {
-        const show = region === 'all' || group.dataset.region === region;
+        const show = region === "all" || group.dataset.region === region;
         group.hidden = !show;
         if (show) {
-          visible += group.querySelectorAll('.prow').length;
+          visible += group.querySelectorAll(".prow").length;
           // Restart the stagger so a filter change animates in.
-          group.style.animation = 'none';
+          group.style.animation = "none";
           void group.offsetHeight;
-          group.style.animation = '';
+          group.style.animation = "";
         }
       });
 
       chips.forEach((chip) => {
         const active = chip.dataset.region === region;
-        chip.classList.toggle('is-active', active);
-        if (active) chip.setAttribute('aria-current', 'true');
-        else chip.removeAttribute('aria-current');
+        chip.classList.toggle("is-active", active);
+        if (active) chip.setAttribute("aria-current", "true");
+        else chip.removeAttribute("aria-current");
       });
 
       if (count) count.textContent = `${visible} projects`;
 
       if (pushState) {
-        const url = region === 'all' ? '/projects/' : `/projects/?region=${region}`;
-        history.pushState({ region }, '', url);
+        const url =
+          region === "all" ? "/projects/" : `/projects/?region=${region}`;
+        history.pushState({ region }, "", url);
       }
     };
 
     chips.forEach((chip) => {
-      chip.addEventListener('click', (event) => {
-        if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+      chip.addEventListener("click", (event) => {
+        if (
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.button !== 0
+        )
+          return;
         event.preventDefault();
-        apply(chip.dataset.region ?? 'all', true);
+        apply(chip.dataset.region ?? "all", true);
       });
     });
 
     // Apply any ?region= present on first load.
-    const initial = new URLSearchParams(location.search).get('region');
-    if (initial && chips.some((c) => c.dataset.region === initial)) apply(initial, false);
+    const initial = new URLSearchParams(location.search).get("region");
+    if (initial && chips.some((c) => c.dataset.region === initial))
+      apply(initial, false);
 
     // Back/forward should move between filters, not reload the page.
-    window.addEventListener('popstate', () => {
-      const region = new URLSearchParams(location.search).get('region') ?? 'all';
+    window.addEventListener("popstate", () => {
+      const region =
+        new URLSearchParams(location.search).get("region") ?? "all";
       apply(region, false);
     });
   }
@@ -326,7 +357,7 @@ const totalCount = directory.length;
   }
 
   .flag::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(

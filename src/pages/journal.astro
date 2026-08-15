@@ -7,24 +7,24 @@
  * `?category=`, applied client-side against a fully server-rendered
  * grid, degrading to "every post visible" without JavaScript.
  */
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
-import PostCard from '../components/journal/PostCard.astro';
-import NewsletterForm from '../components/journal/NewsletterForm.astro';
-import ImageSlot from '../components/ImageSlot.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import PostCard from "../components/journal/PostCard.astro";
+import NewsletterForm from "../components/journal/NewsletterForm.astro";
+import ImageSlot from "../components/ImageSlot.astro";
 import {
   featuredPost,
   gridPosts,
   CATEGORY_LABELS,
   CATEGORY_ORDER,
   formatPostDateShort,
-} from '../lib/posts';
+} from "../lib/posts";
 
 const featured = await featuredPost();
 const posts = await gridPosts();
 
 const chips = [
-  { key: 'all' as const, label: 'All' },
+  { key: "all" as const, label: "All" },
   ...CATEGORY_ORDER.map((c) => ({ key: c, label: CATEGORY_LABELS[c] })),
 ];
 
@@ -35,17 +35,17 @@ const featuredMeta = featured
       featured.data.readingTime,
     ]
       .filter(Boolean)
-      .join(' · ')
-  : '';
+      .join(" · ")
+  : "";
 ---
 
 <BaseLayout
   title="Hospitality Design & FF&E Journal"
-  description="Perspectives on FF&E procurement, hospitality design and turnkey delivery — insights from I-Field's team, drawn from projects across four continents."
+  description="Perspectives on FF&E procurement, hospitality design, and the craft of delivering luxury spaces."
 >
   <PageHero
     eyebrow="The I-Field Journal"
-    title="Insights &amp; <em>industry thinking</em>"
+    title="Insights & <em>industry thinking</em>"
     lead="Perspectives on FF&E procurement, hospitality design, and the craft of delivering luxury spaces — drawn from the field, across four continents."
     image="heroJournal"
     minHeight="66vh"
@@ -73,9 +73,16 @@ const featuredMeta = featured
                   decoding="async"
                 />
               ) : (
-                <ImageSlot slot="heroJournal" alt="" fill filter="grayscale(28%) brightness(0.62)" />
+                <ImageSlot
+                  slot="heroJournal"
+                  alt=""
+                  fill
+                  filter="grayscale(28%) brightness(0.62)"
+                />
               )}
-              <span class="jfeat__tag">{CATEGORY_LABELS[featured.data.category]}</span>
+              <span class="jfeat__tag">
+                {CATEGORY_LABELS[featured.data.category]}
+              </span>
             </div>
             <div class="jfeat__body">
               <span class="jfeat__meta">{featuredMeta}</span>
@@ -108,10 +115,14 @@ const featuredMeta = featured
         {
           chips.map((chip) => (
             <a
-              href={chip.key === 'all' ? '/journal/' : `/journal/?category=${chip.key}`}
-              class:list={['chip', { 'is-active': chip.key === 'all' }]}
+              href={
+                chip.key === "all"
+                  ? "/journal/"
+                  : `/journal/?category=${chip.key}`
+              }
+              class:list={["chip", { "is-active": chip.key === "all" }]}
               data-category={chip.key}
-              aria-current={chip.key === 'all' ? 'true' : undefined}
+              aria-current={chip.key === "all" ? "true" : undefined}
             >
               {chip.label}
             </a>
@@ -131,7 +142,9 @@ const featuredMeta = featured
 
       {
         posts.length === 0 && (
-          <p class="body-text jall__empty">No articles published yet — check back soon.</p>
+          <p class="body-text jall__empty">
+            No articles published yet — check back soon.
+          </p>
         )
       }
     </div>
@@ -156,50 +169,64 @@ const featuredMeta = featured
    * chip links and filter in place, keeping the URL in sync. Without
    * JS the links still work as ordinary hrefs.
    */
-  const chips = Array.from(document.querySelectorAll<HTMLAnchorElement>('.chip[data-category]'));
-  const items = Array.from(document.querySelectorAll<HTMLElement>('.jall__item[data-category]'));
-  const count = document.getElementById('postCount');
+  const chips = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>(".chip[data-category]"),
+  );
+  const items = Array.from(
+    document.querySelectorAll<HTMLElement>(".jall__item[data-category]"),
+  );
+  const count = document.getElementById("postCount");
 
   if (chips.length > 0 && items.length > 0) {
     const apply = (category: string, pushState: boolean) => {
       let visible = 0;
 
       items.forEach((item) => {
-        const show = category === 'all' || item.dataset.category === category;
+        const show = category === "all" || item.dataset.category === category;
         item.hidden = !show;
         if (show) visible += 1;
       });
 
       chips.forEach((chip) => {
         const active = chip.dataset.category === category;
-        chip.classList.toggle('is-active', active);
-        if (active) chip.setAttribute('aria-current', 'true');
-        else chip.removeAttribute('aria-current');
+        chip.classList.toggle("is-active", active);
+        if (active) chip.setAttribute("aria-current", "true");
+        else chip.removeAttribute("aria-current");
       });
 
-      if (count) count.textContent = `${visible} article${visible === 1 ? '' : 's'}`;
+      if (count)
+        count.textContent = `${visible} article${visible === 1 ? "" : "s"}`;
 
       if (pushState) {
-        const url = category === 'all' ? '/journal/' : `/journal/?category=${category}`;
-        history.pushState({ category }, '', url);
+        const url =
+          category === "all" ? "/journal/" : `/journal/?category=${category}`;
+        history.pushState({ category }, "", url);
       }
     };
 
     chips.forEach((chip) => {
-      chip.addEventListener('click', (event) => {
-        if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+      chip.addEventListener("click", (event) => {
+        if (
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.button !== 0
+        )
+          return;
         event.preventDefault();
-        apply(chip.dataset.category ?? 'all', true);
+        apply(chip.dataset.category ?? "all", true);
       });
     });
 
-    window.addEventListener('popstate', () => {
-      const category = new URLSearchParams(location.search).get('category') ?? 'all';
+    window.addEventListener("popstate", () => {
+      const category =
+        new URLSearchParams(location.search).get("category") ?? "all";
       apply(category, false);
     });
 
-    const initial = new URLSearchParams(location.search).get('category');
-    if (initial && chips.some((c) => c.dataset.category === initial)) apply(initial, false);
+    const initial = new URLSearchParams(location.search).get("category");
+    if (initial && chips.some((c) => c.dataset.category === initial))
+      apply(initial, false);
   }
 </script>
 

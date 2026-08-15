@@ -5,14 +5,14 @@
  *
  * `#approach` and `#team` anchors are linked from the footer.
  */
-import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
-import SectionIntro from '../components/SectionIntro.astro';
-import StatBand from '../components/StatBand.astro';
-import ImageSlot from '../components/ImageSlot.astro';
-import JourneyTimeline from '../components/company/JourneyTimeline.astro';
-import TeamGrid from '../components/company/TeamGrid.astro';
-import CtaBand from '../components/CtaBand.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionIntro from "../components/SectionIntro.astro";
+import StatBand from "../components/StatBand.astro";
+import ImageSlot from "../components/ImageSlot.astro";
+import JourneyTimeline from "../components/company/JourneyTimeline.astro";
+import TeamGrid from "../components/company/TeamGrid.astro";
+import CtaBand from "../components/CtaBand.astro";
 ---
 
 <BaseLayout
@@ -22,20 +22,25 @@ import CtaBand from '../components/CtaBand.astro';
   <PageHero
     eyebrow="The Company"
     title="Crafting the <em>epitome</em> of luxury hospitality"
-    lead="An end-to-end fit-out and FF&E partner — established and run by hotel owners and industry professionals who understand hospitality from the inside out."
+    lead="An end-to-end fit-out and FF&E partner, delivering every project from first specification to final handover."
     image="heroCompany"
-    facts={['Est. 2003 · Hong Kong', '20+ Countries', '9 Global Offices', 'Luxury Hospitality']}
+    facts={[
+      "Est. 2003 · Hong Kong",
+      "20+ Countries",
+      "9 Global Offices",
+      "Luxury Hospitality",
+    ]}
     minHeight="80vh"
     titleWidth="14ch"
   />
 
   <SectionIntro
     eyebrow="Our Story"
-    title="Built by hospitality people, for hospitality spaces"
+    title="The Partner Behind the Finish"
     subtitle="Turnkey solutions since 2003."
     paragraphs={[
-      "We began as hotel contractors based in Hong Kong, with a representative office in Guangzhou. Since then we've grown into one of Asia's largest fit-out and FF&E companies — trusted by the owners and developers behind the world's finest hospitality properties.",
-      'We work alongside acclaimed architects and interior designers, fusing the handwork of skilled craftspeople with state-of-the-art technology. No two I-Field projects are the same — except for their quality. Our end-to-end process means every project is delivered on time and on value, so your doors can open the moment you turn the key.',
+      "For over two decades, I-Field has done one thing: deliver the interiors that define exceptional hospitality. What began with a vision has become a global fit-out and FF&E group, entrusted by the owners and developers behind some of the world's most acclaimed properties.",
+      "We work alongside the architects and designers shaping these spaces, giving form to their ideas through skilled craftsmanship and precise manufacturing. Every project is different; the standard never is. From first specification to final handover, we control each stage ourselves, so nothing is lost between the drawing and the finished room.",
     ]}
     flushBottom
   />
@@ -59,23 +64,22 @@ import CtaBand from '../components/CtaBand.astro';
         <div class="reveal">
           <span class="eyebrow">Our Vision</span>
           <h2 class="vm__statement">
-            To be the most trusted name in luxury hospitality fit-out and FF&amp;E.
+            To be the most trusted name in luxury hospitality fit-out and
+            FF&amp;E.
           </h2>
           <p class="body-text vm__copy">
-            Relentless in our commitment to unmatched quality for the world's most acclaimed
-            hotels — assuring clients of immaculate attention to detail in services that are
-            streamlined, sustainable and cost-efficient.
+            A future where the most demanding projects, anywhere in the world,
+            are placed in our hands with complete confidence.
           </p>
         </div>
         <div class="reveal reveal-d2">
           <span class="eyebrow">Our Mission</span>
           <h2 class="vm__statement">
-            To deliver the right products, real value and reliable service — every time.
+            Nothing lost, from first drawing to final handover.
           </h2>
           <p class="body-text vm__copy">
-            Driven by excellence at every level, from first drawing to final handover. We
-            combine quality, efficiency and an obsessive attention to detail to create outcomes
-            that consistently exceed expectations.
+            Every stage stays in our hands, from manufacture and supply through
+            to final fit-out, with no gaps and no handoffs along the way.
           </p>
         </div>
       </div>
@@ -91,16 +95,17 @@ import CtaBand from '../components/CtaBand.astro';
         </div>
         <div class="reveal reveal-d1">
           <span class="eyebrow">Our Approach</span>
-          <h2 class="section-h2">Every detail, handled<br />in-house</h2>
+          <h2 class="section-h2">No Two Projects Alike</h2>
           <p class="body-text split__copy">
-            We support owners and operators creating environments unlike any other. Our
-            resources make room for new technologies and solutions while ensuring everything we
-            do adds value and lifts the return on every investment.
+            We work as an extension of the owners and operators we partner with,
+            bringing the technology, craft and resources to realise spaces
+            unlike any other. Every decision is made to serve both the guest
+            experience and the value of the asset.
           </p>
           <p class="body-text split__copy">
-            We see every project as an expression of our client's character and the context of
-            its environment — highly individual spaces and furnishings that speak to the
-            operator's vision and the brand's values.
+            Every project takes its cue from the brand behind it and the setting
+            around it: highly individual spaces and furnishings that give form
+            to each operator's identity and standards.
           </p>
         </div>
       </div>
@@ -116,21 +121,26 @@ import CtaBand from '../components/CtaBand.astro';
         </div>
         <div class="reveal reveal-d1">
           <span class="eyebrow">Our Founder</span>
-          <h2 class="section-h2">Hands-on, by design</h2>
+          <h2 class="section-h2">Trusted, personally</h2>
           <p class="body-text split__copy">
-            Abhay moved from India to China in 2003 and quickly built the skills, knowledge and
-            network to found I-Field as one of the region's leading turnkey FF&amp;E
-            manufacturers. In 2012 he led the investment into a dedicated furniture
-            manufacturing unit, and two years later established Guangzhou Daka Import &amp;
-            Export — making I-Field fully self-reliant.
+            In 2003, Abhay moved from India to China and set about building
+            Ifield from the ground up. Drawing on hard-won skills, knowledge and
+            network, he established it as one of the region's leading turnkey
+            FF&E manufacturers, later investing in a dedicated furniture factory
+            and establishing Guangzhou Daka Import & Export to make the company
+            fully self-reliant.
           </p>
           <p class="body-text split__copy">
-            His decades of expertise pair a deep command of FF&amp;E with a rare understanding
-            of people. Wherever I-Field operates, he invests in local talent and training — and
-            personally attends to every client and project.
+            He pairs a deep command of FF&E with a rare understanding of people.
+            He invests in local talent and training wherever Ifield operates,
+            and attends to every client and project himself. That reputation,
+            built one relationship at a time, is why clients return to Ifield,
+            and why the company now works across more than 20 countries.
           </p>
           <p class="founder__sig">
-            Abhay Bhargava<span class="founder__role">— Founder &amp; Managing Director</span>
+            Abhay Bhargava<span class="founder__role"
+              >— Founder &amp; Managing Director</span
+            >
           </p>
         </div>
       </div>
@@ -143,8 +153,8 @@ import CtaBand from '../components/CtaBand.astro';
     title="Tell us about your project"
     subtitle="Let's build something enduring, together."
     actions={[
-      { label: 'Request a Consultation →', href: '/#contact' },
-      { label: 'View Our Projects', href: '/projects', ghost: true },
+      { label: "Request a Consultation →", href: "/#contact" },
+      { label: "View Our Projects", href: "/projects", ghost: true },
     ]}
   />
 </BaseLayout>

@@ -6,19 +6,26 @@
  * The design offered a vertical-rail alternative behind a prop; the
  * horizontal scroll is the default and the one built here.
  */
-import ImageSlot from '../ImageSlot.astro';
-import { milestones } from '../../data/team';
+import ImageSlot from "../ImageSlot.astro";
+import { milestones } from "../../data/team";
 ---
 
 <section class="journey">
   <div class="container">
     <div class="journey__head reveal">
       <span class="eyebrow journey__eyebrow">Our Journey</span>
-      <h2 class="section-h2">Two decades, nine offices<br />One standard</h2>
-      <span class="section-h2-sub">From a Hong Kong contractor to a global FF&amp;E group.</span>
+      <h2 class="section-h2">The Road To a Global Standard.</h2>
+      <span class="section-h2-sub"
+        >A reputation built one project at a time</span
+      >
     </div>
 
-    <div class="journey__scroller" id="journeyScroller" tabindex="0" aria-label="Company milestones, scrollable">
+    <div
+      class="journey__scroller"
+      id="journeyScroller"
+      tabindex="0"
+      aria-label="Company milestones, scrollable"
+    >
       <ol class="journey__track">
         {
           milestones.map((m) => (
@@ -45,7 +52,7 @@ import { milestones } from '../../data/team';
 </section>
 
 <script>
-  const scroller = document.getElementById('journeyScroller');
+  const scroller = document.getElementById("journeyScroller");
 
   if (scroller) {
     let dragging = false;
@@ -53,16 +60,16 @@ import { milestones } from '../../data/team';
     let startScroll = 0;
     let moved = 0;
 
-    scroller.addEventListener('pointerdown', (event) => {
-      if (event.button !== 0 || event.pointerType !== 'mouse') return;
+    scroller.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0 || event.pointerType !== "mouse") return;
       dragging = true;
       moved = 0;
       startX = event.clientX;
       startScroll = scroller.scrollLeft;
-      scroller.classList.add('is-dragging');
+      scroller.classList.add("is-dragging");
     });
 
-    window.addEventListener('pointermove', (event) => {
+    window.addEventListener("pointermove", (event) => {
       if (!dragging) return;
       const dx = event.clientX - startX;
       moved = Math.abs(dx);
@@ -72,15 +79,15 @@ import { milestones } from '../../data/team';
     const end = () => {
       if (!dragging) return;
       dragging = false;
-      scroller.classList.remove('is-dragging');
+      scroller.classList.remove("is-dragging");
     };
 
-    window.addEventListener('pointerup', end);
-    window.addEventListener('pointercancel', end);
+    window.addEventListener("pointerup", end);
+    window.addEventListener("pointercancel", end);
 
     // Never let the end of a drag register as a click on a card.
     scroller.addEventListener(
-      'click',
+      "click",
       (event) => {
         if (moved > 6) {
           event.preventDefault();

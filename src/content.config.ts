@@ -46,7 +46,12 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     category: z.enum(['trends', 'guides', 'interviews', 'insights', 'news']),
-    publishedAt: z.string(),
+    // Keystatic's date field serializes as an unquoted YAML scalar
+    // (`publishedAt: 2026-06-15`), which YAML parses as a Date rather
+    // than a string. Normalize either shape back to `YYYY-MM-DD`.
+    publishedAt: z.union([z.string(), z.date()]).transform((v) =>
+      v instanceof Date ? v.toISOString().slice(0, 10) : v,
+    ),
     draft: z.boolean().default(false),
     excerpt: z.string(),
     readingTime: z.string().optional().default(''),

@@ -18,13 +18,16 @@ import { images } from '../../data/images';
       <img src={`/${images.worldmap.path}`} alt={images.worldmap.alt} loading="lazy" decoding="async" />
       {
         mapPins.map((pin) => (
-          <span
+          <button
+            type="button"
             class:list={['pin', { 'pin--hq': pin.isHq }]}
             style={`left:${pin.left}%;top:${pin.top}%`}
+            data-office-target={pin.officeId}
+            aria-label={`View ${pin.label} office details`}
           >
             <span class="pin__dot" aria-hidden="true" />
             <span class:list={['pin__label', `pin__label--${pin.pos}`]}>{pin.label}</span>
-          </span>
+          </button>
         ))
       }
     </div>
@@ -41,7 +44,7 @@ import { images } from '../../data/images';
   <ul class="offices__grid">
     {
       offices.map((office) => (
-        <li class:list={['office', { 'office--hq': office.isHq }]}>
+        <li id={office.id} class:list={['office', { 'office--hq': office.isHq }]}>
           <div class="office__nameRow">
             <span class="office__dot" aria-hidden="true" />
             <span class="office__name">{office.name}</span>
@@ -62,6 +65,18 @@ import { images } from '../../data/images';
   </a>
 </div>
 
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.pin[data-office-target]').forEach((pin) => {
+    pin.addEventListener('click', () => {
+      const card = document.getElementById(pin.dataset.officeTarget ?? '');
+      if (!card) return;
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.classList.add('office--flash');
+      window.setTimeout(() => card.classList.remove('office--flash'), 1200);
+    });
+  });
+</script>
+
 <style>
   .offices {
     margin-top: 92px;
@@ -70,7 +85,7 @@ import { images } from '../../data/images';
   }
 
   .offices__head {
-    margin-bottom: 38px;
+    margin-bottom: 16px;
   }
 
   .offices__title {
@@ -112,6 +127,22 @@ import { images } from '../../data/images';
     position: absolute;
     width: 0;
     height: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+
+  .pin::before {
+    /* Larger invisible hit area than the visible dot, for easier tapping. */
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    margin: -14px 0 0 -14px;
+    border-radius: 50%;
   }
 
   .pin__dot {
@@ -124,6 +155,18 @@ import { images } from '../../data/images';
     border-radius: 50%;
     background: var(--accent);
     box-shadow: 0 0 0 4px rgba(216, 77, 77, 0.16);
+    transition: transform 0.2s;
+  }
+
+  .pin:hover .pin__dot,
+  .pin:focus-visible .pin__dot {
+    transform: scale(1.25);
+  }
+
+  .pin:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 50%;
   }
 
   .pin--hq .pin__dot {
@@ -226,6 +269,7 @@ import { images } from '../../data/images';
   .office {
     background: var(--bg-warm);
     padding: 26px 24px 28px;
+    scroll-margin-top: 100px;
     transition:
       background 0.3s,
       box-shadow 0.3s,
@@ -233,11 +277,16 @@ import { images } from '../../data/images';
     position: relative;
   }
 
-  .office:hover {
+  .office:hover,
+  .office--flash {
     background: #fff;
     box-shadow: 0 14px 34px rgba(26, 22, 20, 0.1);
     transform: translateY(-2px);
     z-index: 2;
+  }
+
+  .office--flash {
+    box-shadow: 0 0 0 2px var(--accent), 0 14px 34px rgba(26, 22, 20, 0.1);
   }
 
   .office__nameRow {

@@ -21,7 +21,7 @@ export const site = {
   description:
     "I-Field designs, manufactures and installs turnkey fit-out and FF&E for luxury hotels worldwide — one accountable team, nine offices, four continents.",
   /** Rendered in the footer copyright line. */
-  copyrightYear: 2025,
+  copyrightYear: 2026,
 } as const;
 
 export const contact = {
@@ -71,9 +71,10 @@ export interface FooterLink {
 
 export const footerCompanyLinks: readonly FooterLink[] = [
   { label: "The Company", href: "/the-company" },
-  { label: "Our Approach", href: "/the-company#approach" },
-  { label: "Leadership", href: "/the-company#team" },
-  { label: "Careers", href: "/careers" },
+  { label: "Capabilities", href: "/capabilities" },
+  { label: "Process", href: "/process" },
+  { label: "Projects", href: "/projects" },
+  { label: "Journal", href: "/journal" },
 ];
 
 /**
@@ -116,11 +117,9 @@ export interface SocialLink {
   readonly href: string;
 }
 
-/** Hrefs are placeholders until the real profile URLs are supplied. */
 export const socialLinks: readonly SocialLink[] = [
-  { label: "Facebook", short: "f", href: "#" },
-  { label: "Instagram", short: "ig", href: "#" },
-  { label: "LinkedIn", short: "in", href: "#" },
+  { label: "Instagram", short: "ig", href: "https://www.instagram.com/ifield_ltd/" },
+  { label: "LinkedIn", short: "in", href: "https://www.linkedin.com/company/i-field-limited/" },
 ];
 
 // ══════════════════════════════════════════════════════════════

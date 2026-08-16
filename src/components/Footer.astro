@@ -36,7 +36,7 @@ import { images } from '../data/images';
         <div class="footer-social">
           {
             socialLinks.map((s) => (
-              <a href={s.href} class="social-link" aria-label={s.label}>
+              <a href={s.href} class="social-link" aria-label={s.label} target="_blank" rel="noopener noreferrer">
                 <span aria-hidden="true">{s.short}</span>
               </a>
             ))

@@ -10,9 +10,9 @@
  * deliberate in the design and the only place the body face is used at
  * display size.
  */
-import { resolveImage } from '../../lib/assets';
+import { resolveImage } from "../../lib/assets";
 
-const poster = resolveImage('heroHomePoster');
+const poster = resolveImage("heroHomePoster");
 ---
 
 <section class="hero" id="home">
@@ -36,9 +36,11 @@ const poster = resolveImage('heroHomePoster');
   </div>
 
   <div class="hero__content">
-    <p class="hero__eyebrow">Luxury Hospitality Fit-Out &amp; FF&amp;E</p>
+    <p class="hero__eyebrow">Luxury Hospitality Interior Contracting</p>
     <h1 class="hero__title">Turnkey,<br />end to end</h1>
-    <p class="hero__subtitle">Fit-out &amp; FF&amp;E for the world's<br />finest spaces</p>
+    <p class="hero__subtitle">
+      Fit-out &amp; FF&amp;E for the world's<br />finest spaces
+    </p>
     <div class="hero__actions">
       <a href="#contact" class="btn-primary">Request a Consultation →</a>
       <a href="/projects" class="btn-ghost">View Our Projects</a>
@@ -57,7 +59,7 @@ const poster = resolveImage('heroHomePoster');
    * user preference). Retry once on the first interaction rather than
    * leaving a still poster with no explanation.
    */
-  const video = document.getElementById('heroVideo') as HTMLVideoElement | null;
+  const video = document.getElementById("heroVideo") as HTMLVideoElement | null;
 
   if (video) {
     const play = () => {
@@ -66,15 +68,15 @@ const poster = resolveImage('heroHomePoster');
       attempt?.catch(() => {
         const retry = () => {
           video.play().catch(() => {});
-          window.removeEventListener('pointerdown', retry);
+          window.removeEventListener("pointerdown", retry);
         };
-        window.addEventListener('pointerdown', retry, { once: true });
+        window.addEventListener("pointerdown", retry, { once: true });
       });
     };
 
     // A visitor who has asked for reduced motion gets the poster frame.
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      video.removeAttribute('autoplay');
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.removeAttribute("autoplay");
       video.pause();
     } else {
       play();
@@ -112,7 +114,7 @@ const poster = resolveImage('heroHomePoster');
   }
 
   .hero__media::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(
@@ -204,7 +206,11 @@ const poster = resolveImage('heroHomePoster');
   .hero__scrollLine {
     width: 1px;
     height: 40px;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), transparent);
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
     animation: scrollPulse 2s ease-in-out infinite;
   }
 

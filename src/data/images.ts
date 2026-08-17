@@ -72,7 +72,7 @@ const pad = (i: number) => String(i).padStart(2, '0');
 
 /** Homepage services grid card. */
 const svc = (i: number): ImageSlot => ({
-  path: `images/home/service-${pad(i)}.jpg`,
+  path: `images/home/service-${pad(i)}.webp`,
   ratio: '3:4',
   minWidth: 800,
   description: `Services grid card ${i} of 8 — ${SERVICE_NAMES[i - 1]}. Shown grayscale, colour on hover.`,
@@ -81,7 +81,7 @@ const svc = (i: number): ImageSlot => ({
 
 /** Homepage featured-projects grid card. */
 const hproj = (i: number): ImageSlot => ({
-  path: `images/home/project-${pad(i)}.jpg`,
+  path: `images/home/project-${pad(i)}.webp`,
   ratio: '16:11',
   minWidth: 700,
   description: `Featured projects grid card ${i} of 6 on the homepage.`,
@@ -90,7 +90,7 @@ const hproj = (i: number): ImageSlot => ({
 
 /** Capabilities page alternating row. */
 const cap = (i: number): ImageSlot => ({
-  path: `images/capabilities/${pad(i)}.jpg`,
+  path: `images/capabilities/${pad(i)}.webp`,
   ratio: '4:3',
   minWidth: 1000,
   description: `Capability row ${i} of 8 — ${SERVICE_NAMES[i - 1]}.`,
@@ -99,7 +99,7 @@ const cap = (i: number): ImageSlot => ({
 
 /** The Company team grid portrait. */
 const team = (i: number): ImageSlot => ({
-  path: `images/company/team-${pad(i)}.jpg`,
+  path: `images/company/team-${pad(i)}.webp`,
   ratio: '3:4',
   minWidth: 600,
   description: `Team grid portrait ${i} of 15. Grayscale, colour on hover.`,
@@ -108,7 +108,7 @@ const team = (i: number): ImageSlot => ({
 
 /** The Company timeline milestone card. */
 const milestone = (i: number): ImageSlot => ({
-  path: `images/company/milestone-${pad(i)}.jpg`,
+  path: `images/company/milestone-${pad(i)}.webp`,
   ratio: '16:9',
   minWidth: 800,
   description: `Our Journey timeline card ${i} of 7 — ${MILESTONES[i - 1]}.`,
@@ -117,7 +117,7 @@ const milestone = (i: number): ImageSlot => ({
 
 /** Process page stage image. */
 const stage = (i: number): ImageSlot => ({
-  path: `images/process/stage-${pad(i)}.jpg`,
+  path: `images/process/stage-${pad(i)}.webp`,
   ratio: '4:3',
   minWidth: 1000,
   description: `Process stage ${i} of 6 — ${PROCESS_NAMES[i - 1]}.`,
@@ -126,7 +126,7 @@ const stage = (i: number): ImageSlot => ({
 
 /** Projects page Flagship Work card. */
 const feat = (i: number): ImageSlot => ({
-  path: `images/projects/featured-${pad(i)}.jpg`,
+  path: `images/projects/featured-${pad(i)}.webp`,
   ratio: '4:3',
   minWidth: 1000,
   description: `Flagship Work card ${i} of 8 on the Projects page.`,
@@ -135,7 +135,7 @@ const feat = (i: number): ImageSlot => ({
 
 /** Full-bleed page hero. */
 const hero = (name: string, file: string, note: string): ImageSlot => ({
-  path: `images/hero/${file}.jpg`,
+  path: `images/hero/${file}.webp`,
   ratio: '21:9',
   minWidth: 1900,
   description: `${name} page hero. ${note}`,
@@ -149,7 +149,7 @@ const hero = (name: string, file: string, note: string): ImageSlot => ({
 export const images = {
   // ── BRAND — supplied with the design bundle ──
   logoDark: {
-    path: 'images/brand/logo-dark.png',
+    path: 'images/brand/logo-dark.webp',
     ratio: '16:9',
     minWidth: 400,
     description: 'I-Field wordmark, dark. Nav in scrolled state.',
@@ -157,7 +157,7 @@ export const images = {
     present: true,
   },
   logoWhite: {
-    path: 'images/brand/logo-white.png',
+    path: 'images/brand/logo-white.webp',
     ratio: '16:9',
     minWidth: 400,
     description: 'I-Field wordmark, white. Nav over dark heroes, and the footer.',
@@ -165,7 +165,7 @@ export const images = {
     present: true,
   },
   element01: {
-    path: 'images/brand/element-01.png',
+    path: 'images/brand/element-01.webp',
     ratio: '1:1',
     minWidth: 800,
     description: 'Decorative arch mark. Hero overlays and the Services watermark.',
@@ -173,7 +173,7 @@ export const images = {
     present: true,
   },
   element02: {
-    path: 'images/brand/element-02.png',
+    path: 'images/brand/element-02.webp',
     ratio: '1:1',
     minWidth: 800,
     description: 'Decorative arch mark. Global Presence left, Projects top-left.',
@@ -181,7 +181,7 @@ export const images = {
     present: true,
   },
   element03: {
-    path: 'images/brand/element-03.png',
+    path: 'images/brand/element-03.webp',
     ratio: '1:1',
     minWidth: 800,
     description: 'Decorative arch mark. Company section and Process bottom-right.',
@@ -189,7 +189,7 @@ export const images = {
     present: true,
   },
   worldmap: {
-    path: 'images/brand/worldmap.png',
+    path: 'images/brand/worldmap.webp',
     ratio: '16:9',
     minWidth: 1400,
     description: 'World map behind the nine office pins in the Contact section.',
@@ -215,7 +215,7 @@ export const images = {
 
   // ── HOMEPAGE ──
   homeCompanyPortrait: {
-    path: 'images/home/company-portrait.jpg',
+    path: 'images/home/company-portrait.webp',
     ratio: '4:5',
     minWidth: 900,
     description: 'The Company section image, with the offset red accent square.',
@@ -248,21 +248,21 @@ export const images = {
 
   // ── THE COMPANY ──
   companyStory: {
-    path: 'images/company/story.jpg',
+    path: 'images/company/story.webp',
     ratio: '16:9',
     minWidth: 1600,
     description: 'Wide image below the Our Story two-column block.',
     alt: 'An I-Field hospitality project',
   },
   companyApproach: {
-    path: 'images/company/approach.jpg',
+    path: 'images/company/approach.webp',
     ratio: '4:5',
     minWidth: 900,
     description: 'Our Approach section image — craftsmanship detail.',
     alt: 'I-Field craftsmanship',
   },
   companyFounder: {
-    path: 'images/company/founder.jpg',
+    path: 'images/company/founder.webp',
     ratio: '4:5',
     minWidth: 900,
     description: 'Portrait of Abhay Bhargava, Founder & Managing Director.',
@@ -309,28 +309,28 @@ export const images = {
   projectsFeatured07: feat(7),
   projectsFeatured08: feat(8),
   projectsRegionUsa: {
-    path: 'images/projects/region-usa.jpg',
+    path: 'images/projects/region-usa.webp',
     ratio: '21:9',
     minWidth: 1800,
     description: 'Full-bleed banner for the United States portfolio group.',
     alt: 'United States projects',
   },
   projectsRegionMea: {
-    path: 'images/projects/region-mea.jpg',
+    path: 'images/projects/region-mea.webp',
     ratio: '21:9',
     minWidth: 1800,
     description: 'Full-bleed banner for the Middle East & Africa portfolio group.',
     alt: 'Middle East and Africa projects',
   },
   projectsRegionIndia: {
-    path: 'images/projects/region-india.jpg',
+    path: 'images/projects/region-india.webp',
     ratio: '21:9',
     minWidth: 1800,
     description: 'Full-bleed banner for the India & S.E. Asia portfolio group.',
     alt: 'India and South East Asia projects',
   },
   projectsRegionChina: {
-    path: 'images/projects/region-china.jpg',
+    path: 'images/projects/region-china.webp',
     ratio: '21:9',
     minWidth: 1800,
     description: 'Full-bleed banner for the China portfolio group.',
@@ -375,7 +375,7 @@ export const clientLogos: ReadonlyArray<{ path: string; alt: string }> = [
   'Sarovar',
   'Marriott',
   'Radisson',
-].map((alt, i) => ({ path: `images/clients/${pad(i + 1)}.png`, alt }));
+].map((alt, i) => ({ path: `images/clients/${pad(i + 1)}.webp`, alt }));
 
 /** Aspect ratio as a CSS `aspect-ratio` value. */
 export function ratioToCss(ratio: Ratio): string {

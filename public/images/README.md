@@ -12,7 +12,10 @@ npm run check:images
 
 ## Rules of thumb
 
-- **Format** — JPG for photography, PNG only where transparency is needed (logos, brand marks).
+- **Format** — WebP for everything (photography and transparent logos/brand marks alike).
+  The one exception is `og-default.jpg`, which stays JPG because some social-platform
+  crawlers don't reliably support WebP for `og:image`. Run
+  `node scripts/convert-images-to-webp.mjs` after dropping in JPG/PNG files to convert them.
 - **Width** — meet the minimum listed; larger is fine, it gets resized. Don't upscale a small file.
 - **Crop** — match the aspect ratio listed. The site crops to fill, so anything off-ratio loses
   edges. Keep the subject away from the extreme edges.
@@ -28,24 +31,24 @@ npm run check:images
 
 | File | Page | Suggested subject |
 | --- | --- | --- |
-| `capabilities.jpg` | Capabilities | Interior detail or workshop craft |
-| `company.jpg` | The Company | Team, factory floor or flagship lobby |
-| `process.jpg` | Process | Drawings, samples or a site in progress |
-| `projects.jpg` | Projects | A signature completed property |
-| `journal.jpg` | Journal | Editorial, atmospheric interior |
-| `careers.jpg` | Careers | People at work — factory, studio or site |
+| `capabilities.webp` | Capabilities | Interior detail or workshop craft |
+| `company.webp` | The Company | Team, factory floor or flagship lobby |
+| `process.webp` | Process | Drawings, samples or a site in progress |
+| `projects.webp` | Projects | A signature completed property |
+| `journal.webp` | Journal | Editorial, atmospheric interior |
+| `careers.webp` | Careers | People at work — factory, studio or site |
 
 ## `home/` — homepage
 
 | File | Ratio | Min width | Use |
 | --- | --- | --- | --- |
-| `company-portrait.jpg` | 4:5 | 900 | The Company section, with the offset red square |
-| `service-01.jpg` … `service-08.jpg` | 3:4 | 800 | Services grid — see the capability order below |
-| `project-01.jpg` … `project-06.jpg` | 16:11 | 700 | Featured projects grid |
+| `company-portrait.webp` | 4:5 | 900 | The Company section, with the offset red square |
+| `service-01.webp` … `service-08.webp` | 3:4 | 800 | Services grid — see the capability order below |
+| `project-01.webp` … `project-06.webp` | 16:11 | 700 | Featured projects grid |
 
 ## `capabilities/` — the eight rows · 4:3 · ≥1000px
 
-`01.jpg` … `08.jpg`, in this order:
+`01.webp` … `08.webp`, in this order:
 
 1. Fit-Outs
 2. Fixed Furniture & Joineries
@@ -56,17 +59,17 @@ npm run check:images
 7. Decorative Lighting
 8. Artwork & Accessories
 
-The same order applies to `home/service-01…08.jpg`.
+The same order applies to `home/service-01…08.webp`.
 
 ## `company/` — The Company
 
 | File | Ratio | Min width | Use |
 | --- | --- | --- | --- |
-| `story.jpg` | 16:9 | 1600 | Wide image under Our Story |
-| `approach.jpg` | 4:5 | 900 | Our Approach — craftsmanship detail |
-| `founder.jpg` | 4:5 | 900 | Abhay Bhargava portrait |
-| `team-01.jpg` … `team-15.jpg` | 3:4 | 600 | Team grid portraits |
-| `milestone-01.jpg` … `milestone-07.jpg` | 16:9 | 800 | Timeline cards |
+| `story.webp` | 16:9 | 1600 | Wide image under Our Story |
+| `approach.webp` | 4:5 | 900 | Our Approach — craftsmanship detail |
+| `founder.webp` | 4:5 | 900 | Abhay Bhargava portrait |
+| `team-01.webp` … `team-15.webp` | 3:4 | 600 | Team grid portraits |
+| `milestone-01.webp` … `milestone-07.webp` | 16:9 | 800 | Timeline cards |
 
 Team portraits are in the order the team appears in the source copy — Abhay Bhargava,
 Crystal Huang, Tony Lee, Tiger Chen, Vicki Leung, David Xu, Punya Bhargava, then eight
@@ -78,18 +81,18 @@ Milestones run: 2003 Hong Kong · 2011 China manufacturing · 2013 Daka Import &
 
 ## `process/` — the six stages · 4:3 · ≥1000px
 
-`stage-01.jpg` … `stage-06.jpg`: Assess · Design · Procurement · Production · Logistics ·
+`stage-01.webp` … `stage-06.webp`: Assess · Design · Procurement · Production · Logistics ·
 Delivery & Installation.
 
 ## `projects/` — Projects page
 
 | File | Ratio | Min width | Use |
 | --- | --- | --- | --- |
-| `featured-01.jpg` … `featured-08.jpg` | 4:3 | 1000 | Flagship Work cards |
-| `region-usa.jpg` | 21:9 | 1800 | United States banner |
-| `region-mea.jpg` | 21:9 | 1800 | Middle East & Africa banner |
-| `region-india.jpg` | 21:9 | 1800 | India & S.E. Asia banner |
-| `region-china.jpg` | 21:9 | 1800 | China banner |
+| `featured-01.webp` … `featured-08.webp` | 4:3 | 1000 | Flagship Work cards |
+| `region-usa.webp` | 21:9 | 1800 | United States banner |
+| `region-mea.webp` | 21:9 | 1800 | Middle East & Africa banner |
+| `region-india.webp` | 21:9 | 1800 | India & S.E. Asia banner |
+| `region-china.webp` | 21:9 | 1800 | China banner |
 
 ## Root
 

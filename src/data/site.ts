@@ -118,8 +118,16 @@ export interface SocialLink {
 }
 
 export const socialLinks: readonly SocialLink[] = [
-  { label: "Instagram", short: "ig", href: "https://www.instagram.com/ifield_ltd/" },
-  { label: "LinkedIn", short: "in", href: "https://www.linkedin.com/company/i-field-limited/" },
+  {
+    label: "Instagram",
+    short: "ig",
+    href: "https://www.instagram.com/ifield_ltd/",
+  },
+  {
+    label: "LinkedIn",
+    short: "in",
+    href: "https://www.linkedin.com/company/i-field-limited/",
+  },
 ];
 
 // ══════════════════════════════════════════════════════════════
@@ -137,7 +145,7 @@ export interface Stat {
 }
 
 export const stats: readonly Stat[] = [
-  { target: 70, display: "100", sup: "+", label: "Projects Completed" },
+  { target: 100, display: "100", sup: "+", label: "Projects Completed" },
   { target: 20, display: "20", sup: "+", label: "Years of Experience" },
   { target: 9, display: "9", label: "Global Offices" },
   { target: 20, display: "20", sup: "+", label: "Countries Served" },

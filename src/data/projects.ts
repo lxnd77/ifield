@@ -89,6 +89,7 @@ const raw: Record<RegionKey, ReadonlyArray<readonly [string, string]>> = {
     ["Sarovar Premiere", "Hargeisa, Somaliland"],
     ["Sarovar Premier", "Lusaka, Zambia"],
     ["Golden Tulip Resort", "Zanzibar, Tanzania"],
+    ["Vijana Penthouse", "Dar es Salaam, Tanzania"],
   ],
   india: [
     ["Aaron Regina", "Goa"],

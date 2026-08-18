@@ -167,4 +167,16 @@ export const team: readonly TeamMember[] = [
     location: "Dubai",
     image: "companyTeam14",
   },
+  {
+    name: "Rishika Kapoor",
+    role: "Creative Lead",
+    location: "Dubai",
+    image: "companyTeam15",
+  },
+  {
+    name: "Sherry",
+    role: "HR",
+    location: "Dubai",
+    image: "companyTeam16",
+  },
 ];

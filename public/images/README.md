@@ -68,7 +68,7 @@ The same order applies to `home/service-01…08.webp`.
 | `story.webp` | 16:9 | 1600 | Wide image under Our Story |
 | `approach.webp` | 4:5 | 900 | Our Approach — craftsmanship detail |
 | `founder.webp` | 4:5 | 900 | Abhay Bhargava portrait |
-| `team-01.webp` … `team-15.webp` | 3:4 | 600 | Team grid portraits |
+| `team-01.webp` … `team-16.webp` | 3:4 | 600 | Team grid portraits |
 | `milestone-01.webp` … `milestone-07.webp` | 16:9 | 800 | Timeline cards |
 
 Team portraits are in the order the team appears in the source copy — Abhay Bhargava,

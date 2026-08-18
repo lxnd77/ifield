@@ -124,7 +124,7 @@ const raw: Record<RegionKey, ReadonlyArray<readonly [string, string]>> = {
     ["Radisson", "Rudrapur"],
     ["Ramada Plaza", "Jaipur"],
     ["Renaissance", "Lucknow"],
-    ["The Leaf Resort", "Nepal"],
+    ["Kavya Himalayas", "Nepal"],
   ],
   china: [
     ["Club Zilan", "Chengdu"],

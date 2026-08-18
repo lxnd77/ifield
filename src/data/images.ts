@@ -102,7 +102,7 @@ const team = (i: number): ImageSlot => ({
   path: `images/company/team-${pad(i)}.webp`,
   ratio: '3:4',
   minWidth: 600,
-  description: `Team grid portrait ${i} of 15. Grayscale, colour on hover.`,
+  description: `Team grid portrait ${i} of 16. Grayscale, colour on hover.`,
   alt: 'I-Field team member',
 });
 
@@ -283,6 +283,7 @@ export const images = {
   companyTeam13: team(13),
   companyTeam14: team(14),
   companyTeam15: team(15),
+  companyTeam16: team(16),
   companyMilestone01: milestone(1),
   companyMilestone02: milestone(2),
   companyMilestone03: milestone(3),

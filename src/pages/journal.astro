@@ -14,14 +14,14 @@ import NewsletterForm from "../components/journal/NewsletterForm.astro";
 import ImageSlot from "../components/ImageSlot.astro";
 import {
   featuredPost,
-  gridPosts,
+  allPosts,
   CATEGORY_LABELS,
   CATEGORY_ORDER,
   formatPostDateShort,
 } from "../lib/posts";
 
 const featured = await featuredPost();
-const posts = await gridPosts();
+const posts = await allPosts();
 
 const chips = [
   { key: "all" as const, label: "All" },
@@ -260,6 +260,19 @@ const featuredMeta = featured
     );
     aspect-ratio: 16 / 11;
     min-height: 340px;
+    /*
+     * The row's height is stretched (default align-items: stretch) to
+     * match the text column, which can be taller than the image's own
+     * aspect-ratio height when the title wraps to several lines.
+     * Without an explicit width, that stretched height combines with
+     * aspect-ratio to derive width FROM height instead of from the
+     * 1.15fr track, ballooning this column across the text column.
+     * Pinning width to 100% forces aspect-ratio to derive height from
+     * the track width instead, and overflow: hidden crops the rest.
+     */
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
   }
 
   .jfeat__media img,
@@ -293,6 +306,7 @@ const featuredMeta = featured
     flex-direction: column;
     justify-content: center;
     padding: clamp(24px, 3vw, 20px) clamp(4px, 1vw, 8px);
+    min-width: 0;
   }
 
   .jfeat__meta {

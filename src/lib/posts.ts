@@ -29,17 +29,6 @@ export async function featuredPost(): Promise<Post | null> {
   return posts.find((p) => p.data.featured) ?? posts[0] ?? null;
 }
 
-/**
- * The card grid — every published post except whichever one is running
- * as the featured story, so the same article never appears twice on
- * one page.
- */
-export async function gridPosts(): Promise<Post[]> {
-  const posts = await allPosts();
-  const featured = await featuredPost();
-  return featured ? posts.filter((p) => p.id !== featured.id) : posts;
-}
-
 export const CATEGORY_LABELS: Record<Post['data']['category'], string> = {
   trends: 'Trends',
   guides: 'Guides',

@@ -106,37 +106,6 @@ export const team: readonly TeamMember[] = [
     location: "Guangzhou",
     image: "companyTeam04",
   },
-  {
-    name: "Carol",
-    role: "Project Manager, Manufacturing",
-    location: "Guangzhou",
-    image: "companyTeam05",
-  },
-  {
-    name: "David",
-    role: "Project Manager, Manufacturing",
-    location: "Guangzhou",
-    image: "companyTeam06",
-  },
-  {
-    name: "Tiger",
-    role: "Executive, Design",
-    location: "Guangzhou",
-    image: "companyTeam07",
-  },
-
-  {
-    name: "Ating",
-    role: "Executive, Procurement",
-    location: "Guangzhou",
-    image: "companyTeam08",
-  },
-  {
-    name: "Harper",
-    role: "Executive, Procurement",
-    location: "Guangzhou",
-    image: "companyTeam09",
-  },
   // {
   //   name: "Saugat",
   //   role: "Project Manager, Execution",
@@ -154,6 +123,18 @@ export const team: readonly TeamMember[] = [
     role: "Project Manager, Execution",
     location: "KSA",
     image: "companyTeam12",
+  },
+  {
+    name: "Carol",
+    role: "Project Manager, Manufacturing",
+    location: "Guangzhou",
+    image: "companyTeam05",
+  },
+  {
+    name: "David",
+    role: "Project Manager, Manufacturing",
+    location: "Guangzhou",
+    image: "companyTeam06",
   },
   {
     name: "Qureshi",
@@ -178,5 +159,23 @@ export const team: readonly TeamMember[] = [
     role: "HR",
     location: "Dubai",
     image: "companyTeam16",
+  },
+  {
+    name: "Tiger",
+    role: "Executive, Design",
+    location: "Guangzhou",
+    image: "companyTeam07",
+  },
+  {
+    name: "Ating",
+    role: "Executive, Procurement",
+    location: "Guangzhou",
+    image: "companyTeam08",
+  },
+  {
+    name: "Harper",
+    role: "Executive, Procurement",
+    location: "Guangzhou",
+    image: "companyTeam09",
   },
 ];

@@ -284,6 +284,8 @@ export const images = {
   companyTeam14: team(14),
   companyTeam15: team(15),
   companyTeam16: team(16),
+  companyTeam17: team(17),
+  companyTeam18: team(18),
   companyMilestone01: milestone(1),
   companyMilestone02: milestone(2),
   companyMilestone03: milestone(3),

@@ -18,7 +18,9 @@ export default defineConfig({
 
   // Vercel adapter so those two routes render on demand as serverless
   // functions; every other route is prerendered to static HTML.
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: { enabled: true }
+  }),
 
   integrations: [react(), markdoc(), keystatic()],
 
